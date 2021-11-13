@@ -1,0 +1,20 @@
+{
+  "name": "be-easyshop",
+  "version": "1.0.0",
+  "description": "back end set up for Easy Shop",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnthonyMcGreal/be-easyShop.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnthonyMcGreal/be-easyShop/issues"
+  },
+  "homepage": "https://github.com/AnthonyMcGreal/be-easyShop#readme"
+}
