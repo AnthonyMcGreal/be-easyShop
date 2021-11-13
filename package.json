@@ -1,0 +1,27 @@
+{
+  "name": "be-easyshop",
+  "version": "1.0.0",
+  "description": "back end set up for Easy Shop",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "devStart": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnthonyMcGreal/be-easyShop.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AnthonyMcGreal/be-easyShop/issues"
+  },
+  "homepage": "https://github.com/AnthonyMcGreal/be-easyShop#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0",
+    "nodemon": "^2.0.15"
+  }
+}
