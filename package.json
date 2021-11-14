@@ -4,7 +4,7 @@
   "description": "back end set up for Easy Shop",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "devStart": "nodemon listen.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,13 @@
   "bugs": {
     "url": "https://github.com/AnthonyMcGreal/be-easyShop/issues"
   },
-  "homepage": "https://github.com/AnthonyMcGreal/be-easyShop#readme"
+  "homepage": "https://github.com/AnthonyMcGreal/be-easyShop#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "dotenv": "^10.0.0",
+    "nodemon": "^2.0.15"
+  }
 }
