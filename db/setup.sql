@@ -1,0 +1,5 @@
+DROP DATABASE IF EXISTS easyShop_test;
+DROP DATABASE IF EXISTS easyShop;
+
+CREATE DATABASE easyShop_test;
+CREATE DATABASE easyShop;
