@@ -89,7 +89,6 @@ const seed = async ({
 
   await db.query(insertIngredientsData);
 
-  //format recipes data
   let insertRecipesData = format(
     `INSERT INTO recipes
       (name, user, link, ingredients, ingredient_quantity, portions)
@@ -97,6 +96,8 @@ const seed = async ({
       RETURNING *;`,
     formatRecipeData(recipesData)
   );
+
+  await db.query(insertRecipesData);
   //insert recipes data
 
   //format mealPlans data
