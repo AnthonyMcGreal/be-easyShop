@@ -2,6 +2,7 @@ const {
   formatUsersData,
   formatMiscItemsData,
   formatIngredientsData,
+  formatRecipeData,
 } = require('../db/utils/data_manipulation');
 
 describe('tests for formatUsersData', () => {
@@ -221,7 +222,6 @@ describe('tests for formatIngredientsData', () => {
 
     expect(input).toEqual(input2);
   });
-
   it('should return an array with nested arrays from an object', () => {
     const input = [
       {
@@ -262,5 +262,100 @@ describe('tests for formatIngredientsData', () => {
     ];
 
     expect(formatIngredientsData(input)).not.toBe(input);
+  });
+});
+
+describe('test for formatRecipeData', () => {
+  it('should not mutate the original data', () => {
+    const input = [
+      {
+        name: 'Spag Bol',
+        user: 'Anthony',
+        link: '',
+        ingredients: 'Mince',
+        ingredient_quantity: 400,
+        portions: 2,
+      },
+      {
+        name: 'Spag Bol',
+        user: 'Anthony',
+        link: '',
+        ingredients: 'Spaghetti',
+        ingredient_quantity: 80,
+        portions: 2,
+      },
+    ];
+
+    const input2 = [
+      {
+        name: 'Spag Bol',
+        user: 'Anthony',
+        link: '',
+        ingredients: 'Mince',
+        ingredient_quantity: 400,
+        portions: 2,
+      },
+      {
+        name: 'Spag Bol',
+        user: 'Anthony',
+        link: '',
+        ingredients: 'Spaghetti',
+        ingredient_quantity: 80,
+        portions: 2,
+      },
+    ];
+
+    formatRecipeData(input);
+
+    expect(input).toEqual(input2);
+  });
+  it('should return an array with nested arrays from an object', () => {
+    const input = [
+      {
+        name: 'Spag Bol',
+        user: 'Anthony',
+        link: '',
+        ingredients: 'Mince',
+        ingredient_quantity: 400,
+        portions: 2,
+      },
+      {
+        name: 'Spag Bol',
+        user: 'Anthony',
+        link: '',
+        ingredients: 'Spaghetti',
+        ingredient_quantity: 80,
+        portions: 2,
+      },
+    ];
+
+    const output = [
+      ['Spag Bol', 'Anthony', '', 'Mince', 400, 2],
+      ['Spag Bol', 'Anthony', '', 'Spaghetti', 80, 2],
+    ];
+
+    expect(formatRecipeData(input)).toEqual(output);
+  });
+  it('should return a new Array', () => {
+    const input = [
+      {
+        name: 'Spag Bol',
+        user: 'Anthony',
+        link: '',
+        ingredients: 'Mince',
+        ingredient_quantity: 400,
+        portions: 2,
+      },
+      {
+        name: 'Spag Bol',
+        user: 'Anthony',
+        link: '',
+        ingredients: 'Spaghetti',
+        ingredient_quantity: 80,
+        portions: 2,
+      },
+    ];
+
+    expect(formatRecipeData(input)).not.toBe(input);
   });
 });

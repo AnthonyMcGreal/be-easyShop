@@ -25,3 +25,17 @@ exports.formatIngredientsData = (ingredientsData) => {
   });
   return formattedData;
 };
+
+exports.formatRecipeData = (recipeData) => {
+  const formattedData = recipeData.map((recipe) => {
+    return [
+      recipe.name,
+      recipe.user,
+      recipe.link,
+      recipe.ingredients,
+      recipe.ingredient_quantity,
+      recipe.portions,
+    ];
+  });
+  return formattedData;
+};

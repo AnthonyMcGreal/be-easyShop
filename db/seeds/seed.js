@@ -4,9 +4,15 @@ const {
   formatUsersData,
   formatMiscItemsData,
   formatIngredientsData,
+  formatRecipeData,
 } = require('../utils/data_manipulation.js');
 
-const seed = async ({ usersData, miscItemsData, ingredientsData }) => {
+const seed = async ({
+  usersData,
+  miscItemsData,
+  ingredientsData,
+  recipesData,
+}) => {
   await db.query(`DROP TABLE IF EXISTS mealPlans`);
   await db.query(`DROP TABLE IF EXISTS recipes`);
   await db.query(`DROP TABLE IF EXISTS ingredients`);
@@ -84,6 +90,13 @@ const seed = async ({ usersData, miscItemsData, ingredientsData }) => {
   await db.query(insertIngredientsData);
 
   //format recipes data
+  let insertRecipesData = format(
+    `INSERT INTO recipes
+      (name, user, link, ingredients, ingredient_quantity, portions)
+      VALUES %L
+      RETURNING *;`,
+    formatRecipeData(recipesData)
+  );
   //insert recipes data
 
   //format mealPlans data
