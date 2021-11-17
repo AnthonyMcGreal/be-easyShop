@@ -3,9 +3,10 @@ const format = require('pg-format');
 const {
   formatUsersData,
   formatMiscItemsData,
+  formatIngredientsData,
 } = require('../utils/data_manipulation.js');
 
-const seed = async ({ usersData, miscItemsData }) => {
+const seed = async ({ usersData, miscItemsData, ingredientsData }) => {
   await db.query(`DROP TABLE IF EXISTS mealPlans`);
   await db.query(`DROP TABLE IF EXISTS recipes`);
   await db.query(`DROP TABLE IF EXISTS ingredients`);
@@ -72,8 +73,15 @@ const seed = async ({ usersData, miscItemsData }) => {
 
   await db.query(insertMiscItemsData);
 
-  //format ingredients data
-  //insert ingredients data
+  let insertIngredientsData = format(
+    `INSERT INTO ingredients
+      (name, unit_of_measurement, storage_type, user)
+      VALUES %L
+      RETURNING *;`,
+    formatIngredientsData(ingredientsData)
+  );
+
+  await db.query(insertIngredientsData);
 
   //format recipes data
   //insert recipes data

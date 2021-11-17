@@ -13,3 +13,15 @@ exports.formatMiscItemsData = (miscItemsData) => {
   });
   return formattedData;
 };
+
+exports.formatIngredientsData = (ingredientsData) => {
+  const formattedData = ingredientsData.map((ingredient) => {
+    return [
+      ingredient.name,
+      ingredient.unit_of_measurement,
+      ingredient.storage_type,
+      ingredient.user,
+    ];
+  });
+  return formattedData;
+};

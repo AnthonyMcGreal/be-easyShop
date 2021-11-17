@@ -1,6 +1,7 @@
 const {
   formatUsersData,
   formatMiscItemsData,
+  formatIngredientsData,
 } = require('../db/utils/data_manipulation');
 
 describe('tests for formatUsersData', () => {
@@ -92,7 +93,7 @@ describe('tests for formatUsersData', () => {
   });
 });
 
-describe('tests for format miscItemsData', () => {
+describe('tests for formatMiscItemsData', () => {
   it('should not mutate the original data', () => {
     const input = [
       {
@@ -181,5 +182,85 @@ describe('tests for format miscItemsData', () => {
     ];
 
     expect(formatMiscItemsData(input)).not.toBe(input);
+  });
+});
+
+describe('tests for formatIngredientsData', () => {
+  it('should not mutate the original data', () => {
+    const input = [
+      {
+        name: 'Mince',
+        unit_of_measurement: 'grams',
+        storage_type: 'chilled',
+        user: 'Anthony',
+      },
+      {
+        name: 'Spaghetti',
+        unit_of_measurement: 'grams',
+        storage_type: 'Ambient',
+        user: 'Solveiga',
+      },
+    ];
+
+    const input2 = [
+      {
+        name: 'Mince',
+        unit_of_measurement: 'grams',
+        storage_type: 'chilled',
+        user: 'Anthony',
+      },
+      {
+        name: 'Spaghetti',
+        unit_of_measurement: 'grams',
+        storage_type: 'Ambient',
+        user: 'Solveiga',
+      },
+    ];
+
+    formatIngredientsData(input);
+
+    expect(input).toEqual(input2);
+  });
+
+  it('should return an array with nested arrays from an object', () => {
+    const input = [
+      {
+        name: 'Mince',
+        unit_of_measurement: 'grams',
+        storage_type: 'chilled',
+        user: 'Anthony',
+      },
+      {
+        name: 'Spaghetti',
+        unit_of_measurement: 'grams',
+        storage_type: 'Ambient',
+        user: 'Solveiga',
+      },
+    ];
+
+    const output = [
+      ['Mince', 'grams', 'chilled', 'Anthony'],
+      ['Spaghetti', 'grams', 'Ambient', 'Solveiga'],
+    ];
+
+    expect(formatIngredientsData(input)).toEqual(output);
+  });
+  it('should return a new array', () => {
+    const input = [
+      {
+        name: 'Mince',
+        unit_of_measurement: 'grams',
+        storage_type: 'chilled',
+        user: 'Anthony',
+      },
+      {
+        name: 'Spaghetti',
+        unit_of_measurement: 'grams',
+        storage_type: 'Ambient',
+        user: 'Solveiga',
+      },
+    ];
+
+    expect(formatIngredientsData(input)).not.toBe(input);
   });
 });
