@@ -39,3 +39,16 @@ exports.formatRecipeData = (recipeData) => {
   });
   return formattedData;
 };
+
+exports.formatMealPlansData = (mealPlanData) => {
+  const formattedData = mealPlanData.map((mealPlan) => {
+    return [
+      mealPlan.name,
+      mealPlan.user,
+      mealPlan.day,
+      mealPlan.day_part,
+      mealPlan.recipe,
+    ];
+  });
+  return formattedData;
+};

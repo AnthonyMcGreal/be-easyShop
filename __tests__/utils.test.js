@@ -3,6 +3,7 @@ const {
   formatMiscItemsData,
   formatIngredientsData,
   formatRecipeData,
+  formatMealPlansData,
 } = require('../db/utils/data_manipulation');
 
 describe('tests for formatUsersData', () => {
@@ -357,5 +358,63 @@ describe('test for formatRecipeData', () => {
     ];
 
     expect(formatRecipeData(input)).not.toBe(input);
+  });
+});
+
+describe('tests for formatMealPlansData', () => {
+  it('should not mutate the original data', () => {
+    const input = [
+      {
+        name: 'week1 rotation',
+        user: 'MVPAnt',
+        day: 'Monday',
+        day_part: 'Dinner',
+        recipe: 'Spag Bol',
+      },
+    ];
+
+    const input2 = [
+      {
+        name: 'week1 rotation',
+        user: 'MVPAnt',
+        day: 'Monday',
+        day_part: 'Dinner',
+        recipe: 'Spag Bol',
+      },
+    ];
+
+    formatMealPlansData(input);
+
+    expect(input).toEqual(input2);
+  });
+  it('should return array with nested arrays from an object', () => {
+    const input = [
+      {
+        name: 'week1 rotation',
+        user: 'MVPAnt',
+        day: 'Monday',
+        day_part: 'Dinner',
+        recipe: 'Spag Bol',
+      },
+    ];
+
+    const output = [
+      ['week1 rotation', 'MVPAnt', 'Monday', 'Dinner', 'Spag Bol'],
+    ];
+
+    expect(formatMealPlansData(input)).toEqual(output);
+  });
+  it('should return a new array', () => {
+    const input = [
+      {
+        name: 'week1 rotation',
+        user: 'MVPAnt',
+        day: 'Monday',
+        day_part: 'Dinner',
+        recipe: 'Spag Bol',
+      },
+    ];
+
+    expect(formatMealPlansData).not.toBe(input);
   });
 });
