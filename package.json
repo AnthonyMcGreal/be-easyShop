@@ -4,7 +4,8 @@
   "description": "back end set up for Easy Shop",
   "main": "index.js",
   "scripts": {
-    "devStart": "nodemon node listen.js"
+    "devStart": "nodemon node listen.js",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -19,8 +20,9 @@
   "homepage": "https://github.com/AnthonyMcGreal/be-easyShop#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.17.1",
     "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jest": "^27.3.1",
     "pg": "^8.7.1",
     "pg-format": "^1.0.4"
   },

@@ -1,7 +1,11 @@
 const db = require('../connection.js');
 const format = require('pg-format');
+const {
+  formatUsersData,
+  formatMiscItemsData,
+} = require('../utils/data_manipulation.js');
 
-const seed = async ({}) => {
+const seed = async ({ usersData, miscItemsData }) => {
   await db.query(`DROP TABLE IF EXISTS mealPlans`);
   await db.query(`DROP TABLE IF EXISTS recipes`);
   await db.query(`DROP TABLE IF EXISTS ingredients`);
@@ -47,4 +51,33 @@ const seed = async ({}) => {
       day_part TEXT NOT NULL,
       recipe TEXT REFERENCES recipes(name),
   );`);
+
+  let insertUsersData = format(
+    `INSERT INTO users
+      (name, username, avatar_url)
+      VALUES %L
+      RETURNING *;`,
+    formatUsersData(usersData)
+  );
+
+  await db.query(insertUsersData);
+
+  let insertMiscItemsData = format(
+    `INSERT INTO miscItems
+      (name, user, category)
+      VALUES %L
+      RETURNING *;`,
+    formatMiscItemsData(miscItemsData)
+  );
+
+  await db.query(insertMiscItemsData);
+
+  //format ingredients data
+  //insert ingredients data
+
+  //format recipes data
+  //insert recipes data
+
+  //format mealPlans data
+  //insert mealPlans data
 };
