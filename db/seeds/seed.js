@@ -30,24 +30,24 @@ const seed = async ({
   await db.query(`CREATE TABLE miscItems (
       item_id SERIAL PRIMARY KEY,
       name TEXT NOT NULL,
-      user VARCHAR(60) REFERENCES users(name),
+      username VARCHAR(60) REFERENCES users(name),
       category TEXT NOT NULL
   );`);
 
   await db.query(`CREATE TABLE ingredients (
       ingredient_id SERIAL PRIMARY KEY,
       name TEXT NOT NULL,
-      unit_of_measurement INT DEFAULT 0 NOT NULL,
+      unit_of_measurement VARCHAR(20) DEFAULT 0 NOT NULL,
       storage_type TEXT NOT NULL,
-      user VARCHAR(60) REFERENCES users(name)
+      username VARCHAR(60) REFERENCES users(name)
   );`);
 
   await db.query(`CREATE TABLE recipes (
       recipe_id SERIAL PRIMARY KEY,
       name TEXT NOT NULL,
-      user VARCHAR(60) REFERENCES users(username),
+      username VARCHAR(60) REFERENCES users(name),
       link TEXT,
-      ingredients TEXT REFERENCES ingredients(name),
+      ingredients INT REFERENCES ingredients(ingredient_id),
       ingredient_quantity INT NOT NULL,
       portions INT NOT NULL
   );`);
@@ -55,10 +55,10 @@ const seed = async ({
   await db.query(`CREATE TABLE mealPlans (
       template_id SERIAL PRIMARY KEY,
       name TEXT NOT NULL,
-      user VARCHAR(60) REFERENCES users(name),
+      username VARCHAR(60) REFERENCES users(name),
       day INT NOT NULL,
       day_part TEXT NOT NULL,
-      recipe TEXT REFERENCES recipes(name),
+      recipe TEXT
   );`);
 
   let insertUsersData = format(
@@ -73,7 +73,7 @@ const seed = async ({
 
   let insertMiscItemsData = format(
     `INSERT INTO miscItems
-      (name, user, category)
+      (name, username, category)
       VALUES %L
       RETURNING *;`,
     formatMiscItemsData(miscItemsData)
@@ -83,7 +83,7 @@ const seed = async ({
 
   let insertIngredientsData = format(
     `INSERT INTO ingredients
-      (name, unit_of_measurement, storage_type, user)
+      (name, unit_of_measurement, storage_type, username)
       VALUES %L
       RETURNING *;`,
     formatIngredientsData(ingredientsData)
@@ -93,7 +93,7 @@ const seed = async ({
 
   let insertRecipesData = format(
     `INSERT INTO recipes
-      (name, user, link, ingredients, ingredient_quantity, portions)
+      (name, username, link, ingredients, ingredient_quantity, portions)
       VALUES %L
       RETURNING *;`,
     formatRecipeData(recipesData)
@@ -103,7 +103,7 @@ const seed = async ({
 
   let insertMealPlans = format(
     `INSERT INTO mealPlans
-      (name, user, day, day_part, recipe)
+      (name, username, day, day_part, recipe)
       VALUES %L
       RETURNING *;`,
     formatMealPlansData(templatesData)

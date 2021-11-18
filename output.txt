@@ -1,0 +1,6 @@
+You are now connected to database "easy_shop" as user "anthony".
+ template_id |      name      | username | day | day_part |  recipe  
+-------------+----------------+----------+-----+----------+----------
+           1 | week1 rotation | Anthony  |   1 | Dinner   | Spag Bol
+(1 row)
+
