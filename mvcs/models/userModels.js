@@ -28,6 +28,26 @@ exports.insertUser = (name, username, avatar_url) => {
   });
 };
 
-exports.updateUserByUsername = () => {};
+exports.updateUserByUsername = (
+  name,
+  username,
+  avatar_url,
+  originalUsername
+) => {
+  if (/\d/g.test(name)) {
+    return Promise.reject({ status: 400, msg: 'Bad Request' });
+  }
+  return db
+    .query(
+      `UPDATE users 
+    SET name = $1, username = $2, avatar_url = $3 
+    WHERE username = $4 
+    RETURNING *;`,
+      [name, username, avatar_url, originalUsername]
+    )
+    .then(({ rows }) => {
+      return rows;
+    });
+};
 
 exports.removeUserByUsername = () => {};

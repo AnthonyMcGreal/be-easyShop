@@ -69,3 +69,88 @@ describe('POST - /api/user/:username', () => {
       });
   });
 });
+describe('PATCH - /api/user/:username', () => {
+  it('updates a users name', () => {
+    const update = {
+      name: 'updatedName',
+      username: 'MVPAnt',
+      avatar_url: '',
+    };
+
+    return request(app)
+      .patch('/api/user/MVPAnt')
+      .send(update)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.user[0].name).toEqual(update.name);
+        expect(body.user[0].username).toEqual(update.username);
+        expect(body.user[0].avatar_url).toEqual(update.avatar_url);
+      });
+  });
+  it('updates a users username', () => {
+    const update = {
+      name: 'Anthony',
+      username: 'newUsername',
+      avatar_url: '',
+    };
+
+    return request(app)
+      .patch('/api/user/MVPAnt')
+      .send(update)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.user[0].name).toEqual(update.name);
+        expect(body.user[0].username).toEqual(update.username);
+        expect(body.user[0].avatar_url).toEqual(update.avatar_url);
+      });
+  });
+  it('updates a users avatar_url', () => {
+    const update = {
+      name: 'Anthony',
+      username: 'newUsername',
+      avatar_url:
+        'https://gravatar.com/avatar/8210d12499010fbb4e14237d1a8f6cb1?s=400&d=robohash&r=x',
+    };
+
+    return request(app)
+      .patch('/api/user/MVPAnt')
+      .send(update)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.user[0].name).toEqual(update.name);
+        expect(body.user[0].username).toEqual(update.username);
+        expect(body.user[0].avatar_url).toEqual(update.avatar_url);
+      });
+  });
+  it('returns a 404 if user doesnt exist', () => {
+    const update = {
+      name: 'Anthony',
+      username: 'newUsername',
+      avatar_url:
+        'https://gravatar.com/avatar/8210d12499010fbb4e14237d1a8f6cb1?s=400&d=robohash&r=x',
+    };
+
+    return request(app)
+      .patch('/api/user/NonExistentUser')
+      .send(update)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual('Not Found');
+      });
+  });
+  it('returns a 400 if the input is bad', () => {
+    const update = {
+      name: 12345,
+      username: 'MVPAnt',
+      avatar_url: '',
+    };
+
+    return request(app)
+      .patch('/api/user/MVPAnt')
+      .send(update)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual('Bad Request');
+      });
+  });
+});

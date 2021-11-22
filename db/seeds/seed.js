@@ -30,7 +30,7 @@ const seed = async ({
   await db.query(`CREATE TABLE miscItems (
       item_id SERIAL PRIMARY KEY,
       name TEXT NOT NULL,
-      username VARCHAR(60) REFERENCES users(name),
+      username VARCHAR(60) REFERENCES users(name) ON UPDATE CASCADE,
       category TEXT NOT NULL
   );`);
 
@@ -39,13 +39,13 @@ const seed = async ({
       name TEXT NOT NULL,
       unit_of_measurement VARCHAR(20) DEFAULT 0 NOT NULL,
       storage_type TEXT NOT NULL,
-      username VARCHAR(60) REFERENCES users(name)
+      username VARCHAR(60) REFERENCES users(name) ON UPDATE CASCADE
   );`);
 
   await db.query(`CREATE TABLE recipes (
       recipe_id SERIAL PRIMARY KEY,
       name TEXT NOT NULL,
-      username VARCHAR(60) REFERENCES users(name),
+      username VARCHAR(60) REFERENCES users(name) ON UPDATE CASCADE,
       link TEXT,
       ingredients INT REFERENCES ingredients(ingredient_id),
       ingredient_quantity INT NOT NULL,
@@ -55,7 +55,7 @@ const seed = async ({
   await db.query(`CREATE TABLE mealPlans (
       template_id SERIAL PRIMARY KEY,
       name TEXT NOT NULL,
-      username VARCHAR(60) REFERENCES users(name),
+      username VARCHAR(60) REFERENCES users(name) ON UPDATE CASCADE,
       day INT NOT NULL,
       day_part TEXT NOT NULL,
       recipe TEXT

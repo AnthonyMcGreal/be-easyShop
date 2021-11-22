@@ -1,4 +1,8 @@
-const { selectUserByUsername, insertUser } = require('../models/userModels');
+const {
+  selectUserByUsername,
+  insertUser,
+  updateUserByUsername,
+} = require('../models/userModels');
 
 exports.getUserByUsername = (req, res, next) => {
   const { username } = req.params;
@@ -20,6 +24,18 @@ exports.postUser = (req, res, next) => {
     .catch(next);
 };
 
-exports.patchUserByUsername = () => {};
+exports.patchUserByUsername = (req, res, next) => {
+  const originalUsername = req.params.username;
+  const { name, username, avatar_url } = req.body;
+  updateUserByUsername(name, username, avatar_url, originalUsername)
+    .then((user) => {
+      if (user.length === 0) {
+        res.status(404).send({ msg: 'Not Found' });
+      } else {
+        res.status(200).send({ user });
+      }
+    })
+    .catch(next);
+};
 
 exports.deleteUserByUsername = () => {};
