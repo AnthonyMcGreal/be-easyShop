@@ -1,6 +1,8 @@
 You are now connected to database "easy_shop" as user "anthony".
- template_id |      name      | username | day | day_part |  recipe  
--------------+----------------+----------+-----+----------+----------
-           1 | week1 rotation | Anthony  |   1 | Dinner   | Spag Bol
-(1 row)
+   name   | username |                                     avatar_url                                     
+----------+----------+------------------------------------------------------------------------------------
+ Anthony  | MVPAnt   | https://gravatar.com/avatar/fc25b0331ed2cfed2ca5a32452705da2?s=400&d=robohash&r=x
+ Solveiga | Sole89   | https://gravatar.com/avatar/8210d12499010fbb4e14237d1a8f6cb1?s=400&d=robohash&r=x
+ David    | Toodles  | https://gravatar.com/avatar/c65c3f695e08d1250792bebd265065af?s=400&d=monsterid&r=x
+(3 rows)
 

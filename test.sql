@@ -1,3 +1,3 @@
 \c easy_shop
 
-SELECT * FROM mealPlans;
+SELECT * FROM users;
