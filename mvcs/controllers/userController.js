@@ -1,8 +1,7 @@
-const { selectUserByUsername } = require('../models/userModels');
+const { selectUserByUsername, insertUser } = require('../models/userModels');
 
 exports.getUserByUsername = (req, res, next) => {
   const { username } = req.params;
-  console.log('inside controller');
   selectUserByUsername(username).then((user) => {
     if (user.length === 0) {
       res.status(404).send({ msg: 'Not Found' });
@@ -12,7 +11,14 @@ exports.getUserByUsername = (req, res, next) => {
   });
 };
 
-exports.postUser = () => {};
+exports.postUser = (req, res, next) => {
+  const { name, username, avatar_url } = req.body;
+  insertUser(name, username, avatar_url)
+    .then((user) => {
+      res.status(201).send({ user });
+    })
+    .catch(next);
+};
 
 exports.patchUserByUsername = () => {};
 
