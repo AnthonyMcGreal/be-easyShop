@@ -29,12 +29,8 @@
     "pg": "^8.7.1",
     "pg-format": "^1.0.4"
   },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "jest-sorted"
-    ]
-  },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "supertest": "^6.1.6"
   }
 }
