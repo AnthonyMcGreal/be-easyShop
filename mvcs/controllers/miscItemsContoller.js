@@ -1,4 +1,7 @@
-const { selectMiscItemById } = require('../models/miscItemsModels');
+const {
+  selectMiscItemById,
+  insertMiscItem,
+} = require('../models/miscItemsModels');
 
 exports.getMiscItemById = (req, res, next) => {
   const { miscItem_id } = req.params;
@@ -12,6 +15,13 @@ exports.getMiscItemById = (req, res, next) => {
     })
     .catch(next);
 };
-exports.postMiscItem = () => {};
+exports.postMiscItem = (req, res, next) => {
+  const { body } = req;
+  insertMiscItem(body)
+    .then((miscItem) => {
+      res.status(201).send({ miscItem });
+    })
+    .catch(next);
+};
 exports.patchMiscItemById = () => {};
 exports.deleteMiscItemById = () => {};

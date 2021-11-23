@@ -6,3 +6,8 @@ You are now connected to database "easy_shop" as user "anthony".
  David    | Toodles  | https://gravatar.com/avatar/c65c3f695e08d1250792bebd265065af?s=400&d=monsterid&r=x
 (3 rows)
 
+ item_id |    name    | username | category 
+---------+------------+----------+----------
+       1 | Toothpaste | Anthony  | Hygiene
+(1 row)
+

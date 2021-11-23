@@ -15,6 +15,26 @@ exports.selectMiscItemById = (miscItem_id) => {
   });
 };
 
-exports.insertMiscItem = () => {};
+exports.insertMiscItem = (item) => {
+  const { name, username, category } = item;
+  const formatedData = [[name, username, category]];
+
+  if (!name || !username || !category) {
+    return Promise.reject({ status: 400, msg: 'Bad Request' });
+  }
+
+  let inputString = format(
+    `INSERT INTO miscItems
+        (name, username, category)
+        VALUES
+        %L
+        RETURNING *;`,
+    formatedData
+  );
+
+  return db.query(inputString).then(({ rows }) => {
+    return rows[0];
+  });
+};
 exports.updateMiscItemById = () => {};
 exports.removeMiscItemById = () => {};

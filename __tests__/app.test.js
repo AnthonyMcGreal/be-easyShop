@@ -201,3 +201,70 @@ describe('GET - /api/miscItem/:miscItem_id', () => {
       });
   });
 });
+
+describe('POST - /api/miscItem', () => {
+  it('should return an item once posted', () => {
+    const newItem = {
+      name: 'Kitchen Roll',
+      username: 'Anthony',
+      category: 'Cleaning',
+    };
+    return request(app)
+      .post('/api/miscItem')
+      .send(newItem)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.miscItem).toHaveProperty('name');
+        expect(body.miscItem).toHaveProperty('username');
+        expect(body.miscItem).toHaveProperty('category');
+        expect(body.miscItem.name).toEqual('Kitchen Roll');
+        expect(body.miscItem.username).toEqual('Anthony');
+        expect(body.miscItem.category).toEqual('Cleaning');
+      });
+  });
+  it('should return 400 if the name field is missing', () => {
+    const newItem = {
+      name: '',
+      username: 'Anthony',
+      category: 'Cleaning',
+    };
+
+    return request(app)
+      .post('/api/miscItem')
+      .send(newItem)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual('Bad Request');
+      });
+  });
+  it('should return 400 if the username field is missing', () => {
+    const newItem = {
+      name: 'Kitchen Roll',
+      username: '',
+      category: 'Cleaning',
+    };
+
+    return request(app)
+      .post('/api/miscItem')
+      .send(newItem)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual('Bad Request');
+      });
+  });
+  it('should return 400 if the category field is missing', () => {
+    const newItem = {
+      name: 'Kitchen Roll',
+      username: 'Anthony',
+      category: '',
+    };
+
+    return request(app)
+      .post('/api/miscItem')
+      .send(newItem)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual('Bad Request');
+      });
+  });
+});
