@@ -202,6 +202,23 @@ describe('GET - /api/miscItem/:miscItem_id', () => {
   });
 });
 
+describe('GET - /api/miscItem', () => {
+  it('gets all misc items available', () => {
+    return request(app)
+      .get('/api/miscItem')
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.miscItems.length).toEqual(3);
+        body.miscItems.forEach((miscItem) => {
+          expect(miscItem).toHaveProperty('item_id');
+          expect(miscItem).toHaveProperty('name');
+          expect(miscItem).toHaveProperty('username');
+          expect(miscItem).toHaveProperty('category');
+        });
+      });
+  });
+});
+
 describe('POST - /api/miscItem', () => {
   it('should return an item once posted', () => {
     const newItem = {

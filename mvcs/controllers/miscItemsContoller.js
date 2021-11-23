@@ -1,6 +1,7 @@
 const {
   selectMiscItemById,
   insertMiscItem,
+  selectAllMiscItems,
 } = require('../models/miscItemsModels');
 
 exports.getMiscItemById = (req, res, next) => {
@@ -15,6 +16,7 @@ exports.getMiscItemById = (req, res, next) => {
     })
     .catch(next);
 };
+
 exports.postMiscItem = (req, res, next) => {
   const { body } = req;
   insertMiscItem(body)
@@ -23,5 +25,12 @@ exports.postMiscItem = (req, res, next) => {
     })
     .catch(next);
 };
+
+exports.getAllMiscItems = (req, res, next) => {
+  selectAllMiscItems().then((miscItems) => {
+    res.status(200).send({ miscItems });
+  });
+};
+
 exports.patchMiscItemById = () => {};
 exports.deleteMiscItemById = () => {};

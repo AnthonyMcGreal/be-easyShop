@@ -3,11 +3,12 @@ const {
   getMiscItemById,
   patchMiscItemById,
   deleteMiscItemById,
+  getAllMiscItems,
 } = require('../controllers/miscItemsContoller');
 
 const miscItemRouter = require('express').Router();
 
-miscItemRouter.route('/').post(postMiscItem);
+miscItemRouter.route('/').get(getAllMiscItems).post(postMiscItem);
 miscItemRouter
   .route('/:miscItem_id')
   .get(getMiscItemById)

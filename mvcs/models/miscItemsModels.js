@@ -36,5 +36,14 @@ exports.insertMiscItem = (item) => {
     return rows[0];
   });
 };
+
+exports.selectAllMiscItems = () => {
+  let queryStr = `SELECT * FROM miscItems;`;
+
+  return db.query(queryStr).then(({ rows }) => {
+    return rows;
+  });
+};
+
 exports.updateMiscItemById = () => {};
 exports.removeMiscItemById = () => {};
