@@ -50,4 +50,17 @@ exports.updateUserByUsername = (
     });
 };
 
-exports.removeUserByUsername = () => {};
+exports.removeUserByUsername = (username) => {
+  let queryStr = format(`SELECT * FROM users WHERE username = %L;`, [username]);
+
+  return db.query(queryStr).then((user) => {
+    const nameToBeDeleted = user.rows.name;
+    if (user.rows.length === 0) {
+      return Promise.reject({ status: 404, msg: 'Not Found' });
+    }
+
+    return db.query(`DELETE FROM users WHERE username = $1;`, [
+      nameToBeDeleted,
+    ]);
+  });
+};

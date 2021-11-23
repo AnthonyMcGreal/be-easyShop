@@ -2,6 +2,7 @@ const {
   selectUserByUsername,
   insertUser,
   updateUserByUsername,
+  removeUserByUsername,
 } = require('../models/userModels');
 
 exports.getUserByUsername = (req, res, next) => {
@@ -38,4 +39,12 @@ exports.patchUserByUsername = (req, res, next) => {
     .catch(next);
 };
 
-exports.deleteUserByUsername = () => {};
+exports.deleteUserByUsername = (req, res, next) => {
+  const { username } = req.params;
+
+  removeUserByUsername(username)
+    .then((response) => {
+      res.send(204);
+    })
+    .catch(next);
+};

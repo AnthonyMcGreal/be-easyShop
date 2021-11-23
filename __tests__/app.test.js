@@ -69,6 +69,7 @@ describe('POST - /api/user/:username', () => {
       });
   });
 });
+
 describe('PATCH - /api/user/:username', () => {
   it('updates a users name', () => {
     const update = {
@@ -151,6 +152,20 @@ describe('PATCH - /api/user/:username', () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toEqual('Bad Request');
+      });
+  });
+});
+
+describe('DELETE - /api/user/:username', () => {
+  it('should delete a user matching the param endpoint', () => {
+    return request(app).delete('/api/user/MVPAnt').expect(204);
+  });
+  it('should return 404 if username doesnt exist', () => {
+    return request(app)
+      .delete('/api/user/iDontExist')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual('Not Found');
       });
   });
 });
