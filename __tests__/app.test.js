@@ -294,3 +294,20 @@ describe('DELETE - /api/miscItem/:miscItem_id', () => {
     return request(app).delete('/api/miscItem/99').expect(404);
   });
 });
+
+describe('GET - /api/ingredients', () => {
+  it('should return an array of all ingredient objects', () => {
+    return request(app)
+      .get('/api/ingredients')
+      .expect(200)
+      .then(({ body }) => {
+        body.ingredients.forEach((ingredient) => {
+          expect(ingredient).toHaveProperty('ingredient_id');
+          expect(ingredient).toHaveProperty('name');
+          expect(ingredient).toHaveProperty('unit_of_measurement');
+          expect(ingredient).toHaveProperty('storage_type');
+          expect(ingredient).toHaveProperty('username');
+        });
+      });
+  });
+});
