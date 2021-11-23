@@ -45,5 +45,8 @@ exports.selectAllMiscItems = () => {
   });
 };
 
-exports.updateMiscItemById = () => {};
-exports.removeMiscItemById = () => {};
+exports.removeMiscItemById = (miscItem_id) => {
+  return db.query(`DELETE FROM miscItems WHERE item_id = $1 RETURNING *;`, [
+    miscItem_id,
+  ]);
+};

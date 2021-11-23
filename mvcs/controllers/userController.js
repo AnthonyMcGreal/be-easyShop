@@ -44,7 +44,7 @@ exports.deleteUserByUsername = (req, res, next) => {
 
   removeUserByUsername(username)
     .then((response) => {
-      res.send(204);
+      res.sendStatus(204);
     })
     .catch(next);
 };

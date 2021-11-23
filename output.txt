@@ -11,3 +11,4 @@ You are now connected to database "easy_shop" as user "anthony".
        1 | Toothpaste | Anthony  | Hygiene
 (1 row)
 
+DELETE 1

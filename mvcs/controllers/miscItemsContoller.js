@@ -2,6 +2,7 @@ const {
   selectMiscItemById,
   insertMiscItem,
   selectAllMiscItems,
+  removeMiscItemById,
 } = require('../models/miscItemsModels');
 
 exports.getMiscItemById = (req, res, next) => {
@@ -32,5 +33,13 @@ exports.getAllMiscItems = (req, res, next) => {
   });
 };
 
-exports.patchMiscItemById = () => {};
-exports.deleteMiscItemById = () => {};
+exports.deleteMiscItemById = (req, res, next) => {
+  const { miscItem_id } = req.params;
+  removeMiscItemById(miscItem_id).then((item) => {
+    if (item.rows.length === 0) {
+      res.status(404).send({ msg: 'Not Found' });
+    } else {
+      res.sendStatus(204);
+    }
+  });
+};

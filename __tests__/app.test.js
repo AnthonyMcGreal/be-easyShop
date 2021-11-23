@@ -285,3 +285,12 @@ describe('POST - /api/miscItem', () => {
       });
   });
 });
+
+describe('DELETE - /api/miscItem/:miscItem_id', () => {
+  it('deletes a miscItem matching the param endpoint', () => {
+    return request(app).delete('/api/miscItem/1').expect(204);
+  });
+  it('returns a 404 is item doesnt exist', () => {
+    return request(app).delete('/api/miscItem/99').expect(404);
+  });
+});

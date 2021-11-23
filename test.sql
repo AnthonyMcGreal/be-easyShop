@@ -2,4 +2,4 @@
 
 SELECT * FROM users;
 
-SELECT * FROM miscItems WHERE item_id = 1;
+DELETE FROM miscItems WHERE item_id = 1 RETURNING *;

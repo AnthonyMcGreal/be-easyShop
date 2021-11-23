@@ -12,7 +12,6 @@ miscItemRouter.route('/').get(getAllMiscItems).post(postMiscItem);
 miscItemRouter
   .route('/:miscItem_id')
   .get(getMiscItemById)
-  .patch(patchMiscItemById)
   .delete(deleteMiscItemById);
 
 module.exports = miscItemRouter;
