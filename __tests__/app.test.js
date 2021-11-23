@@ -169,3 +169,35 @@ describe('DELETE - /api/user/:username', () => {
       });
   });
 });
+
+describe('GET - /api/miscItem/:miscItem_id', () => {
+  it('should respond with a miscItem object that matches the param', () => {
+    return request(app)
+      .get('/api/miscItem/1')
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.miscItem[0]).toHaveProperty('name');
+        expect(body.miscItem[0]).toHaveProperty('username');
+        expect(body.miscItem[0]).toHaveProperty('category');
+        expect(body.miscItem[0].name).toEqual('Toothpaste');
+        expect(body.miscItem[0].username).toEqual('Anthony');
+        expect(body.miscItem[0].category).toEqual('Hygiene');
+      });
+  });
+  it('should respond a 404 if item doesnt exist', () => {
+    return request(app)
+      .get('/api/miscItem/99')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual('Not Found');
+      });
+  });
+  it('should respond with 400 if input isnt valid', () => {
+    return request(app)
+      .get('/api/miscItem/NaN')
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual('Bad Request');
+      });
+  });
+});

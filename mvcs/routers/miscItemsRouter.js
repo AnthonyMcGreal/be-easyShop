@@ -5,11 +5,13 @@ const {
   deleteMiscItemById,
 } = require('../controllers/miscItemsContoller');
 
-const miscItemsRouter = require('express').Router();
+const miscItemRouter = require('express').Router();
 
-miscItemsRouter.route('/').post(postMiscItem);
-miscItemsRouter
+miscItemRouter.route('/').post(postMiscItem);
+miscItemRouter
   .route('/:miscItem_id')
   .get(getMiscItemById)
   .patch(patchMiscItemById)
   .delete(deleteMiscItemById);
+
+module.exports = miscItemRouter;
