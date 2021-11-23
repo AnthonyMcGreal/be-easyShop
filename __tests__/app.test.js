@@ -311,3 +311,99 @@ describe('GET - /api/ingredients', () => {
       });
   });
 });
+
+describe('POST - /api/ingredients', () => {
+  it('should return an ingredient object once posted to db', () => {
+    const newIngredient = {
+      name: 'Onion',
+      unit_of_measurement: 'Individual',
+      storage_type: 'Ambient',
+      username: 'Solveiga',
+    };
+
+    return request(app)
+      .post('/api/ingredients')
+      .send(newIngredient)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.ingredient).toHaveProperty('ingredient_id');
+        expect(body.ingredient).toHaveProperty('name');
+        expect(body.ingredient).toHaveProperty('unit_of_measurement');
+        expect(body.ingredient).toHaveProperty('storage_type');
+        expect(body.ingredient).toHaveProperty('username');
+        expect(body.ingredient.name).toEqual(newIngredient.name);
+        expect(body.ingredient.unit_of_measurement).toEqual(
+          newIngredient.unit_of_measurement
+        );
+        expect(body.ingredient.storage_type).toEqual(
+          newIngredient.storage_type
+        );
+        expect(body.ingredient.username).toEqual(newIngredient.username);
+        expect(body.ingredient.ingredient_id).toEqual(5);
+      });
+  });
+  it('should return a 400 if ingredient is missing a name', () => {
+    const newIngredient = {
+      name: '',
+      unit_of_measurement: 'Individual',
+      storage_type: 'Ambient',
+      username: 'Solveiga',
+    };
+
+    return request(app)
+      .post('/api/ingredients')
+      .send(newIngredient)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual('Bad Request');
+      });
+  });
+  it('should return a 400 if ingredient is missing a UoM', () => {
+    const newIngredient = {
+      name: 'Onion',
+      unit_of_measurement: '',
+      storage_type: 'Ambient',
+      username: 'Solveiga',
+    };
+
+    return request(app)
+      .post('/api/ingredients')
+      .send(newIngredient)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual('Bad Request');
+      });
+  });
+  it('should return a 400 if ingredient is missing a storage type', () => {
+    const newIngredient = {
+      name: 'Onion',
+      unit_of_measurement: 'Individual',
+      storage_type: '',
+      username: 'Solveiga',
+    };
+
+    return request(app)
+      .post('/api/ingredients')
+      .send(newIngredient)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual('Bad Request');
+      });
+  });
+  it('should return a 400 if ingredient is missing a username', () => {
+    const newIngredient = {
+      name: 'Onion',
+      unit_of_measurement: 'Individual',
+      storage_type: 'Ambient',
+      username: '',
+    };
+
+    return request(app)
+      .post('/api/ingredients')
+      .send(newIngredient)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual('Bad Request');
+      });
+  });
+});
