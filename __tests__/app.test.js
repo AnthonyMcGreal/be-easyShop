@@ -407,3 +407,118 @@ describe('POST - /api/ingredients', () => {
       });
   });
 });
+
+describe('PATCH - /api/ingredients/:ingredient_id', () => {
+  it('should update an ingredients name', () => {
+    const updatedObject = {
+      name: 'Mince Meat',
+      unit_of_measurement: 'grams',
+      storage_type: 'chilled',
+      username: 'Anthony',
+    };
+
+    return request(app)
+      .patch('/api/ingredients/1')
+      .send(updatedObject)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.ingredient.ingredient_id).toEqual(1);
+        expect(body.ingredient.username).toEqual(updatedObject.username);
+        expect(body.ingredient.unit_of_measurement).toEqual(
+          updatedObject.unit_of_measurement
+        );
+        expect(body.ingredient.storage_type).toEqual(
+          updatedObject.storage_type
+        );
+        expect(body.ingredient.username).toEqual(updatedObject.username);
+      });
+  });
+  it('should update an ingredients UoM', () => {
+    const updatedObject = {
+      name: 'Mince',
+      unit_of_measurement: 'ltr',
+      storage_type: 'chilled',
+      username: 'Anthony',
+    };
+
+    return request(app)
+      .patch('/api/ingredients/1')
+      .send(updatedObject)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.ingredient.ingredient_id).toEqual(1);
+        expect(body.ingredient.username).toEqual(updatedObject.username);
+        expect(body.ingredient.unit_of_measurement).toEqual(
+          updatedObject.unit_of_measurement
+        );
+        expect(body.ingredient.storage_type).toEqual(
+          updatedObject.storage_type
+        );
+        expect(body.ingredient.username).toEqual(updatedObject.username);
+      });
+  });
+  it('should update an ingredients storage_type', () => {
+    const updatedObject = {
+      name: 'Mince',
+      unit_of_measurement: 'grams',
+      storage_type: 'Ambient',
+      username: 'Anthony',
+    };
+
+    return request(app)
+      .patch('/api/ingredients/1')
+      .send(updatedObject)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.ingredient.ingredient_id).toEqual(1);
+        expect(body.ingredient.username).toEqual(updatedObject.username);
+        expect(body.ingredient.unit_of_measurement).toEqual(
+          updatedObject.unit_of_measurement
+        );
+        expect(body.ingredient.storage_type).toEqual(
+          updatedObject.storage_type
+        );
+        expect(body.ingredient.username).toEqual(updatedObject.username);
+      });
+  });
+  it('should update an ingredients username', () => {
+    const updatedObject = {
+      name: 'Mince',
+      unit_of_measurement: 'grams',
+      storage_type: 'chilled',
+      username: 'Solveiga',
+    };
+
+    return request(app)
+      .patch('/api/ingredients/1')
+      .send(updatedObject)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.ingredient.ingredient_id).toEqual(1);
+        expect(body.ingredient.username).toEqual(updatedObject.username);
+        expect(body.ingredient.unit_of_measurement).toEqual(
+          updatedObject.unit_of_measurement
+        );
+        expect(body.ingredient.storage_type).toEqual(
+          updatedObject.storage_type
+        );
+        expect(body.ingredient.username).toEqual(updatedObject.username);
+      });
+  });
+  it('should return a 404 if ingredient isnt found', () => {
+    const updatedObject = {
+      name: 'Mince Meat',
+      unit_of_measurement: 'grams',
+      storage_type: 'chilled',
+      username: 'Anthony',
+    };
+
+    return request(app)
+      .patch('/api/ingredients/99')
+      .send(updatedObject)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual('Not Found');
+      });
+  });
+});
