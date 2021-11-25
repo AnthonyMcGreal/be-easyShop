@@ -537,3 +537,13 @@ describe('DELETE - /api/ingredients/:ingredients_id', () => {
       });
   });
 });
+
+describe('GET - /api/recipe', () => {});
+
+describe('GET - /api/recipe/:recipe_id', () => {});
+
+describe('POST - /api/recipe', () => {});
+
+describe('PATCH - /api/recipe/:recipe_id', () => {});
+
+describe('DELETE - /api/recipe/:recipe_id', () => {});
