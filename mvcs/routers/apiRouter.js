@@ -7,6 +7,6 @@ const recipeRouter = require('./recipeRouter');
 apiRouter.use('/user', userRouter);
 apiRouter.use('/miscItem', miscItemRouter);
 apiRouter.use('/ingredients', ingredientsRouter);
-apiRouter.use('/recipes', recipeRouter);
+apiRouter.use('/recipe', recipeRouter);
 
 module.exports = apiRouter;

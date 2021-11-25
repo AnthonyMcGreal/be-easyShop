@@ -538,7 +538,21 @@ describe('DELETE - /api/ingredients/:ingredients_id', () => {
   });
 });
 
-describe('GET - /api/recipe', () => {});
+describe('GET - /api/recipe', () => {
+  it('should return a list of all recipes', () => {
+    return request(app)
+      .get('/api/recipe')
+      .expect(200)
+      .then(({ body }) => {
+        console.log(body.recipes);
+        expect(body.recipes.length).toEqual(2);
+        body.recipes.forEach((recipe) => {
+          expect(recipe).toHaveProperty('name');
+          expect(Object.keys(recipe).length).toEqual(1);
+        });
+      });
+  });
+});
 
 describe('GET - /api/recipe/:recipe_id', () => {});
 
