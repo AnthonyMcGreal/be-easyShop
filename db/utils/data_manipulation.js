@@ -30,7 +30,7 @@ exports.formatRecipeData = (recipeData) => {
   const formattedData = recipeData.map((recipe) => {
     return [
       recipe.name,
-      recipe.user,
+      recipe.username,
       recipe.link,
       recipe.ingredients,
       recipe.ingredient_quantity,

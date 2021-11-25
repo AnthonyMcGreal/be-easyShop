@@ -532,7 +532,6 @@ describe('DELETE - /api/ingredients/:ingredients_id', () => {
       .delete('/api/ingredients/100')
       .expect(404)
       .then(({ body }) => {
-        console.log(body);
         expect(body.msg).toEqual('Not Found');
       });
   });
@@ -544,17 +543,42 @@ describe('GET - /api/recipe', () => {
       .get('/api/recipe')
       .expect(200)
       .then(({ body }) => {
-        console.log(body.recipes);
         expect(body.recipes.length).toEqual(2);
         body.recipes.forEach((recipe) => {
-          expect(recipe).toHaveProperty('name');
+          expect(recipe).toHaveProperty('recipe_name');
           expect(Object.keys(recipe).length).toEqual(1);
         });
       });
   });
 });
 
-describe('GET - /api/recipe/:recipe_id', () => {});
+describe('GET - /api/recipe/:name', () => {
+  it('should return a recipe with ingredient info', () => {
+    return request(app)
+      .get('/api/recipe/Spag_Bol_no_mushrooms')
+      .expect(200)
+      .then(({ body }) => {
+        console.log(body);
+        body.forEach((recipe) => {
+          expect(recipe).toHaveProperty('recipe_name');
+          expect(recipe).toHaveProperty('link');
+          expect(recipe).toHaveProperty('name');
+          expect(recipe).toHaveProperty('ingredient_quantity');
+          expect(recipe).toHaveProperty('unit_of_measurement');
+          expect(recipe).toHaveProperty('portions');
+          expect(recipe).toHaveProperty('storage_type');
+        });
+      });
+  });
+  it('should return a 404 if the recipe doesnt exist', () => {
+    return request(app)
+      .get('/api/recipe/Not a recipe')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual('Not Found');
+      });
+  });
+});
 
 describe('POST - /api/recipe', () => {});
 

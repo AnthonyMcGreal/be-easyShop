@@ -10,7 +10,7 @@ const recipeRouter = require('express').Router();
 
 recipeRouter.route('/').get(getAllRecipes).post(postRecipe);
 recipeRouter
-  .route('/:recipe_id')
+  .route('/:name')
   .get(getRecipeById)
   .patch(patchRecipeById)
   .delete(deleteRecipeById);

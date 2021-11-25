@@ -44,8 +44,8 @@ const seed = async ({
 
   await db.query(`CREATE TABLE recipes (
       recipe_id SERIAL PRIMARY KEY,
-      name TEXT NOT NULL,
-      username VARCHAR(60) REFERENCES users(name) ON UPDATE CASCADE,
+      recipe_name TEXT NOT NULL,
+      username VARCHAR(60) REFERENCES users(name) ON UPDATE CASCADE NOT NULL,
       link TEXT,
       ingredients INT REFERENCES ingredients(ingredient_id) ON DELETE CASCADE,
       ingredient_quantity INT NOT NULL,
@@ -93,7 +93,7 @@ const seed = async ({
 
   let insertRecipesData = format(
     `INSERT INTO recipes
-      (name, username, link, ingredients, ingredient_quantity, portions)
+      (recipe_name, username, link, ingredients, ingredient_quantity, portions)
       VALUES %L
       RETURNING *;`,
     formatRecipeData(recipesData)

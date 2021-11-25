@@ -1,4 +1,7 @@
-const { selectAllRecipes } = require('../models/recipeModels');
+const {
+  selectAllRecipes,
+  selectRecipeById,
+} = require('../models/recipeModels');
 
 exports.getAllRecipes = (req, res, next) => {
   selectAllRecipes().then((recipes) => {
@@ -6,7 +9,17 @@ exports.getAllRecipes = (req, res, next) => {
   });
 };
 
-exports.getRecipeById = () => {};
+exports.getRecipeById = (req, res, next) => {
+  const { name } = req.params;
+  selectRecipeById(name).then((recipe) => {
+    if (recipe.length === 0) {
+      res.status(404).send({ msg: 'Not Found' });
+    } else {
+      res.status(200).send(recipe);
+    }
+  });
+};
+
 exports.postRecipe = () => {};
 exports.patchRecipeById = () => {};
 exports.deleteRecipeById = () => {};
