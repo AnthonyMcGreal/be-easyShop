@@ -522,3 +522,18 @@ describe('PATCH - /api/ingredients/:ingredient_id', () => {
       });
   });
 });
+
+describe('DELETE - /api/ingredients/:ingredients_id', () => {
+  it('deletes an ingredient matching the param endpoint', () => {
+    return request(app).delete('/api/ingredients/1').expect(204);
+  });
+  it('returns a 404 if ingredient doesnt exits', () => {
+    return request(app)
+      .delete('/api/ingredients/100')
+      .expect(404)
+      .then(({ body }) => {
+        console.log(body);
+        expect(body.msg).toEqual('Not Found');
+      });
+  });
+});

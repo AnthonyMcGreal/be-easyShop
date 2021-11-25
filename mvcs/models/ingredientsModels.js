@@ -32,6 +32,7 @@ exports.insertIngredient = (
     return rows[0];
   });
 };
+
 exports.updateIngredientById = (
   ingredient_id,
   name,
@@ -52,4 +53,9 @@ exports.updateIngredientById = (
     });
 };
 
-exports.removeIngredientById = () => {};
+exports.removeIngredientById = (ingredient_id) => {
+  return db.query(
+    `DELETE FROM ingredients WHERE ingredient_id = $1 RETURNING *;`,
+    [ingredient_id]
+  );
+};
