@@ -21,6 +21,31 @@ exports.selectRecipeById = (name) => {
     return rows;
   });
 };
-exports.insertRecipe = () => {};
-exports.updateRecipeById = () => {};
-exports.removeRecipeById = () => {};
+exports.insertRecipe = async (body) => {
+  let count = body.length;
+  return body.map((ingredient) => {
+    let { name, username, link, ingredients, ingredient_quantity, portions } =
+      ingredient;
+
+    let queryStr = format(
+      `INSERT INTO recipes
+    (recipe_name, username, link, ingredients, ingredient_quantity, portions)
+      VALUES
+      %L
+      RETURNING *;`,
+      [[name, username, link, ingredients, ingredient_quantity, portions]]
+    );
+
+    return db.query(queryStr).then(({ rows }) => {
+      count--;
+      if (count === 0) {
+        return rows;
+      }
+    });
+  });
+};
+exports.removeRecipeByName = (name) => {
+  return db.query('DELETE FROM recipes WHERE recipe_name = $1 RETURNING *;', [
+    name,
+  ]);
+};

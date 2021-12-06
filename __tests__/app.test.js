@@ -558,7 +558,6 @@ describe('GET - /api/recipe/:name', () => {
       .get('/api/recipe/Spag_Bol_no_mushrooms')
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         body.forEach((recipe) => {
           expect(recipe).toHaveProperty('recipe_name');
           expect(recipe).toHaveProperty('link');
@@ -580,8 +579,61 @@ describe('GET - /api/recipe/:name', () => {
   });
 });
 
-describe('POST - /api/recipe', () => {});
+describe('POST - /api/recipe', () => {
+  it('should post a new recipe to the db and return all new entries', () => {
+    const newRecipe = [
+      {
+        name: 'Spag_Bol_2',
+        username: 'Anthony',
+        link: '',
+        ingredients: 1,
+        ingredient_quantity: 400,
+        portions: 2,
+      },
+      {
+        name: 'Spag_Bol_2',
+        username: 'Anthony',
+        link: '',
+        ingredients: 2,
+        ingredient_quantity: 80,
+        portions: 2,
+      },
+      {
+        name: 'Spag_Bol_2',
+        username: 'Anthony',
+        link: '',
+        ingredients: 3,
+        ingredient_quantity: 1,
+        portions: 2,
+      },
+      {
+        name: 'Spag_Bol_2',
+        username: 'Anthony',
+        link: '',
+        ingredients: 4,
+        ingredient_quantity: 100,
+        portions: 2,
+      },
+    ];
 
-describe('PATCH - /api/recipe/:recipe_id', () => {});
+    return request(app)
+      .post('/api/recipe')
+      .send(newRecipe)
+      .expect(201)
+      .then(({ body }) => {});
+  });
+});
 
-describe('DELETE - /api/recipe/:recipe_id', () => {});
+describe('DELETE - /api/recipe/:name', () => {
+  it('deletes a recipe that matches the parametric name', () => {
+    return request(app).delete('/api/recipe/Spag_Bol').expect(204);
+  });
+  it('responds with 404 if recipe isnt found', () => {
+    return request(app)
+      .delete('/api/recipe/Not_a_Recipe')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual('Not Found');
+      });
+  });
+});
