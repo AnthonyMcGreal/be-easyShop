@@ -314,7 +314,7 @@ describe('test for formatRecipeData', () => {
     const input = [
       {
         name: 'Spag Bol',
-        user: 'Anthony',
+        username: 'Anthony',
         link: '',
         ingredients: 'Mince',
         ingredient_quantity: 400,
@@ -322,7 +322,7 @@ describe('test for formatRecipeData', () => {
       },
       {
         name: 'Spag Bol',
-        user: 'Anthony',
+        username: 'Anthony',
         link: '',
         ingredients: 'Spaghetti',
         ingredient_quantity: 80,
