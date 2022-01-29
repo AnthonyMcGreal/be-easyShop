@@ -637,3 +637,116 @@ describe('DELETE - /api/recipe/:name', () => {
       });
   });
 });
+
+describe('GET - /api/mealPlans/', () => {
+  it('should return a list of available mealPlans', () => {
+    return request(app)
+      .get('/api/mealPlans')
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.mealPlans.length).toEqual(2);
+        body.mealPlans.forEach((meal) => {
+          expect(meal).toHaveProperty('name');
+        });
+      });
+  });
+});
+
+describe('GET - /api/mealPlans/:mealPlanName', () => {
+  it('should return an array of all meals in a given meal plan', () => {
+    return request(app)
+      .get('/api/mealPlans/week1 rotation')
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.meals.length).toEqual(2);
+        body.meals.forEach((meal) => {
+          expect(meal.name).toEqual('week1 rotation');
+          expect(meal).toHaveProperty('username');
+          expect(meal).toHaveProperty('day');
+          expect(meal).toHaveProperty('day_part');
+          expect(meal).toHaveProperty('recipe');
+        });
+      });
+  });
+  it('should return a 404 if meal doesnt exit', () => {
+    return request(app)
+      .get('/api/mealPlans/notAMealPlan')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual('Not Found');
+      });
+  });
+});
+
+describe('POST - /api/mealPlans', () => {
+  it('should post a new recipe', () => {
+    const testMealPlan = [
+      {
+        name: 'test meal plan',
+        user: 'Anthony',
+        day: 1,
+        day_part: 'Breakfast',
+        recipe: 'Porridge',
+      },
+      {
+        name: 'test meal plan',
+        user: 'Anthony',
+        day: 1,
+        day_part: 'Lunch',
+        recipe: 'Salad',
+      },
+      {
+        name: 'test meal plan',
+        user: 'Anthony',
+        day: 1,
+        day_part: 'Dinner',
+        recipe: 'Pizza',
+      },
+    ];
+
+    return request(app)
+      .post('/api/mealPlans')
+      .send(testMealPlan)
+      .expect(201)
+      .then(({ body }) => {});
+  });
+});
+
+describe('PATCH - /api/mealPlans/:mealPlanName', () => {
+  it('should update a mealPlan when passed a modified mealPlan', () => {
+    const testMealPlan = [
+      {
+        template_id: 1,
+        name: 'test meal plan',
+        username: 'Anthony',
+        day: 1,
+        day_part: 'Breakfast',
+        recipe: 'Porridge',
+      },
+      {
+        template_id: 2,
+        name: 'test meal plan',
+        username: 'Anthony',
+        day: 1,
+        day_part: 'Lunch',
+        recipe: 'Salad',
+      },
+      {
+        template_id: 3,
+        name: 'test meal plan',
+        username: 'Anthony',
+        day: 1,
+        day_part: 'Dinner',
+        recipe: 'Pizza',
+      },
+    ];
+
+    return request(app)
+      .patch('/api/mealPlans/week1 rotation')
+      .send(testMealPlan)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.mealPlan).toEqual(testMealPlan);
+      });
+  });
+});
