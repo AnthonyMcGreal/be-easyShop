@@ -3,6 +3,7 @@ const {
   selectMealPlansByName,
   insertMealPlans,
   updateMealPlanByName,
+  removeMealPlanByName,
 } = require('../models/mealPlansModels');
 
 exports.getAllMealPlans = (req, res, next) => {
@@ -39,5 +40,16 @@ exports.patchMealPlanByName = (req, res, next) => {
   const { body } = req;
   updateMealPlanByName(body).then((mealPlan) => {
     res.status(200).send({ mealPlan });
+  });
+};
+
+exports.deleteMealPlanByName = (req, res, next) => {
+  const { mealPlanName } = req.params;
+  removeMealPlanByName(mealPlanName).then((mealPlan) => {
+    if (mealPlan.rows.length === 0) {
+      res.status(404).send({ msg: 'Not Found' });
+    } else {
+      res.sendStatus(204);
+    }
   });
 };

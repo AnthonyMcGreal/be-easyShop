@@ -750,3 +750,17 @@ describe('PATCH - /api/mealPlans/:mealPlanName', () => {
       });
   });
 });
+
+describe('DELETE - /api/mealPlans/:mealPlanName', () => {
+  it('should remove a mealPlan by name', () => {
+    return request(app).delete('/api/mealPlans/week1 rotation').expect(204);
+  });
+  it('responds with 404 if recipe isnt found', () => {
+    return request(app)
+      .delete('/api/mealPlans/Not a recipe')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual('Not Found');
+      });
+  });
+});

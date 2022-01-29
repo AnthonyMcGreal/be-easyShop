@@ -75,3 +75,9 @@ exports.updateMealPlanByName = async (body) => {
     return rows;
   });
 };
+
+exports.removeMealPlanByName = (mealPlanName) => {
+  return db.query(`DELETE FROM mealPlans WHERE name = $1 RETURNING *;`, [
+    mealPlanName,
+  ]);
+};
