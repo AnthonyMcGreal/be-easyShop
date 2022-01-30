@@ -51,7 +51,7 @@ To run the util tests use the command line;
 
     npm test util
 
-## s
+---
 
 ## Minimum Versions
 
