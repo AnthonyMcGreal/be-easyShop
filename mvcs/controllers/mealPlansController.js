@@ -28,10 +28,8 @@ exports.getMealPlansByName = (req, res, next) => {
 exports.postMealPlans = (req, res, next) => {
   const { body } = req;
   insertMealPlans(body)
-    .then((response) => {
-      selectAllMealPlans().then((recipes) => {
-        res.status(201).send({ recipes });
-      });
+    .then((mealPlan) => {
+      res.status(201).send({ mealPlan });
     })
     .catch(next);
 };

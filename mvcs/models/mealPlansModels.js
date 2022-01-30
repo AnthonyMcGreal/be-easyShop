@@ -23,26 +23,35 @@ exports.selectMealPlansByName = (mealPlanName) => {
 };
 
 exports.insertMealPlans = async (body) => {
-  let count = body.length;
+  let mealPlanName = body[0].name;
 
-  return body.map((meals) => {
-    let { name, user, day, day_part, recipe } = meals;
+  const insertMeals = async () => {
+    return Promise.all(
+      body.map((meals) => {
+        let { name, user, day, day_part, recipe } = meals;
 
-    let queryStr = format(
-      `INSERT INTO mealPlans
-      (name, username, day, day_part, recipe)
-      VALUES
-      %L
-      RETURNING *;`,
-      [[name, user, day, day_part, recipe]]
+        let queryStr = format(
+          `INSERT INTO mealPlans
+          (name, username, day, day_part, recipe)
+          VALUES
+          %L
+          RETURNING *;`,
+          [[name, user, day, day_part, recipe]]
+        );
+
+        return db.query(queryStr);
+      })
     );
+  };
 
-    return db.query(queryStr).then(({ rows }) => {
-      count--;
-      if (count === 0) {
-        return rows;
-      }
-    });
+  await insertMeals();
+
+  let queryStr = format(`SELECT * FROM mealPlans WHERE name = %L`, [
+    mealPlanName,
+  ]);
+
+  return db.query(queryStr).then(({ rows }) => {
+    return rows;
   });
 };
 

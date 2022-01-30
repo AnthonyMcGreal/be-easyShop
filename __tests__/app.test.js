@@ -625,7 +625,7 @@ describe('POST - /api/recipe', () => {
 });
 
 describe('PATCH - /api/recipe/:name', () => {
-  it.only('should update a recipe when passed a modified recipe', () => {
+  it('should update a recipe when passed a modified recipe', () => {
     const testRecipeUpdate = [
       {
         recipe_id: 1,
@@ -794,11 +794,40 @@ describe('POST - /api/mealPlans', () => {
       },
     ];
 
+    const result = [
+      {
+        template_id: 4,
+        name: 'test meal plan',
+        username: 'Anthony',
+        day: 1,
+        day_part: 'Breakfast',
+        recipe: 'Porridge',
+      },
+      {
+        template_id: 5,
+        name: 'test meal plan',
+        username: 'Anthony',
+        day: 1,
+        day_part: 'Lunch',
+        recipe: 'Salad',
+      },
+      {
+        template_id: 6,
+        name: 'test meal plan',
+        username: 'Anthony',
+        day: 1,
+        day_part: 'Dinner',
+        recipe: 'Pizza',
+      },
+    ];
+
     return request(app)
       .post('/api/mealPlans')
       .send(testMealPlan)
       .expect(201)
-      .then(({ body }) => {});
+      .then(({ body }) => {
+        expect(body.mealPlan).toEqual(result);
+      });
   });
 });
 
