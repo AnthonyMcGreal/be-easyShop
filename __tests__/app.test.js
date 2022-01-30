@@ -624,6 +624,96 @@ describe('POST - /api/recipe', () => {
   });
 });
 
+describe('PATCH - /api/recipe/:name', () => {
+  it.only('should update a recipe when passed a modified recipe', () => {
+    const testRecipeUpdate = [
+      {
+        recipe_id: 1,
+        name: 'Test Recipe update',
+        username: 'Anthony',
+        link: '',
+        ingredients: 1,
+        ingredient_quantity: 400,
+        portions: 2,
+      },
+      {
+        recipe_id: 2,
+        name: 'Test Recipe update',
+        username: 'Anthony',
+        link: '',
+        ingredients: 2,
+        ingredient_quantity: 1,
+        portions: 2,
+      },
+      {
+        recipe_id: 3,
+        name: 'Test Recipe update',
+        username: 'Anthony',
+        link: '',
+        ingredients: 3,
+        ingredient_quantity: 50,
+        portions: 2,
+      },
+      {
+        recipe_id: 4,
+        name: 'Test Recipe update',
+        username: 'Anthony',
+        link: '',
+        ingredients: 4,
+        ingredient_quantity: 1,
+        portions: 2,
+      },
+    ];
+
+    const expectedResult = [
+      {
+        recipe_id: 1,
+        recipe_name: 'Test Recipe update',
+        username: 'Anthony',
+        link: '',
+        ingredients: 1,
+        ingredient_quantity: 400,
+        portions: 2,
+      },
+      {
+        recipe_id: 2,
+        recipe_name: 'Test Recipe update',
+        username: 'Anthony',
+        link: '',
+        ingredients: 2,
+        ingredient_quantity: 1,
+        portions: 2,
+      },
+      {
+        recipe_id: 3,
+        recipe_name: 'Test Recipe update',
+        username: 'Anthony',
+        link: '',
+        ingredients: 3,
+        ingredient_quantity: 50,
+        portions: 2,
+      },
+      {
+        recipe_id: 4,
+        recipe_name: 'Test Recipe update',
+        username: 'Anthony',
+        link: '',
+        ingredients: 4,
+        ingredient_quantity: 1,
+        portions: 2,
+      },
+    ];
+
+    return request(app)
+      .patch('/api/recipe/Spag_Bol_no_mushrooms')
+      .send(testRecipeUpdate)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.recipe).toEqual(expectedResult);
+      });
+  });
+});
+
 describe('DELETE - /api/recipe/:name', () => {
   it('deletes a recipe that matches the parametric name', () => {
     return request(app).delete('/api/recipe/Spag_Bol').expect(204);

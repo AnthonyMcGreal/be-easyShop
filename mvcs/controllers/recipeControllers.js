@@ -3,6 +3,7 @@ const {
   selectRecipeById,
   insertRecipe,
   removeRecipeByName,
+  updateRecipeByName,
 } = require('../models/recipeModels');
 
 exports.getAllRecipes = (req, res, next) => {
@@ -31,6 +32,13 @@ exports.postRecipe = async (req, res, next) => {
       });
     })
     .catch(next);
+};
+
+exports.patchRecipeByName = (req, res, next) => {
+  const { body } = req;
+  updateRecipeByName(body).then((recipe) => {
+    res.status(200).send({ recipe });
+  });
 };
 
 exports.deleteRecipeByName = (req, res, next) => {
