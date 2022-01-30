@@ -28,7 +28,7 @@ exports.insertMealPlans = async (body) => {
   const insertMeals = async () => {
     return Promise.all(
       body.map((meals) => {
-        let { name, user, day, day_part, recipe } = meals;
+        let { name, username, day, day_part, recipe } = meals;
 
         let queryStr = format(
           `INSERT INTO mealPlans
@@ -36,7 +36,7 @@ exports.insertMealPlans = async (body) => {
           VALUES
           %L
           RETURNING *;`,
-          [[name, user, day, day_part, recipe]]
+          [[name, username, day, day_part, recipe]]
         );
 
         return db.query(queryStr);

@@ -583,7 +583,7 @@ describe('POST - /api/recipe', () => {
   it('should post a new recipe to the db and return all new entries', () => {
     const newRecipe = [
       {
-        name: 'Spag_Bol_2',
+        recipe_name: 'Spag_Bol_2',
         username: 'Anthony',
         link: '',
         ingredients: 1,
@@ -591,7 +591,7 @@ describe('POST - /api/recipe', () => {
         portions: 2,
       },
       {
-        name: 'Spag_Bol_2',
+        recipe_name: 'Spag_Bol_2',
         username: 'Anthony',
         link: '',
         ingredients: 2,
@@ -599,7 +599,7 @@ describe('POST - /api/recipe', () => {
         portions: 2,
       },
       {
-        name: 'Spag_Bol_2',
+        recipe_name: 'Spag_Bol_2',
         username: 'Anthony',
         link: '',
         ingredients: 3,
@@ -607,7 +607,7 @@ describe('POST - /api/recipe', () => {
         portions: 2,
       },
       {
-        name: 'Spag_Bol_2',
+        recipe_name: 'Spag_Bol_2',
         username: 'Anthony',
         link: '',
         ingredients: 4,
@@ -620,7 +620,9 @@ describe('POST - /api/recipe', () => {
       .post('/api/recipe')
       .send(newRecipe)
       .expect(201)
-      .then(({ body }) => {});
+      .then(({ body }) => {
+        expect(body.recipe).toEqual(newRecipe);
+      });
   });
 });
 
@@ -773,21 +775,21 @@ describe('POST - /api/mealPlans', () => {
     const testMealPlan = [
       {
         name: 'test meal plan',
-        user: 'Anthony',
+        username: 'Anthony',
         day: 1,
         day_part: 'Breakfast',
         recipe: 'Porridge',
       },
       {
         name: 'test meal plan',
-        user: 'Anthony',
+        username: 'Anthony',
         day: 1,
         day_part: 'Lunch',
         recipe: 'Salad',
       },
       {
         name: 'test meal plan',
-        user: 'Anthony',
+        username: 'Anthony',
         day: 1,
         day_part: 'Dinner',
         recipe: 'Pizza',

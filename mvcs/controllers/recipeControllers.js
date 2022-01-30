@@ -26,10 +26,8 @@ exports.getRecipeById = (req, res, next) => {
 exports.postRecipe = async (req, res, next) => {
   const { body } = req;
   insertRecipe(body)
-    .then((response) => {
-      selectAllRecipes().then((recipes) => {
-        res.status(201).send({ recipes });
-      });
+    .then((recipe) => {
+      res.status(201).send({ recipe });
     })
     .catch(next);
 };

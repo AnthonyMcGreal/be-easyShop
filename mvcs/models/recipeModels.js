@@ -1,5 +1,9 @@
 const db = require('../../db/connection');
 const format = require('pg-format');
+const {
+  deleteIngredientsById,
+} = require('../controllers/ingredientsController');
+const { query } = require('../../db/connection');
 
 exports.selectAllRecipes = () => {
   let queryStr = `SELECT DISTINCT recipe_name FROM recipes;`;
@@ -23,26 +27,52 @@ exports.selectRecipeById = (name) => {
 };
 
 exports.insertRecipe = async (body) => {
-  let count = body.length;
-  return body.map((ingredient) => {
-    let { name, username, link, ingredients, ingredient_quantity, portions } =
-      ingredient;
+  let recipeName = body[0].recipe_name;
 
-    let queryStr = format(
-      `INSERT INTO recipes
-    (recipe_name, username, link, ingredients, ingredient_quantity, portions)
-      VALUES
-      %L
-      RETURNING *;`,
-      [[name, username, link, ingredients, ingredient_quantity, portions]]
+  const insertIngredients = async () => {
+    return Promise.all(
+      body.map((ingredient) => {
+        let {
+          recipe_name,
+          username,
+          link,
+          ingredients,
+          ingredient_quantity,
+          portions,
+        } = ingredient;
+
+        let queryStr = format(
+          `INSERT INTO recipes
+      (recipe_name, username, link, ingredients, ingredient_quantity, portions)
+        VALUES
+        %L
+        RETURNING *;`,
+          [
+            [
+              recipe_name,
+              username,
+              link,
+              ingredients,
+              ingredient_quantity,
+              portions,
+            ],
+          ]
+        );
+
+        return db.query(queryStr);
+      })
     );
+  };
 
-    return db.query(queryStr).then(({ rows }) => {
-      count--;
-      if (count === 0) {
-        return rows;
-      }
-    });
+  await insertIngredients();
+
+  let queryStr = format(
+    `SELECT recipe_name, username, link, ingredients, ingredient_quantity, portions FROM recipes WHERE recipe_name = %L;`,
+    [recipeName]
+  );
+
+  return db.query(queryStr).then(({ rows }) => {
+    return rows;
   });
 };
 
