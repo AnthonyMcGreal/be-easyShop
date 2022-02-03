@@ -15,7 +15,7 @@ MiscItems are items users will want to add to a shopping list that aren't part o
 
 ## Cloning this repository
 
-To clone this repository to your machine please follow the following instuctions provided by GitHub Docs
+To clone this repository to your machine please follow the following instructions provided by GitHub Docs
 
 https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository-from-github/cloning-a-repository
 
