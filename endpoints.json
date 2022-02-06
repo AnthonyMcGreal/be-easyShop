@@ -117,6 +117,190 @@
   "GET api/recipe/:name": {
     "description": "serves up recipe ingredient",
     "params": "recipe name",
-    "exampleResponse": {}
+    "exampleResponse": [
+      {
+        "recipe_id": 1,
+        "recipe_name": "Spag_Bol",
+        "link": "",
+        "name": "Mince",
+        "ingredient_quantity": 400,
+        "unit_of_measurement": "grams",
+        "portions": 2,
+        "storage_type": "chilled"
+      },
+      {
+        "recipe_id": 2,
+        "recipe_name": "Spag_Bol",
+        "link": "",
+        "name": "Spaghetti",
+        "ingredient_quantity": 80,
+        "unit_of_measurement": "grams",
+        "portions": 2,
+        "storage_type": "Ambient"
+      },
+      {
+        "recipe_id": 3,
+        "recipe_name": "Spag_Bol",
+        "link": "",
+        "name": "Bolognese sauce",
+        "ingredient_quantity": 1,
+        "unit_of_measurement": "Individual",
+        "portions": 2,
+        "storage_type": "Ambient"
+      },
+      {
+        "recipe_id": 4,
+        "recipe_name": "Spag_Bol",
+        "link": "",
+        "name": "Button mushrooms",
+        "ingredient_quantity": 100,
+        "unit_of_measurement": "grams",
+        "portions": 2,
+        "storage_type": "Produce"
+      }
+    ]
+  },
+  "POST api/recipe": {
+    "description": "will post a recipe into the DB",
+    "postFormat": [
+      {
+        "recipe_name": "Spag_Bol_2",
+        "username": "Anthony",
+        "link": "",
+        "ingredients": 1,
+        "ingredient_quantity": 400,
+        "portions": 2
+      },
+      {
+        "recipe_name": "Spag_Bol_2",
+        "username": "Anthony",
+        "link": "",
+        "ingredients": 2,
+        "ingredient_quantity": 80,
+        "portions": 2
+      },
+      {
+        "recipe_name": "Spag_Bol_2",
+        "username": "Anthony",
+        "link": "",
+        "ingredients": 3,
+        "ingredient_quantity": 1,
+        "portions": 2
+      },
+      {
+        "recipe_name": "Spag_Bol_2",
+        "username": "Anthony",
+        "link": "",
+        "ingredients": 4,
+        "ingredient_quantity": 100,
+        "portions": 2
+      }
+    ]
+  },
+  "PATCH api/recipe/:name": {
+    "description": "will patch a recipe",
+    "params": " name of existing recipe",
+    "patchFormat": [
+      {
+        "recipe_name": "Spag_Bol_2",
+        "username": "Anthony",
+        "link": "",
+        "ingredients": 1,
+        "ingredient_quantity": 400,
+        "portions": 2
+      },
+      {
+        "recipe_name": "Spag_Bol_2",
+        "username": "Anthony",
+        "link": "",
+        "ingredients": 2,
+        "ingredient_quantity": 80,
+        "portions": 2
+      },
+      {
+        "recipe_name": "Spag_Bol_2",
+        "username": "Anthony",
+        "link": "",
+        "ingredients": 3,
+        "ingredient_quantity": 1,
+        "portions": 2
+      },
+      {
+        "recipe_name": "Spag_Bol_2",
+        "username": "Anthony",
+        "link": "",
+        "ingredients": 4,
+        "ingredient_quantity": 100,
+        "portions": 2
+      }
+    ]
+  },
+  "DELETE api/recipe/:name": {
+    "description": "will delete a recipe from the DB",
+    "params": "name of existing recipe"
+  },
+  "GET api/mealPlans": {
+    "description": "Will return an array of all meal plans"
+  },
+  "GET api/mealPlans/:mealPlanName": {
+    "description": "will return the mealPlan matching the name given",
+    "params": "name of existing mealPlan"
+  },
+  "POST api/mealPlans": {
+    "description": "will add a mealPlan to the DB",
+    "postFormat": [
+      {
+        "name": "test meal plan",
+        "username": "Anthony",
+        "day": 1,
+        "day_part": "Breakfast",
+        "recipe": "Porridge"
+      },
+      {
+        "name": "test meal plan",
+        "username": "Anthony",
+        "day": 1,
+        "day_part": "Lunch",
+        "recipe": "Salad"
+      },
+      {
+        "name": "test meal plan",
+        "username": "Anthony",
+        "day": 1,
+        "day_part": "Dinner",
+        "recipe": "Pizza"
+      }
+    ]
+  },
+  "PATCH api/mealPlans/:mealPlanName": {
+    "description": "will patch an existing mealPlan",
+    "params": "name of existing mealPlan",
+    "patchFormat": [
+      {
+        "name": "test meal plan",
+        "username": "Anthony",
+        "day": 1,
+        "day_part": "Breakfast",
+        "recipe": "Porridge"
+      },
+      {
+        "name": "test meal plan",
+        "username": "Anthony",
+        "day": 1,
+        "day_part": "Lunch",
+        "recipe": "Salad"
+      },
+      {
+        "name": "test meal plan",
+        "username": "Anthony",
+        "day": 1,
+        "day_part": "Dinner",
+        "recipe": "Pizza"
+      }
+    ]
+  },
+  "DELETE api/mealPlans/:mealPlanName": {
+    "description": "will remove an existing mealPlan",
+    "params": "name of existing mealPlan"
   }
 }
