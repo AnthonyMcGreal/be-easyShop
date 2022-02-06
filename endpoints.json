@@ -1,1 +1,122 @@
-{ "endpoints": 5 }
+{
+  "GET /api": {
+    "description": "serves up a json of available endpoints"
+  },
+  "GET /api/user/:username": {
+    "description": "serves a user Obj",
+    "params": "name of user",
+    "exampleResponse": {
+      "name": "Anthony",
+      "username": "MVPAnt",
+      "avatar_url": "https://gravatar.com/avatar/fc25b0331ed2cfed2ca5a32452705da2?s=400&d=robohash&r=x"
+    }
+  },
+  "POST /api/user/:username": {
+    "description": "adds a new user object to the database",
+    "params": "users username",
+    "postFormat": {
+      "name": "newName",
+      "username": "username99",
+      "avatar_url": ""
+    },
+    "exampleResponse": {
+      "name": "newName",
+      "username": "username99",
+      "avatar_url": ""
+    }
+  },
+  "PATCH /api/user/:username": {
+    "description": "will update a user",
+    "params": "username of user",
+    "patchFormat": {
+      "name": "newName",
+      "username": "username99",
+      "avatar_url": ""
+    },
+    "exampleResponse": {
+      "name": "newName",
+      "username": "username99",
+      "avatar_url": ""
+    }
+  },
+  "DELETE /api/user/:username": {
+    "description": "will remove a user from the DB",
+    "params": "username of user"
+  },
+  "GET /api/miscItem/:miscItem_id": {
+    "description": "will serve up a miscItem",
+    "params": "number denoting miscItem id",
+    "exampleResponse": {
+      "name": "Toothpaste",
+      "user": "Anthony",
+      "category": "Hygiene"
+    }
+  },
+  "GET /api/miscItem": {
+    "description": "serves up an array of all miscItems"
+  },
+  "POST /api/miscItem": {
+    "description": "will add an misc item to the DB",
+    "postFormat": {
+      "name": "Shampoo",
+      "user": "Anthony",
+      "category": "Hygiene"
+    },
+    "exampleResponse": {
+      "name": "Shampoo",
+      "user": "Anthony",
+      "category": "Hygiene"
+    }
+  },
+  "DELETE api/miscItem/:miscItem_id": {
+    "description": "will remove a miscItem from the DB",
+    "params": "number denoting miscItem id"
+  },
+  "GET api/ingredients": {
+    "description": "serves up an array of all ingredients"
+  },
+  "POST api/ingredients": {
+    "description": "will add a new ingredient to the DB",
+    "postFormat": {
+      "name": "Mince",
+      "unit_of_measurement": "grams",
+      "storage_type": "chilled",
+      "user": "Anthony"
+    },
+    "exampleResponse": {
+      "name": "Mince",
+      "unit_of_measurement": "grams",
+      "storage_type": "chilled",
+      "user": "Anthony"
+    }
+  },
+  "PATCH api/ingredients/:ingredient_id": {
+    "description": "will update an ingredient",
+    "params": "number denoting the ingredient_id",
+    "patchFormat": {
+      "name": "Mince",
+      "unit_of_measurement": "grams",
+      "storage_type": "chilled",
+      "user": "Anthony"
+    },
+    "exampleResponse": {
+      "ingredient_id": 1,
+      "name": "Mince",
+      "unit_of_measurement": "grams",
+      "storage_type": "chilled",
+      "user": "Anthony"
+    }
+  },
+  "DELETE api/ingredients/:ingredients_id": {
+    "description": "will remove an ingredient from the DB",
+    "params": "number denoting the ingredient_id"
+  },
+  "GET api/recipe": {
+    "description": "serves up an array of all recipes"
+  },
+  "GET api/recipe/:name": {
+    "description": "serves up recipe ingredient",
+    "params": "recipe name",
+    "exampleResponse": {}
+  }
+}

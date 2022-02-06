@@ -2,6 +2,8 @@
 
 ## Link to hosted API
 
+https://easy-shop-be.herokuapp.com/api
+
 ---
 
 ## Summary
