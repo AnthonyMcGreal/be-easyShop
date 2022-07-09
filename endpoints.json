@@ -59,7 +59,7 @@
     "description": "will add an misc item to the DB",
     "postFormat": {
       "name": "Shampoo",
-      "user": "Anthony",
+      "username": "Anthony",
       "category": "Hygiene"
     },
     "exampleResponse": {
