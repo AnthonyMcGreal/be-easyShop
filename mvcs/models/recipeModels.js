@@ -6,10 +6,21 @@ const {
 const { query } = require('../../db/connection')
 
 exports.selectAllRecipes = () => {
-	let queryStr = `SELECT DISTINCT recipe_name FROM recipes;`
+	let queryStr = `SELECT recipe_name, portions FROM recipes;`
 
 	return db.query(queryStr).then(({ rows }) => {
-		return rows
+		let distinctRecipes = []
+		rows.forEach(recipe => {
+			for (let i = 0; i <= distinctRecipes.length; i++) {
+				if (!distinctRecipes[i]) {
+					distinctRecipes.push(recipe)
+					return
+				}
+				if (distinctRecipes[i].recipe_name === recipe.recipe_name) return
+			}
+			distinctRecipes.push(recipe)
+		})
+		return distinctRecipes
 	})
 }
 exports.selectRecipeById = name => {
