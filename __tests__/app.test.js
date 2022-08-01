@@ -727,7 +727,6 @@ describe('GET - /api/mealPlans/', () => {
 			.get('/api/mealPlans')
 			.expect(200)
 			.then(({ body }) => {
-				expect(body.mealPlans.length).toEqual(2)
 				body.mealPlans.forEach(meal => {
 					expect(meal).toHaveProperty('name')
 				})
@@ -738,16 +737,13 @@ describe('GET - /api/mealPlans/', () => {
 describe('GET - /api/mealPlans/:mealPlanName', () => {
 	it('should return an array of all meals in a given meal plan', () => {
 		return request(app)
-			.get('/api/mealPlans/week1 rotation')
+			.get('/api/mealPlans/Week 1 test')
 			.expect(200)
 			.then(({ body }) => {
-				expect(body.meals.length).toEqual(2)
 				body.meals.forEach(meal => {
-					expect(meal.name).toEqual('week1 rotation')
+					expect(meal.name).toEqual('Week 1 test')
 					expect(meal).toHaveProperty('username')
-					expect(meal).toHaveProperty('day')
-					expect(meal).toHaveProperty('day_part')
-					expect(meal).toHaveProperty('recipe')
+					expect(meal).toHaveProperty('recipes')
 				})
 			})
 	})
@@ -765,52 +761,26 @@ describe('POST - /api/mealPlans', () => {
 	it('should post a new recipe', () => {
 		const testMealPlan = [
 			{
-				name: 'test meal plan',
+				name: 'Week 2 test',
 				username: 'Anthony',
-				day: 1,
-				day_part: 'Breakfast',
-				recipe: 'Porridge'
-			},
-			{
-				name: 'test meal plan',
-				username: 'Anthony',
-				day: 1,
-				day_part: 'Lunch',
-				recipe: 'Salad'
-			},
-			{
-				name: 'test meal plan',
-				username: 'Anthony',
-				day: 1,
-				day_part: 'Dinner',
-				recipe: 'Pizza'
+				recipes: [
+					{ Monday: ['Spag_Bol', 'Chilli'] },
+					{ Tuesday: ['Porridge', 'Sandwiches'] },
+					{ Wednesday: ['Porridge', 'Curry'] }
+				]
 			}
 		]
 
 		const result = [
 			{
-				template_id: 4,
-				name: 'test meal plan',
+				template_id: 2,
+				name: 'Week 2 test',
 				username: 'Anthony',
-				day: 1,
-				day_part: 'Breakfast',
-				recipe: 'Porridge'
-			},
-			{
-				template_id: 5,
-				name: 'test meal plan',
-				username: 'Anthony',
-				day: 1,
-				day_part: 'Lunch',
-				recipe: 'Salad'
-			},
-			{
-				template_id: 6,
-				name: 'test meal plan',
-				username: 'Anthony',
-				day: 1,
-				day_part: 'Dinner',
-				recipe: 'Pizza'
+				recipes: [
+					{ Monday: ['Spag_Bol', 'Chilli'] },
+					{ Tuesday: ['Porridge', 'Sandwiches'] },
+					{ Wednesday: ['Porridge', 'Curry'] }
+				]
 			}
 		]
 
@@ -829,32 +799,18 @@ describe('PATCH - /api/mealPlans/:mealPlanName', () => {
 		const testMealPlan = [
 			{
 				template_id: 1,
-				name: 'test meal plan',
+				name: 'Week 2 test',
 				username: 'Anthony',
-				day: 1,
-				day_part: 'Breakfast',
-				recipe: 'Porridge'
-			},
-			{
-				template_id: 2,
-				name: 'test meal plan',
-				username: 'Anthony',
-				day: 1,
-				day_part: 'Lunch',
-				recipe: 'Salad'
-			},
-			{
-				template_id: 3,
-				name: 'test meal plan',
-				username: 'Anthony',
-				day: 1,
-				day_part: 'Dinner',
-				recipe: 'Pizza'
+				recipes: [
+					{ Monday: ['Spag_Bol', 'Chilli'] },
+					{ Tuesday: ['Porridge', 'Sandwiches'] },
+					{ Wednesday: ['Porridge', 'Curry'] }
+				]
 			}
 		]
 
 		return request(app)
-			.patch('/api/mealPlans/week1 rotation')
+			.patch('/api/mealPlans/Week 1 test')
 			.send(testMealPlan)
 			.expect(200)
 			.then(({ body }) => {
@@ -865,7 +821,7 @@ describe('PATCH - /api/mealPlans/:mealPlanName', () => {
 
 describe('DELETE - /api/mealPlans/:mealPlanName', () => {
 	it('should remove a mealPlan by name', () => {
-		return request(app).delete('/api/mealPlans/week1 rotation').expect(204)
+		return request(app).delete('/api/mealPlans/Week 1 test').expect(204)
 	})
 	it('responds with 404 if recipe isnt found', () => {
 		return request(app)
