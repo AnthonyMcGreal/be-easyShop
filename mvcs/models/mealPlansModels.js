@@ -47,6 +47,7 @@ exports.insertMealPlans = async body => {
 }
 
 exports.updateMealPlanByName = async body => {
+	console.log(body)
 	let newMealPlanName = body[0].name
 
 	const updateMealPlan = async () => {
