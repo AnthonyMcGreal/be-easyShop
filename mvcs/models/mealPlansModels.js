@@ -47,23 +47,18 @@ exports.insertMealPlans = async body => {
 }
 
 exports.updateMealPlanByName = async body => {
-	console.log(body)
-	let newMealPlanName = body[0].name
+	let newMealPlanName = body.name
 
 	const updateMealPlan = async () => {
-		return Promise.all(
-			body.map(meals => {
-				let { template_id, name, username, recipes } = meals
-				recipes = JSON.stringify(recipes)
+		let { template_id, name, username, recipes } = body
+		recipes = JSON.stringify(recipes)
 
-				return db.query(
-					`UPDATE mealPlans
+		return db.query(
+			`UPDATE mealPlans
         SET name = $2, username = $3, recipes = $4
         WHERE template_id = $1
         RETURNING *;`,
-					[template_id, name, username, recipes]
-				)
-			})
+			[template_id, name, username, recipes]
 		)
 	}
 

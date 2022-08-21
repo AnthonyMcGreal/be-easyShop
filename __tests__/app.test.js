@@ -796,7 +796,18 @@ describe('POST - /api/mealPlans', () => {
 
 describe('PATCH - /api/mealPlans/:mealPlanName', () => {
 	it('should update a mealPlan when passed a modified mealPlan', () => {
-		const testMealPlan = [
+		const testMealPlan = {
+			template_id: 1,
+			name: 'Week 2 test',
+			username: 'Anthony',
+			recipes: [
+				{ Monday: ['Spag_Bol', 'Chilli'] },
+				{ Tuesday: ['Porridge', 'Sandwiches'] },
+				{ Wednesday: ['Porridge', 'Curry'] }
+			]
+		}
+
+		const ExpectedMealPlan = [
 			{
 				template_id: 1,
 				name: 'Week 2 test',
@@ -814,7 +825,7 @@ describe('PATCH - /api/mealPlans/:mealPlanName', () => {
 			.send(testMealPlan)
 			.expect(200)
 			.then(({ body }) => {
-				expect(body.mealPlan).toEqual(testMealPlan)
+				expect(body.mealPlan).toEqual(ExpectedMealPlan)
 			})
 	})
 })
