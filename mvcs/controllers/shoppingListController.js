@@ -1,7 +1,8 @@
 const { makeShoppingList } = require('../models/shoppingListModels')
 
 exports.getShoppingList = (req, res, next) => {
-	makeShoppingList(req.body)
+	const { body } = req
+	makeShoppingList(body)
 		.then(shoppingList => {
 			res.status(200).send({ shoppingList })
 		})
