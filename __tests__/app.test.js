@@ -843,3 +843,110 @@ describe('DELETE - /api/mealPlans/:mealPlanName', () => {
 			})
 	})
 })
+
+describe('POST - /api/shoppingList', () => {
+	it('should return a shoppingList of ingredients when provided with recipes and misc items', () => {
+		const requestData = {
+			miscItems: {
+				Toothpaste: 1,
+				'Washing up liquid': 3
+			},
+			recipes: {
+				Spag_Bol: 2,
+				Spag_Bol_no_mushrooms: 1
+			}
+		}
+
+		const resultData = [
+			{
+				name: 'Mince',
+				ingredient_quantity: 1200,
+				unit_of_measurement: 'grams',
+				storage_type: 'chilled'
+			},
+			{
+				name: 'Spaghetti',
+				ingredient_quantity: 240,
+				unit_of_measurement: 'grams',
+				storage_type: 'Ambient'
+			},
+			{
+				name: 'Bolognese sauce',
+				ingredient_quantity: 3,
+				unit_of_measurement: 'Individual',
+				storage_type: 'Ambient'
+			},
+			{
+				name: 'Button mushrooms',
+				ingredient_quantity: 200,
+				unit_of_measurement: 'grams',
+				storage_type: 'Produce'
+			},
+			{
+				name: 'Toothpaste',
+				category: 'Hygiene',
+				quantity: 1
+			},
+			{
+				name: 'Washing up liquid',
+				category: 'Cleaning',
+				quantity: 3
+			}
+		]
+
+		return request(app)
+			.post('/api/shoppingList')
+			.send(requestData)
+			.expect(200)
+			.then(({ body }) => {
+				expect(body.shoppingList).toEqual(resultData)
+			})
+	})
+
+	it('it ignores recipes and misc items that dont exist', () => {
+		const requestData = {
+			miscItems: {
+				'': 1,
+				'Washing up liquid': 3
+			},
+			recipes: {
+				'Recipe doesnt exist': 2,
+				Spag_Bol_no_mushrooms: 1
+			}
+		}
+
+		const resultData = [
+			{
+				name: 'Mince',
+				ingredient_quantity: 400,
+				unit_of_measurement: 'grams',
+				storage_type: 'chilled'
+			},
+			{
+				name: 'Spaghetti',
+				ingredient_quantity: 80,
+				unit_of_measurement: 'grams',
+				storage_type: 'Ambient'
+			},
+			{
+				name: 'Bolognese sauce',
+				ingredient_quantity: 1,
+				unit_of_measurement: 'Individual',
+				storage_type: 'Ambient'
+			},
+			{
+				name: 'Washing up liquid',
+				category: 'Cleaning',
+				quantity: 3
+			}
+		]
+
+		return request(app)
+			.post('/api/shoppingList')
+			.send(requestData)
+			.expect(200)
+			.then(({ body }) => {
+				expect(body.shoppingList).toEqual(resultData)
+			})
+	})
+})
