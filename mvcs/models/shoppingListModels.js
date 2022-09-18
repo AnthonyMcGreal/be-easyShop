@@ -77,7 +77,30 @@ exports.makeShoppingList = async body => {
 				finalIngredientList.push(ingredient)
 			})
 
-			return [...finalIngredientList, ...finalMiscItemsList]
+			const sortedShoppingList = {}
+			finalIngredientList.forEach(ingredient => {
+				updatedIngredient = {
+					name: ingredient.name,
+					quantity: ingredient.ingredient_quantity,
+					unit_of_measurement: ingredient.unit_of_measurement
+				}
+				if (!sortedShoppingList.hasOwnProperty(ingredient.storage_type)) {
+					sortedShoppingList[ingredient.storage_type] = [updatedIngredient]
+				} else {
+					sortedShoppingList[ingredient.storage_type].push(updatedIngredient)
+				}
+			})
+
+			finalMiscItemsList.forEach(item => {
+				updatedItem = { name: item.name, quantity: item.quantity }
+				if (!sortedShoppingList.hasOwnProperty(item.category)) {
+					sortedShoppingList[item.category] = [updatedItem]
+				} else {
+					sortedShoppingList[item.category].push(updatedItem)
+				}
+			})
+
+			return sortedShoppingList
 		}
 	)
 

@@ -857,42 +857,28 @@ describe('POST - /api/shoppingList', () => {
 			}
 		}
 
-		const resultData = [
-			{
-				name: 'Mince',
-				ingredient_quantity: 1200,
-				unit_of_measurement: 'grams',
-				storage_type: 'chilled'
-			},
-			{
-				name: 'Spaghetti',
-				ingredient_quantity: 240,
-				unit_of_measurement: 'grams',
-				storage_type: 'Ambient'
-			},
-			{
-				name: 'Bolognese sauce',
-				ingredient_quantity: 3,
-				unit_of_measurement: 'Individual',
-				storage_type: 'Ambient'
-			},
-			{
-				name: 'Button mushrooms',
-				ingredient_quantity: 200,
-				unit_of_measurement: 'grams',
-				storage_type: 'Produce'
-			},
-			{
-				name: 'Toothpaste',
-				category: 'Hygiene',
-				quantity: 1
-			},
-			{
-				name: 'Washing up liquid',
-				category: 'Cleaning',
-				quantity: 3
-			}
-		]
+		const resultData = {
+			Ambient: [
+				{ name: 'Spaghetti', quantity: 240, unit_of_measurement: 'grams' },
+				{
+					name: 'Bolognese sauce',
+					quantity: 3,
+					unit_of_measurement: 'Individual'
+				}
+			],
+			Chilled: [
+				{ name: 'Mince', quantity: 1200, unit_of_measurement: 'grams' }
+			],
+			Cleaning: [{ name: 'Washing up liquid', quantity: 3 }],
+			Hygiene: [{ name: 'Toothpaste', quantity: 1 }],
+			Produce: [
+				{
+					name: 'Button mushrooms',
+					quantity: 200,
+					unit_of_measurement: 'grams'
+				}
+			]
+		}
 
 		return request(app)
 			.post('/api/shoppingList')
@@ -915,31 +901,18 @@ describe('POST - /api/shoppingList', () => {
 			}
 		}
 
-		const resultData = [
-			{
-				name: 'Mince',
-				ingredient_quantity: 400,
-				unit_of_measurement: 'grams',
-				storage_type: 'chilled'
-			},
-			{
-				name: 'Spaghetti',
-				ingredient_quantity: 80,
-				unit_of_measurement: 'grams',
-				storage_type: 'Ambient'
-			},
-			{
-				name: 'Bolognese sauce',
-				ingredient_quantity: 1,
-				unit_of_measurement: 'Individual',
-				storage_type: 'Ambient'
-			},
-			{
-				name: 'Washing up liquid',
-				category: 'Cleaning',
-				quantity: 3
-			}
-		]
+		const resultData = {
+			Ambient: [
+				{ name: 'Spaghetti', quantity: 80, unit_of_measurement: 'grams' },
+				{
+					name: 'Bolognese sauce',
+					quantity: 1,
+					unit_of_measurement: 'Individual'
+				}
+			],
+			Chilled: [{ name: 'Mince', quantity: 400, unit_of_measurement: 'grams' }],
+			Cleaning: [{ name: 'Washing up liquid', quantity: 3 }]
+		}
 
 		return request(app)
 			.post('/api/shoppingList')
