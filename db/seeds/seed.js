@@ -22,46 +22,46 @@ const seed = async ({
 	await db.query(`DROP TABLE IF EXISTS users`)
 
 	await db.query(`CREATE TABLE users (
-      name TEXT PRIMARY KEY NOT NULL,
-      username VARCHAR(60) NOT NULL,
-      avatar_url TEXT
+      user_id UUID PRIMARY KEY NOT NULL,
+			email VARCHAR(60) NOT NULL,
+			password VARCHAR NOT NULL
   );`)
 
 	await db.query(`CREATE TABLE miscItems (
-      item_id SERIAL PRIMARY KEY,
-      name TEXT NOT NULL,
-      username VARCHAR(60) REFERENCES users(name) ON UPDATE CASCADE,
-      category TEXT NOT NULL
-  );`)
+	    item_id SERIAL PRIMARY KEY,
+	    name TEXT NOT NULL,
+	    user_id UUID REFERENCES users(user_id) ON UPDATE CASCADE,
+	    category TEXT NOT NULL
+	);`)
 
 	await db.query(`CREATE TABLE ingredients (
-      ingredient_id SERIAL PRIMARY KEY,
-      name TEXT NOT NULL,
-      unit_of_measurement VARCHAR(20) DEFAULT 0 NOT NULL,
-      storage_type TEXT NOT NULL,
-      username VARCHAR(60) REFERENCES users(name) ON UPDATE CASCADE
-  );`)
+	    ingredient_id SERIAL PRIMARY KEY,
+	    name TEXT NOT NULL,
+	    unit_of_measurement VARCHAR(20) DEFAULT 0 NOT NULL,
+	    storage_type TEXT NOT NULL,
+	    user_id UUID REFERENCES users(user_id) ON UPDATE CASCADE
+	);`)
 
 	await db.query(`CREATE TABLE recipes (
-      recipe_id SERIAL PRIMARY KEY,
-      recipe_name TEXT NOT NULL,
-      username VARCHAR(60) REFERENCES users(name) ON UPDATE CASCADE NOT NULL,
-      link TEXT,
-      ingredients INT REFERENCES ingredients(ingredient_id) ON DELETE CASCADE,
-      ingredient_quantity INT NOT NULL,
-      portions INT NOT NULL
-  );`)
+	    recipe_id SERIAL PRIMARY KEY,
+	    recipe_name TEXT NOT NULL,
+	    user_id UUID REFERENCES users(user_id) ON UPDATE CASCADE,
+	    link TEXT,
+	    ingredients INT REFERENCES ingredients(ingredient_id) ON DELETE CASCADE,
+	    ingredient_quantity INT NOT NULL,
+	    portions INT NOT NULL
+	);`)
 
 	await db.query(`CREATE TABLE mealPlans (
-      template_id SERIAL PRIMARY KEY,
-      name TEXT NOT NULL,
-      username VARCHAR(60) REFERENCES users(name) ON UPDATE CASCADE,
-      recipes JSONB
-  );`)
+	    template_id SERIAL PRIMARY KEY,
+	    name TEXT NOT NULL,
+	    user_id UUID REFERENCES users(user_id) ON UPDATE CASCADE,
+	    recipes JSONB
+	);`)
 
 	let insertUsersData = format(
 		`INSERT INTO users
-      (name, username, avatar_url)
+      (user_id, email, password)
       VALUES %L
       RETURNING *;`,
 		formatUsersData(usersData)
@@ -71,9 +71,9 @@ const seed = async ({
 
 	let insertMiscItemsData = format(
 		`INSERT INTO miscItems
-      (name, username, category)
-      VALUES %L
-      RETURNING *;`,
+	    (name, user_id, category)
+	    VALUES %L
+	    RETURNING *;`,
 		formatMiscItemsData(miscItemsData)
 	)
 
@@ -81,9 +81,9 @@ const seed = async ({
 
 	let insertIngredientsData = format(
 		`INSERT INTO ingredients
-      (name, unit_of_measurement, storage_type, username)
-      VALUES %L
-      RETURNING *;`,
+	    (name, unit_of_measurement, storage_type, user_id )
+	    VALUES %L
+	    RETURNING *;`,
 		formatIngredientsData(ingredientsData)
 	)
 
@@ -91,9 +91,9 @@ const seed = async ({
 
 	let insertRecipesData = format(
 		`INSERT INTO recipes
-      (recipe_name, username, link, ingredients, ingredient_quantity, portions)
-      VALUES %L
-      RETURNING *;`,
+	    (recipe_name, user_id, link, ingredients, ingredient_quantity, portions)
+	    VALUES %L
+	    RETURNING *;`,
 		formatRecipeData(recipesData)
 	)
 
@@ -101,9 +101,9 @@ const seed = async ({
 
 	let insertMealPlans = format(
 		`INSERT INTO mealPlans
-      (name, username, recipes)
-      VALUES %L
-      RETURNING *;`,
+	    (name, user_id, recipes)
+	    VALUES %L
+	    RETURNING *;`,
 		formatMealPlansData(templatesData)
 	)
 

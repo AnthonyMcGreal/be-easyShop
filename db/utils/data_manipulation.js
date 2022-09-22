@@ -2,14 +2,14 @@ const db = require('../connection.js')
 
 exports.formatUsersData = userData => {
 	const formattedData = userData.map(userObject => {
-		return [userObject.name, userObject.username, userObject.avatar_url]
+		return [userObject.user_id, userObject.email, userObject.password]
 	})
 	return formattedData
 }
 
 exports.formatMiscItemsData = miscItemsData => {
 	const formattedData = miscItemsData.map(itemData => {
-		return [itemData.name, itemData.user, itemData.category]
+		return [itemData.name, itemData.user_id, itemData.category]
 	})
 	return formattedData
 }
@@ -20,7 +20,7 @@ exports.formatIngredientsData = ingredientsData => {
 			ingredient.name,
 			ingredient.unit_of_measurement,
 			ingredient.storage_type,
-			ingredient.user
+			ingredient.user_id
 		]
 	})
 	return formattedData
@@ -30,7 +30,7 @@ exports.formatRecipeData = recipeData => {
 	const formattedData = recipeData.map(recipe => {
 		return [
 			recipe.name,
-			recipe.username,
+			recipe.user_id,
 			recipe.link,
 			recipe.ingredients,
 			recipe.ingredient_quantity,
@@ -42,7 +42,7 @@ exports.formatRecipeData = recipeData => {
 
 exports.formatMealPlansData = mealPlanData => {
 	const formattedData = mealPlanData.map(mealPlan => {
-		return [mealPlan.name, mealPlan.username, JSON.stringify(mealPlan.recipes)]
+		return [mealPlan.name, mealPlan.user_id, JSON.stringify(mealPlan.recipes)]
 	})
 	return formattedData
 }

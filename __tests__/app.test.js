@@ -7,19 +7,22 @@ const request = require('supertest')
 beforeEach(() => seed(testData))
 afterAll(() => db.end())
 
-describe('GET - /api/users/:username', () => {
+describe.only('GET - /api/users/:username', () => {
 	it('should respond with a user object', () => {
 		return request(app)
-			.get('/api/user/MVPAnt')
+			.get('/api/user/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 			.expect(200)
 			.then(({ body }) => {
-				expect(body.user[0]).toHaveProperty('username')
-				expect(body.user[0]).toHaveProperty('avatar_url')
-				expect(body.user[0]).toHaveProperty('name')
+				console.log(body)
+				expect(body.user[0]).toHaveProperty('user_id')
+				expect(body.user[0]).toHaveProperty('email')
+				expect(body.user[0]).toHaveProperty('password')
 			})
 	})
 	it('should respond with 404 if user doesnt exist', () => {
-		return request(app).get('/api/user/unknownUser').expect(404)
+		return request(app)
+			.get('/api/user/8b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
+			.expect(404)
 	})
 })
 
@@ -177,10 +180,12 @@ describe('GET - /api/miscItem/:miscItem_id', () => {
 			.expect(200)
 			.then(({ body }) => {
 				expect(body.miscItem[0]).toHaveProperty('name')
-				expect(body.miscItem[0]).toHaveProperty('username')
+				expect(body.miscItem[0]).toHaveProperty('user')
 				expect(body.miscItem[0]).toHaveProperty('category')
 				expect(body.miscItem[0].name).toEqual('Toothpaste')
-				expect(body.miscItem[0].username).toEqual('Anthony')
+				expect(body.miscItem[0].user).toEqual(
+					'9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+				)
 				expect(body.miscItem[0].category).toEqual('Hygiene')
 			})
 	})
