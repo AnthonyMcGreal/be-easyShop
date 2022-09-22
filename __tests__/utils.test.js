@@ -10,37 +10,37 @@ describe('tests for formatUsersData', () => {
 	it('should not mutate the original data', () => {
 		const input = [
 			{
-				name: 'Anthony',
-				username: 'MVPAnt',
-				avatar_url: `https://gravatar.com/avatar/fc25b0331ed2cfed2ca5a32452705da2?s=400&d=robohash&r=x`
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
+				email: 'anthonymcgreal@hotmail.co.uk',
+				password: 'TestPassword1'
 			},
 			{
-				name: 'Solveiga',
-				username: 'Sole89',
-				avatar_url: `https://gravatar.com/avatar/8210d12499010fbb4e14237d1a8f6cb1?s=400&d=robohash&r=x`
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6e',
+				email: 'sol@outlook.co.uk',
+				password: 'TestPassword2'
 			},
 			{
-				name: 'David',
-				username: 'Toodles',
-				avatar_url: `https://gravatar.com/avatar/c65c3f695e08d1250792bebd265065af?s=400&d=monsterid&r=x`
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6f',
+				email: 'david@outlook.co.uk',
+				password: 'TestPassword3'
 			}
 		]
 
 		const input2 = [
 			{
-				name: 'Anthony',
-				username: 'MVPAnt',
-				avatar_url: `https://gravatar.com/avatar/fc25b0331ed2cfed2ca5a32452705da2?s=400&d=robohash&r=x`
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
+				email: 'anthonymcgreal@hotmail.co.uk',
+				password: 'TestPassword1'
 			},
 			{
-				name: 'Solveiga',
-				username: 'Sole89',
-				avatar_url: `https://gravatar.com/avatar/8210d12499010fbb4e14237d1a8f6cb1?s=400&d=robohash&r=x`
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6e',
+				email: 'sol@outlook.co.uk',
+				password: 'TestPassword2'
 			},
 			{
-				name: 'David',
-				username: 'Toodles',
-				avatar_url: `https://gravatar.com/avatar/c65c3f695e08d1250792bebd265065af?s=400&d=monsterid&r=x`
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6f',
+				email: 'david@outlook.co.uk',
+				password: 'TestPassword3'
 			}
 		]
 
@@ -51,27 +51,27 @@ describe('tests for formatUsersData', () => {
 	it('should return an array of nested arrays from an object', () => {
 		const input = [
 			{
-				name: 'Anthony',
-				username: 'MVPAnt',
-				avatar_url: `https://gravatar.com/avatar/fc25b0331ed2cfed2ca5a32452705da2?s=400&d=robohash&r=x`
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
+				email: 'anthonymcgreal@hotmail.co.uk',
+				password: 'TestPassword1'
 			},
 			{
-				name: 'Solveiga',
-				username: 'Sole89',
-				avatar_url: `https://gravatar.com/avatar/8210d12499010fbb4e14237d1a8f6cb1?s=400&d=robohash&r=x`
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6e',
+				email: 'sol@outlook.co.uk',
+				password: 'TestPassword2'
 			}
 		]
 
 		const output = [
 			[
-				'Anthony',
-				'MVPAnt',
-				`https://gravatar.com/avatar/fc25b0331ed2cfed2ca5a32452705da2?s=400&d=robohash&r=x`
+				'9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
+				'anthonymcgreal@hotmail.co.uk',
+				'TestPassword1'
 			],
 			[
-				'Solveiga',
-				'Sole89',
-				`https://gravatar.com/avatar/8210d12499010fbb4e14237d1a8f6cb1?s=400&d=robohash&r=x`
+				'9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6e',
+				'sol@outlook.co.uk',
+				'TestPassword2'
 			]
 		]
 
@@ -141,25 +141,25 @@ describe('tests for formatMiscItemsData', () => {
 		const input = [
 			{
 				name: 'Toothpaste',
-				user: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				category: 'Hygiene'
 			},
 			{
 				name: 'Toilet Paper',
-				user: 'Solveiga',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6e',
 				category: 'Hygiene'
 			},
 			{
 				name: 'Washing up liquid',
-				user: 'David',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6f',
 				category: 'Cleaning'
 			}
 		]
 
 		const output = [
-			['Toothpaste', 'Anthony', 'Hygiene'],
-			['Toilet Paper', 'Solveiga', 'Hygiene'],
-			['Washing up liquid', 'David', 'Cleaning']
+			['Toothpaste', '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d', 'Hygiene'],
+			['Toilet Paper', '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6e', 'Hygiene'],
+			['Washing up liquid', '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6f', 'Cleaning']
 		]
 
 		expect(formatMiscItemsData(input)).toEqual(output)
@@ -229,19 +229,19 @@ describe('tests for formatIngredientsData', () => {
 				name: 'Mince',
 				unit_of_measurement: 'grams',
 				storage_type: 'chilled',
-				user: 'Anthony'
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 			},
 			{
 				name: 'Spaghetti',
 				unit_of_measurement: 'grams',
 				storage_type: 'Ambient',
-				user: 'Solveiga'
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6e'
 			}
 		]
 
 		const output = [
-			['Mince', 'grams', 'chilled', 'Anthony'],
-			['Spaghetti', 'grams', 'Ambient', 'Solveiga']
+			['Mince', 'grams', 'chilled', '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'],
+			['Spaghetti', 'grams', 'Ambient', '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6e']
 		]
 
 		expect(formatIngredientsData(input)).toEqual(output)
@@ -314,7 +314,7 @@ describe('test for formatRecipeData', () => {
 		const input = [
 			{
 				name: 'Spag Bol',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				link: '',
 				ingredients: 'Mince',
 				ingredient_quantity: 400,
@@ -322,7 +322,7 @@ describe('test for formatRecipeData', () => {
 			},
 			{
 				name: 'Spag Bol',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				link: '',
 				ingredients: 'Spaghetti',
 				ingredient_quantity: 80,
@@ -331,8 +331,15 @@ describe('test for formatRecipeData', () => {
 		]
 
 		const output = [
-			['Spag Bol', 'Anthony', '', 'Mince', 400, 2],
-			['Spag Bol', 'Anthony', '', 'Spaghetti', 80, 2]
+			['Spag Bol', '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d', '', 'Mince', 400, 2],
+			[
+				'Spag Bol',
+				'9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
+				'',
+				'Spaghetti',
+				80,
+				2
+			]
 		]
 
 		expect(formatRecipeData(input)).toEqual(output)
@@ -395,7 +402,7 @@ describe('tests for formatMealPlansData', () => {
 		const input = [
 			{
 				name: 'Week 1 test',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				recipes: [
 					{ Wednesday: ['Spag_Bol', 'Chilli'] },
 					{ Thursday: ['Porridge', 'Sandwiches'] },
@@ -407,7 +414,7 @@ describe('tests for formatMealPlansData', () => {
 		const output = [
 			[
 				'Week 1 test',
-				'Anthony',
+				'9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				'[{"Wednesday":["Spag_Bol","Chilli"]},{"Thursday":["Porridge","Sandwiches"]},{"Friday":["Porridge","Curry"]}]'
 			]
 		]

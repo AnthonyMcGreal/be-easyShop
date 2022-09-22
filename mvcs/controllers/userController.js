@@ -1,13 +1,12 @@
 const {
 	selectUserByUsername,
 	insertUser,
-	updateUserByUsername,
 	removeUserByUsername
 } = require('../models/userModels')
 
 exports.getUserByUsername = (req, res, next) => {
-	const { username } = req.params
-	selectUserByUsername(username).then(user => {
+	const { user_id } = req.params
+	selectUserByUsername(user_id).then(user => {
 		if (user.length === 0) {
 			res.status(404).send({ msg: 'Not Found' })
 		} else {
@@ -17,32 +16,18 @@ exports.getUserByUsername = (req, res, next) => {
 }
 
 exports.postUser = (req, res, next) => {
-	const { name, username, avatar_url } = req.body
-	insertUser(name, username, avatar_url)
+	const { email, password } = req.body
+	insertUser(email, password)
 		.then(user => {
 			res.status(201).send({ user })
 		})
 		.catch(next)
 }
 
-exports.patchUserByUsername = (req, res, next) => {
-	const originalUsername = req.params.username
-	const { name, username, avatar_url } = req.body
-	updateUserByUsername(name, username, avatar_url, originalUsername)
-		.then(user => {
-			if (user.length === 0) {
-				res.status(404).send({ msg: 'Not Found' })
-			} else {
-				res.status(200).send({ user })
-			}
-		})
-		.catch(next)
-}
-
 exports.deleteUserByUsername = (req, res, next) => {
-	const { username } = req.params
+	const { user_id } = req.params
 
-	removeUserByUsername(username)
+	removeUserByUsername(user_id)
 		.then(response => {
 			res.sendStatus(204)
 		})

@@ -1,17 +1,16 @@
 const {
-  postUser,
-  patchUserByUsername,
-  deleteUserByUsername,
-  getUserByUsername,
-} = require('../controllers/userController');
+	postUser,
+	deleteUserByUsername,
+	getUserByUsername
+} = require('../controllers/userController')
 
-const usersRouter = require('express').Router();
+const usersRouter = require('express').Router()
+
+usersRouter.route('/').post(postUser)
 
 usersRouter
-  .route('/:username')
-  .get(getUserByUsername)
-  .post(postUser)
-  .patch(patchUserByUsername)
-  .delete(deleteUserByUsername);
+	.route('/:user_id')
+	.get(getUserByUsername)
+	.delete(deleteUserByUsername)
 
-module.exports = usersRouter;
+module.exports = usersRouter

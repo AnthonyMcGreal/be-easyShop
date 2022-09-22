@@ -1,306 +1,292 @@
 {
-  "GET /api": {
-    "description": "serves up a json of available endpoints"
-  },
-  "GET /api/user/:username": {
-    "description": "serves a user Obj",
-    "params": "name of user",
-    "exampleResponse": {
-      "name": "Anthony",
-      "username": "MVPAnt",
-      "avatar_url": "https://gravatar.com/avatar/fc25b0331ed2cfed2ca5a32452705da2?s=400&d=robohash&r=x"
-    }
-  },
-  "POST /api/user/:username": {
-    "description": "adds a new user object to the database",
-    "params": "users username",
-    "postFormat": {
-      "name": "newName",
-      "username": "username99",
-      "avatar_url": ""
-    },
-    "exampleResponse": {
-      "name": "newName",
-      "username": "username99",
-      "avatar_url": ""
-    }
-  },
-  "PATCH /api/user/:username": {
-    "description": "will update a user",
-    "params": "username of user",
-    "patchFormat": {
-      "name": "newName",
-      "username": "username99",
-      "avatar_url": ""
-    },
-    "exampleResponse": {
-      "name": "newName",
-      "username": "username99",
-      "avatar_url": ""
-    }
-  },
-  "DELETE /api/user/:username": {
-    "description": "will remove a user from the DB",
-    "params": "username of user"
-  },
-  "GET /api/miscItem/:miscItem_id": {
-    "description": "will serve up a miscItem",
-    "params": "number denoting miscItem id",
-    "exampleResponse": {
-      "name": "Toothpaste",
-      "user": "Anthony",
-      "category": "Hygiene"
-    }
-  },
-  "GET /api/miscItem": {
-    "description": "serves up an array of all miscItems"
-  },
-  "POST /api/miscItem": {
-    "description": "will add an misc item to the DB",
-    "postFormat": {
-      "name": "Shampoo",
-      "username": "Anthony",
-      "category": "Hygiene"
-    },
-    "exampleResponse": {
-      "name": "Shampoo",
-      "user": "Anthony",
-      "category": "Hygiene"
-    }
-  },
-  "DELETE api/miscItem/:miscItem_id": {
-    "description": "will remove a miscItem from the DB",
-    "params": "number denoting miscItem id"
-  },
-  "GET api/ingredients": {
-    "description": "serves up an array of all ingredients"
-  },
-  "POST api/ingredients": {
-    "description": "will add a new ingredient to the DB",
-    "postFormat": {
-      "name": "Mince",
-      "unit_of_measurement": "grams",
-      "storage_type": "chilled",
-      "user": "Anthony"
-    },
-    "exampleResponse": {
-      "name": "Mince",
-      "unit_of_measurement": "grams",
-      "storage_type": "chilled",
-      "user": "Anthony"
-    }
-  },
-  "PATCH api/ingredients/:ingredient_id": {
-    "description": "will update an ingredient",
-    "params": "number denoting the ingredient_id",
-    "patchFormat": {
-      "name": "Mince",
-      "unit_of_measurement": "grams",
-      "storage_type": "chilled",
-      "user": "Anthony"
-    },
-    "exampleResponse": {
-      "ingredient_id": 1,
-      "name": "Mince",
-      "unit_of_measurement": "grams",
-      "storage_type": "chilled",
-      "user": "Anthony"
-    }
-  },
-  "DELETE api/ingredients/:ingredients_id": {
-    "description": "will remove an ingredient from the DB",
-    "params": "number denoting the ingredient_id"
-  },
-  "GET api/recipe": {
-    "description": "serves up an array of all recipes"
-  },
-  "GET api/recipe/:name": {
-    "description": "serves up recipe ingredient",
-    "params": "recipe name",
-    "exampleResponse": [
-      {
-        "recipe_id": 1,
-        "recipe_name": "Spag_Bol",
-        "link": "",
-        "name": "Mince",
-        "ingredient_quantity": 400,
-        "unit_of_measurement": "grams",
-        "portions": 2,
-        "storage_type": "chilled"
-      },
-      {
-        "recipe_id": 2,
-        "recipe_name": "Spag_Bol",
-        "link": "",
-        "name": "Spaghetti",
-        "ingredient_quantity": 80,
-        "unit_of_measurement": "grams",
-        "portions": 2,
-        "storage_type": "Ambient"
-      },
-      {
-        "recipe_id": 3,
-        "recipe_name": "Spag_Bol",
-        "link": "",
-        "name": "Bolognese sauce",
-        "ingredient_quantity": 1,
-        "unit_of_measurement": "Individual",
-        "portions": 2,
-        "storage_type": "Ambient"
-      },
-      {
-        "recipe_id": 4,
-        "recipe_name": "Spag_Bol",
-        "link": "",
-        "name": "Button mushrooms",
-        "ingredient_quantity": 100,
-        "unit_of_measurement": "grams",
-        "portions": 2,
-        "storage_type": "Produce"
-      }
-    ]
-  },
-  "POST api/recipe": {
-    "description": "will post a recipe into the DB",
-    "postFormat": [
-      {
-        "recipe_name": "Spag_Bol_2",
-        "username": "Anthony",
-        "link": "",
-        "ingredients": 1,
-        "ingredient_quantity": 400,
-        "portions": 2
-      },
-      {
-        "recipe_name": "Spag_Bol_2",
-        "username": "Anthony",
-        "link": "",
-        "ingredients": 2,
-        "ingredient_quantity": 80,
-        "portions": 2
-      },
-      {
-        "recipe_name": "Spag_Bol_2",
-        "username": "Anthony",
-        "link": "",
-        "ingredients": 3,
-        "ingredient_quantity": 1,
-        "portions": 2
-      },
-      {
-        "recipe_name": "Spag_Bol_2",
-        "username": "Anthony",
-        "link": "",
-        "ingredients": 4,
-        "ingredient_quantity": 100,
-        "portions": 2
-      }
-    ]
-  },
-  "PATCH api/recipe/:name": {
-    "description": "will patch a recipe",
-    "params": " name of existing recipe",
-    "patchFormat": [
-      {
-        "recipe_name": "Spag_Bol_2",
-        "username": "Anthony",
-        "link": "",
-        "ingredients": 1,
-        "ingredient_quantity": 400,
-        "portions": 2
-      },
-      {
-        "recipe_name": "Spag_Bol_2",
-        "username": "Anthony",
-        "link": "",
-        "ingredients": 2,
-        "ingredient_quantity": 80,
-        "portions": 2
-      },
-      {
-        "recipe_name": "Spag_Bol_2",
-        "username": "Anthony",
-        "link": "",
-        "ingredients": 3,
-        "ingredient_quantity": 1,
-        "portions": 2
-      },
-      {
-        "recipe_name": "Spag_Bol_2",
-        "username": "Anthony",
-        "link": "",
-        "ingredients": 4,
-        "ingredient_quantity": 100,
-        "portions": 2
-      }
-    ]
-  },
-  "DELETE api/recipe/:name": {
-    "description": "will delete a recipe from the DB",
-    "params": "name of existing recipe"
-  },
-  "GET api/mealPlans": {
-    "description": "Will return an array of all meal plans"
-  },
-  "GET api/mealPlans/:mealPlanName": {
-    "description": "will return the mealPlan matching the name given",
-    "params": "name of existing mealPlan"
-  },
-  "POST api/mealPlans": {
-    "description": "will add a mealPlan to the DB",
-    "postFormat": [
-      {
-        "name": "test meal plan",
-        "username": "Anthony",
-        "day": 1,
-        "day_part": "Breakfast",
-        "recipe": "Porridge"
-      },
-      {
-        "name": "test meal plan",
-        "username": "Anthony",
-        "day": 1,
-        "day_part": "Lunch",
-        "recipe": "Salad"
-      },
-      {
-        "name": "test meal plan",
-        "username": "Anthony",
-        "day": 1,
-        "day_part": "Dinner",
-        "recipe": "Pizza"
-      }
-    ]
-  },
-  "PATCH api/mealPlans/:mealPlanName": {
-    "description": "will patch an existing mealPlan",
-    "params": "name of existing mealPlan",
-    "patchFormat": [
-      {
-        "name": "test meal plan",
-        "username": "Anthony",
-        "day": 1,
-        "day_part": "Breakfast",
-        "recipe": "Porridge"
-      },
-      {
-        "name": "test meal plan",
-        "username": "Anthony",
-        "day": 1,
-        "day_part": "Lunch",
-        "recipe": "Salad"
-      },
-      {
-        "name": "test meal plan",
-        "username": "Anthony",
-        "day": 1,
-        "day_part": "Dinner",
-        "recipe": "Pizza"
-      }
-    ]
-  },
-  "DELETE api/mealPlans/:mealPlanName": {
-    "description": "will remove an existing mealPlan",
-    "params": "name of existing mealPlan"
-  }
+	"GET /api": {
+		"description": "serves up a json of available endpoints"
+	},
+	"GET /api/user/:user_id": {
+		"description": "serves a user Obj",
+		"params": "name of user",
+		"exampleResponse": {
+			"name": "Anthony",
+			"username": "MVPAnt",
+			"avatar_url": "https://gravatar.com/avatar/fc25b0331ed2cfed2ca5a32452705da2?s=400&d=robohash&r=x"
+		}
+	},
+	"POST /api/user": {
+		"description": "adds a new user object to the database",
+		"params": "users username",
+		"postFormat": {
+			"name": "newName",
+			"username": "username99",
+			"avatar_url": ""
+		},
+		"exampleResponse": {
+			"name": "newName",
+			"username": "username99",
+			"avatar_url": ""
+		}
+	},
+	"DELETE /api/user/:username": {
+		"description": "will remove a user from the DB",
+		"params": "username of user"
+	},
+	"GET /api/miscItem/:miscItem_id": {
+		"description": "will serve up a miscItem",
+		"params": "number denoting miscItem id",
+		"exampleResponse": {
+			"name": "Toothpaste",
+			"user": "Anthony",
+			"category": "Hygiene"
+		}
+	},
+	"GET /api/miscItem": {
+		"description": "serves up an array of all miscItems"
+	},
+	"POST /api/miscItem": {
+		"description": "will add an misc item to the DB",
+		"postFormat": {
+			"name": "Shampoo",
+			"username": "Anthony",
+			"category": "Hygiene"
+		},
+		"exampleResponse": {
+			"name": "Shampoo",
+			"user": "Anthony",
+			"category": "Hygiene"
+		}
+	},
+	"DELETE api/miscItem/:miscItem_id": {
+		"description": "will remove a miscItem from the DB",
+		"params": "number denoting miscItem id"
+	},
+	"GET api/ingredients": {
+		"description": "serves up an array of all ingredients"
+	},
+	"POST api/ingredients": {
+		"description": "will add a new ingredient to the DB",
+		"postFormat": {
+			"name": "Mince",
+			"unit_of_measurement": "grams",
+			"storage_type": "chilled",
+			"user": "Anthony"
+		},
+		"exampleResponse": {
+			"name": "Mince",
+			"unit_of_measurement": "grams",
+			"storage_type": "chilled",
+			"user": "Anthony"
+		}
+	},
+	"PATCH api/ingredients/:ingredient_id": {
+		"description": "will update an ingredient",
+		"params": "number denoting the ingredient_id",
+		"patchFormat": {
+			"name": "Mince",
+			"unit_of_measurement": "grams",
+			"storage_type": "chilled",
+			"user": "Anthony"
+		},
+		"exampleResponse": {
+			"ingredient_id": 1,
+			"name": "Mince",
+			"unit_of_measurement": "grams",
+			"storage_type": "chilled",
+			"user": "Anthony"
+		}
+	},
+	"DELETE api/ingredients/:ingredients_id": {
+		"description": "will remove an ingredient from the DB",
+		"params": "number denoting the ingredient_id"
+	},
+	"GET api/recipe": {
+		"description": "serves up an array of all recipes"
+	},
+	"GET api/recipe/:name": {
+		"description": "serves up recipe ingredient",
+		"params": "recipe name",
+		"exampleResponse": [
+			{
+				"recipe_id": 1,
+				"recipe_name": "Spag_Bol",
+				"link": "",
+				"name": "Mince",
+				"ingredient_quantity": 400,
+				"unit_of_measurement": "grams",
+				"portions": 2,
+				"storage_type": "chilled"
+			},
+			{
+				"recipe_id": 2,
+				"recipe_name": "Spag_Bol",
+				"link": "",
+				"name": "Spaghetti",
+				"ingredient_quantity": 80,
+				"unit_of_measurement": "grams",
+				"portions": 2,
+				"storage_type": "Ambient"
+			},
+			{
+				"recipe_id": 3,
+				"recipe_name": "Spag_Bol",
+				"link": "",
+				"name": "Bolognese sauce",
+				"ingredient_quantity": 1,
+				"unit_of_measurement": "Individual",
+				"portions": 2,
+				"storage_type": "Ambient"
+			},
+			{
+				"recipe_id": 4,
+				"recipe_name": "Spag_Bol",
+				"link": "",
+				"name": "Button mushrooms",
+				"ingredient_quantity": 100,
+				"unit_of_measurement": "grams",
+				"portions": 2,
+				"storage_type": "Produce"
+			}
+		]
+	},
+	"POST api/recipe": {
+		"description": "will post a recipe into the DB",
+		"postFormat": [
+			{
+				"recipe_name": "Spag_Bol_2",
+				"username": "Anthony",
+				"link": "",
+				"ingredients": 1,
+				"ingredient_quantity": 400,
+				"portions": 2
+			},
+			{
+				"recipe_name": "Spag_Bol_2",
+				"username": "Anthony",
+				"link": "",
+				"ingredients": 2,
+				"ingredient_quantity": 80,
+				"portions": 2
+			},
+			{
+				"recipe_name": "Spag_Bol_2",
+				"username": "Anthony",
+				"link": "",
+				"ingredients": 3,
+				"ingredient_quantity": 1,
+				"portions": 2
+			},
+			{
+				"recipe_name": "Spag_Bol_2",
+				"username": "Anthony",
+				"link": "",
+				"ingredients": 4,
+				"ingredient_quantity": 100,
+				"portions": 2
+			}
+		]
+	},
+	"PATCH api/recipe/:name": {
+		"description": "will patch a recipe",
+		"params": " name of existing recipe",
+		"patchFormat": [
+			{
+				"recipe_name": "Spag_Bol_2",
+				"username": "Anthony",
+				"link": "",
+				"ingredients": 1,
+				"ingredient_quantity": 400,
+				"portions": 2
+			},
+			{
+				"recipe_name": "Spag_Bol_2",
+				"username": "Anthony",
+				"link": "",
+				"ingredients": 2,
+				"ingredient_quantity": 80,
+				"portions": 2
+			},
+			{
+				"recipe_name": "Spag_Bol_2",
+				"username": "Anthony",
+				"link": "",
+				"ingredients": 3,
+				"ingredient_quantity": 1,
+				"portions": 2
+			},
+			{
+				"recipe_name": "Spag_Bol_2",
+				"username": "Anthony",
+				"link": "",
+				"ingredients": 4,
+				"ingredient_quantity": 100,
+				"portions": 2
+			}
+		]
+	},
+	"DELETE api/recipe/:name": {
+		"description": "will delete a recipe from the DB",
+		"params": "name of existing recipe"
+	},
+	"GET api/mealPlans": {
+		"description": "Will return an array of all meal plans"
+	},
+	"GET api/mealPlans/:mealPlanName": {
+		"description": "will return the mealPlan matching the name given",
+		"params": "name of existing mealPlan"
+	},
+	"POST api/mealPlans": {
+		"description": "will add a mealPlan to the DB",
+		"postFormat": [
+			{
+				"name": "test meal plan",
+				"username": "Anthony",
+				"day": 1,
+				"day_part": "Breakfast",
+				"recipe": "Porridge"
+			},
+			{
+				"name": "test meal plan",
+				"username": "Anthony",
+				"day": 1,
+				"day_part": "Lunch",
+				"recipe": "Salad"
+			},
+			{
+				"name": "test meal plan",
+				"username": "Anthony",
+				"day": 1,
+				"day_part": "Dinner",
+				"recipe": "Pizza"
+			}
+		]
+	},
+	"PATCH api/mealPlans/:mealPlanName": {
+		"description": "will patch an existing mealPlan",
+		"params": "name of existing mealPlan",
+		"patchFormat": [
+			{
+				"name": "test meal plan",
+				"username": "Anthony",
+				"day": 1,
+				"day_part": "Breakfast",
+				"recipe": "Porridge"
+			},
+			{
+				"name": "test meal plan",
+				"username": "Anthony",
+				"day": 1,
+				"day_part": "Lunch",
+				"recipe": "Salad"
+			},
+			{
+				"name": "test meal plan",
+				"username": "Anthony",
+				"day": 1,
+				"day_part": "Dinner",
+				"recipe": "Pizza"
+			}
+		]
+	},
+	"DELETE api/mealPlans/:mealPlanName": {
+		"description": "will remove an existing mealPlan",
+		"params": "name of existing mealPlan"
+	}
 }

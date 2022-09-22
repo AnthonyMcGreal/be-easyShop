@@ -45,7 +45,7 @@ exports.insertRecipe = async body => {
 			body.map(ingredient => {
 				let {
 					recipe_name,
-					username,
+					user_id,
 					link,
 					ingredients,
 					ingredient_quantity,
@@ -54,14 +54,14 @@ exports.insertRecipe = async body => {
 
 				let queryStr = format(
 					`INSERT INTO recipes
-      (recipe_name, username, link, ingredients, ingredient_quantity, portions)
+      (recipe_name, user_id, link, ingredients, ingredient_quantity, portions)
         VALUES
         %L
         RETURNING *;`,
 					[
 						[
 							recipe_name,
-							username,
+							user_id,
 							link,
 							ingredients,
 							ingredient_quantity,
@@ -78,7 +78,7 @@ exports.insertRecipe = async body => {
 	await insertIngredients()
 
 	let queryStr = format(
-		`SELECT recipe_name, username, link, ingredients, ingredient_quantity, portions FROM recipes WHERE recipe_name = %L;`,
+		`SELECT recipe_name, user_id, link, ingredients, ingredient_quantity, portions FROM recipes WHERE recipe_name = %L;`,
 		[recipeName]
 	)
 
@@ -96,7 +96,7 @@ exports.updateRecipeByName = async body => {
 				let {
 					recipe_id,
 					name,
-					username,
+					user_id,
 					link,
 					ingredients,
 					ingredient_quantity,
@@ -105,13 +105,13 @@ exports.updateRecipeByName = async body => {
 
 				return db.query(
 					`UPDATE recipes
-          SET recipe_name = $2, username = $3, link = $4, ingredients = $5, ingredient_quantity = $6, portions = $7
-          WHERE recipe_id = $1
+          SET recipe_name = $2, link = $4, ingredients = $5, ingredient_quantity = $6, portions = $7
+          WHERE recipe_id = $1 AND user_id = $3
           RETURNING *;`,
 					[
 						recipe_id,
 						name,
-						username,
+						user_id,
 						link,
 						ingredients,
 						ingredient_quantity,

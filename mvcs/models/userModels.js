@@ -1,22 +1,27 @@
 const db = require('../../db/connection')
 const format = require('pg-format')
+const { v4: uuidv4 } = require('uuid')
+const bcrypt = require('bcryptjs')
 
-exports.selectUserByUsername = username => {
-	let queryStr = format(`SELECT * FROM users WHERE user_id= %L;`, [username])
+exports.selectUserByUsername = user_id => {
+	let queryStr = format(`SELECT * FROM users WHERE user_id= %L;`, [user_id])
 
 	return db.query(queryStr).then(user => {
 		return user.rows
 	})
 }
 
-exports.insertUser = (name, username, avatar_url) => {
-	let dataArray = [[name, username, avatar_url]]
-
-	if (!name || !username) {
+exports.insertUser = async (email, password) => {
+	if (!email || !password) {
 		return Promise.reject({ status: 400, msg: 'Bad Request' })
 	}
+	let newUUID = uuidv4()
+	let encryptedPassword = await bcrypt.hash(password, 10)
+
+	let dataArray = [[newUUID, email, encryptedPassword]]
+
 	let queryStr = format(
-		`INSERT INTO users (name, username, avatar_url)
+		`INSERT INTO users (user_id, email, password)
   VALUES
   %L
   RETURNING *`,
@@ -28,30 +33,8 @@ exports.insertUser = (name, username, avatar_url) => {
 	})
 }
 
-exports.updateUserByUsername = (
-	name,
-	username,
-	avatar_url,
-	originalUsername
-) => {
-	if (/\d/g.test(name)) {
-		return Promise.reject({ status: 400, msg: 'Bad Request' })
-	}
-	return db
-		.query(
-			`UPDATE users 
-    SET name = $1, username = $2, avatar_url = $3 
-    WHERE username = $4 
-    RETURNING *;`,
-			[name, username, avatar_url, originalUsername]
-		)
-		.then(({ rows }) => {
-			return rows
-		})
-}
-
-exports.removeUserByUsername = username => {
-	let queryStr = format(`SELECT * FROM users WHERE username = %L;`, [username])
+exports.removeUserByUsername = user_id => {
+	let queryStr = format(`SELECT * FROM users WHERE user_id = %L;`, [user_id])
 
 	return db.query(queryStr).then(user => {
 		const nameToBeDeleted = user.rows.name
@@ -59,6 +42,6 @@ exports.removeUserByUsername = username => {
 			return Promise.reject({ status: 404, msg: 'Not Found' })
 		}
 
-		return db.query(`DELETE FROM users WHERE username = $1;`, [nameToBeDeleted])
+		return db.query(`DELETE FROM users WHERE user_id = $1;`, [nameToBeDeleted])
 	})
 }

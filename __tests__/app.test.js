@@ -3,17 +3,17 @@ const testData = require('../db/data/test_data/index')
 const { seed } = require('../db/seeds/seed')
 const app = require('../app')
 const request = require('supertest')
+const bcrypt = require('bcryptjs')
 
 beforeEach(() => seed(testData))
 afterAll(() => db.end())
 
-describe.only('GET - /api/users/:username', () => {
+describe('GET - /api/users/:user_id', () => {
 	it('should respond with a user object', () => {
 		return request(app)
 			.get('/api/user/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 			.expect(200)
 			.then(({ body }) => {
-				console.log(body)
 				expect(body.user[0]).toHaveProperty('user_id')
 				expect(body.user[0]).toHaveProperty('email')
 				expect(body.user[0]).toHaveProperty('password')
@@ -26,45 +26,44 @@ describe.only('GET - /api/users/:username', () => {
 	})
 })
 
-describe('POST - /api/user/:username', () => {
+describe('POST - /api/user', () => {
 	it('should post a new user', () => {
 		const postUser = {
-			name: 'newName',
-			username: 'username99',
-			avatar_url: ''
+			email: 'test@email.com',
+			password: 'testpassword'
 		}
 		return request(app)
-			.post('/api/user/username99')
+			.post('/api/user')
 			.send(postUser)
 			.expect(201)
-			.then(({ body }) => {
-				expect(body.user.name).toEqual(postUser.name)
-				expect(body.user.username).toEqual(postUser.username)
-				expect(body.user.avatar_url).toEqual(postUser.avatar_url)
+			.then(async ({ body }) => {
+				expect(body.user.email).toEqual(postUser.email)
+				expect(body.user).toHaveProperty('user_id')
+				let passwordCheck = await bcrypt.compare(
+					postUser.password,
+					body.user.password
+				)
+				expect(passwordCheck).toEqual(true)
 			})
 	})
-	it('should return a 400 if name field is missing', () => {
+	it('should return a 400 if email field is missing', () => {
 		const postUser = {
-			name: undefined,
-			username: 'username99',
-			avatar_url: ''
+			password: 'testpassword'
 		}
 		return request(app)
-			.post('/api/user/username99')
+			.post('/api/user')
 			.send(postUser)
 			.expect(400)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Bad Request')
 			})
 	})
-	it('should return a 400 if username field is missing', () => {
+	it('should return a 400 if password field is missing', () => {
 		const postUser = {
-			name: 'newName',
-			username: undefined,
-			avatar_url: ''
+			email: 'test@email.com'
 		}
 		return request(app)
-			.post('/api/user/undefined')
+			.post('/api/user')
 			.send(postUser)
 			.expect(400)
 			.then(({ body }) => {
@@ -73,99 +72,15 @@ describe('POST - /api/user/:username', () => {
 	})
 })
 
-describe('PATCH - /api/user/:username', () => {
-	it('updates a users name', () => {
-		const update = {
-			name: 'updatedName',
-			username: 'MVPAnt',
-			avatar_url: ''
-		}
-
-		return request(app)
-			.patch('/api/user/MVPAnt')
-			.send(update)
-			.expect(200)
-			.then(({ body }) => {
-				expect(body.user[0].name).toEqual(update.name)
-				expect(body.user[0].username).toEqual(update.username)
-				expect(body.user[0].avatar_url).toEqual(update.avatar_url)
-			})
-	})
-	it('updates a users username', () => {
-		const update = {
-			name: 'Anthony',
-			username: 'newUsername',
-			avatar_url: ''
-		}
-
-		return request(app)
-			.patch('/api/user/MVPAnt')
-			.send(update)
-			.expect(200)
-			.then(({ body }) => {
-				expect(body.user[0].name).toEqual(update.name)
-				expect(body.user[0].username).toEqual(update.username)
-				expect(body.user[0].avatar_url).toEqual(update.avatar_url)
-			})
-	})
-	it('updates a users avatar_url', () => {
-		const update = {
-			name: 'Anthony',
-			username: 'newUsername',
-			avatar_url:
-				'https://gravatar.com/avatar/8210d12499010fbb4e14237d1a8f6cb1?s=400&d=robohash&r=x'
-		}
-
-		return request(app)
-			.patch('/api/user/MVPAnt')
-			.send(update)
-			.expect(200)
-			.then(({ body }) => {
-				expect(body.user[0].name).toEqual(update.name)
-				expect(body.user[0].username).toEqual(update.username)
-				expect(body.user[0].avatar_url).toEqual(update.avatar_url)
-			})
-	})
-	it('returns a 404 if user doesnt exist', () => {
-		const update = {
-			name: 'Anthony',
-			username: 'newUsername',
-			avatar_url:
-				'https://gravatar.com/avatar/8210d12499010fbb4e14237d1a8f6cb1?s=400&d=robohash&r=x'
-		}
-
-		return request(app)
-			.patch('/api/user/NonExistentUser')
-			.send(update)
-			.expect(404)
-			.then(({ body }) => {
-				expect(body.msg).toEqual('Not Found')
-			})
-	})
-	it('returns a 400 if the input is bad', () => {
-		const update = {
-			name: 12345,
-			username: 'MVPAnt',
-			avatar_url: ''
-		}
-
-		return request(app)
-			.patch('/api/user/MVPAnt')
-			.send(update)
-			.expect(400)
-			.then(({ body }) => {
-				expect(body.msg).toEqual('Bad Request')
-			})
-	})
-})
-
-describe('DELETE - /api/user/:username', () => {
+describe('DELETE - /api/user/:user_id', () => {
 	it('should delete a user matching the param endpoint', () => {
-		return request(app).delete('/api/user/MVPAnt').expect(204)
+		return request(app)
+			.delete('/api/user/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
+			.expect(204)
 	})
 	it('should return 404 if username doesnt exist', () => {
 		return request(app)
-			.delete('/api/user/iDontExist')
+			.delete('/api/user/8b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 			.expect(404)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Not Found')
@@ -180,10 +95,10 @@ describe('GET - /api/miscItem/:miscItem_id', () => {
 			.expect(200)
 			.then(({ body }) => {
 				expect(body.miscItem[0]).toHaveProperty('name')
-				expect(body.miscItem[0]).toHaveProperty('user')
+				expect(body.miscItem[0]).toHaveProperty('user_id')
 				expect(body.miscItem[0]).toHaveProperty('category')
 				expect(body.miscItem[0].name).toEqual('Toothpaste')
-				expect(body.miscItem[0].user).toEqual(
+				expect(body.miscItem[0].user_id).toEqual(
 					'9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 				)
 				expect(body.miscItem[0].category).toEqual('Hygiene')
@@ -217,7 +132,7 @@ describe('GET - /api/miscItem', () => {
 				body.miscItems.forEach(miscItem => {
 					expect(miscItem).toHaveProperty('item_id')
 					expect(miscItem).toHaveProperty('name')
-					expect(miscItem).toHaveProperty('username')
+					expect(miscItem).toHaveProperty('user_id')
 					expect(miscItem).toHaveProperty('category')
 				})
 			})
@@ -228,7 +143,7 @@ describe('POST - /api/miscItem', () => {
 	it('should return an item once posted', () => {
 		const newItem = {
 			name: 'Kitchen Roll',
-			username: 'Anthony',
+			user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 			category: 'Cleaning'
 		}
 		return request(app)
@@ -237,17 +152,19 @@ describe('POST - /api/miscItem', () => {
 			.expect(201)
 			.then(({ body }) => {
 				expect(body.miscItem).toHaveProperty('name')
-				expect(body.miscItem).toHaveProperty('username')
+				expect(body.miscItem).toHaveProperty('user_id')
 				expect(body.miscItem).toHaveProperty('category')
 				expect(body.miscItem.name).toEqual('Kitchen Roll')
-				expect(body.miscItem.username).toEqual('Anthony')
+				expect(body.miscItem.user_id).toEqual(
+					'9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+				)
 				expect(body.miscItem.category).toEqual('Cleaning')
 			})
 	})
 	it('should return 400 if the name field is missing', () => {
 		const newItem = {
 			name: '',
-			username: 'Anthony',
+			user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 			category: 'Cleaning'
 		}
 
@@ -262,7 +179,7 @@ describe('POST - /api/miscItem', () => {
 	it('should return 400 if the username field is missing', () => {
 		const newItem = {
 			name: 'Kitchen Roll',
-			username: '',
+			user_id: '',
 			category: 'Cleaning'
 		}
 
@@ -277,7 +194,7 @@ describe('POST - /api/miscItem', () => {
 	it('should return 400 if the category field is missing', () => {
 		const newItem = {
 			name: 'Kitchen Roll',
-			username: 'Anthony',
+			user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 			category: ''
 		}
 
@@ -311,7 +228,7 @@ describe('GET - /api/ingredients', () => {
 					expect(ingredient).toHaveProperty('name')
 					expect(ingredient).toHaveProperty('unit_of_measurement')
 					expect(ingredient).toHaveProperty('storage_type')
-					expect(ingredient).toHaveProperty('username')
+					expect(ingredient).toHaveProperty('user_id')
 				})
 			})
 	})
@@ -323,7 +240,7 @@ describe('POST - /api/ingredients', () => {
 			name: 'Onion',
 			unit_of_measurement: 'Individual',
 			storage_type: 'Ambient',
-			username: 'Solveiga'
+			user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 		}
 
 		return request(app)
@@ -335,13 +252,13 @@ describe('POST - /api/ingredients', () => {
 				expect(body.ingredient).toHaveProperty('name')
 				expect(body.ingredient).toHaveProperty('unit_of_measurement')
 				expect(body.ingredient).toHaveProperty('storage_type')
-				expect(body.ingredient).toHaveProperty('username')
+				expect(body.ingredient).toHaveProperty('user_id')
 				expect(body.ingredient.name).toEqual(newIngredient.name)
 				expect(body.ingredient.unit_of_measurement).toEqual(
 					newIngredient.unit_of_measurement
 				)
 				expect(body.ingredient.storage_type).toEqual(newIngredient.storage_type)
-				expect(body.ingredient.username).toEqual(newIngredient.username)
+				expect(body.ingredient.user_id).toEqual(newIngredient.user_id)
 				expect(body.ingredient.ingredient_id).toEqual(5)
 			})
 	})
@@ -350,7 +267,7 @@ describe('POST - /api/ingredients', () => {
 			name: '',
 			unit_of_measurement: 'Individual',
 			storage_type: 'Ambient',
-			username: 'Solveiga'
+			user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 		}
 
 		return request(app)
@@ -366,7 +283,7 @@ describe('POST - /api/ingredients', () => {
 			name: 'Onion',
 			unit_of_measurement: '',
 			storage_type: 'Ambient',
-			username: 'Solveiga'
+			user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 		}
 
 		return request(app)
@@ -382,7 +299,7 @@ describe('POST - /api/ingredients', () => {
 			name: 'Onion',
 			unit_of_measurement: 'Individual',
 			storage_type: '',
-			username: 'Solveiga'
+			user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 		}
 
 		return request(app)
@@ -393,12 +310,12 @@ describe('POST - /api/ingredients', () => {
 				expect(body.msg).toEqual('Bad Request')
 			})
 	})
-	it('should return a 400 if ingredient is missing a username', () => {
+	it('should return a 400 if ingredient is missing a user_id', () => {
 		const newIngredient = {
 			name: 'Onion',
 			unit_of_measurement: 'Individual',
 			storage_type: 'Ambient',
-			username: ''
+			user_id: ''
 		}
 
 		return request(app)
@@ -417,7 +334,7 @@ describe('PATCH - /api/ingredients/:ingredient_id', () => {
 			name: 'Mince Meat',
 			unit_of_measurement: 'grams',
 			storage_type: 'chilled',
-			username: 'Anthony'
+			user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 		}
 
 		return request(app)
@@ -426,12 +343,12 @@ describe('PATCH - /api/ingredients/:ingredient_id', () => {
 			.expect(200)
 			.then(({ body }) => {
 				expect(body.ingredient.ingredient_id).toEqual(1)
-				expect(body.ingredient.username).toEqual(updatedObject.username)
+				expect(body.ingredient.user_id).toEqual(updatedObject.user_id)
 				expect(body.ingredient.unit_of_measurement).toEqual(
 					updatedObject.unit_of_measurement
 				)
 				expect(body.ingredient.storage_type).toEqual(updatedObject.storage_type)
-				expect(body.ingredient.username).toEqual(updatedObject.username)
+				expect(body.ingredient.user_id).toEqual(updatedObject.user_id)
 			})
 	})
 	it('should update an ingredients UoM', () => {
@@ -439,7 +356,7 @@ describe('PATCH - /api/ingredients/:ingredient_id', () => {
 			name: 'Mince',
 			unit_of_measurement: 'ltr',
 			storage_type: 'chilled',
-			username: 'Anthony'
+			user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 		}
 
 		return request(app)
@@ -448,12 +365,12 @@ describe('PATCH - /api/ingredients/:ingredient_id', () => {
 			.expect(200)
 			.then(({ body }) => {
 				expect(body.ingredient.ingredient_id).toEqual(1)
-				expect(body.ingredient.username).toEqual(updatedObject.username)
+				expect(body.ingredient.user_id).toEqual(updatedObject.user_id)
 				expect(body.ingredient.unit_of_measurement).toEqual(
 					updatedObject.unit_of_measurement
 				)
 				expect(body.ingredient.storage_type).toEqual(updatedObject.storage_type)
-				expect(body.ingredient.username).toEqual(updatedObject.username)
+				expect(body.ingredient.user_id).toEqual(updatedObject.user_id)
 			})
 	})
 	it('should update an ingredients storage_type', () => {
@@ -461,7 +378,7 @@ describe('PATCH - /api/ingredients/:ingredient_id', () => {
 			name: 'Mince',
 			unit_of_measurement: 'grams',
 			storage_type: 'Ambient',
-			username: 'Anthony'
+			user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 		}
 
 		return request(app)
@@ -470,34 +387,12 @@ describe('PATCH - /api/ingredients/:ingredient_id', () => {
 			.expect(200)
 			.then(({ body }) => {
 				expect(body.ingredient.ingredient_id).toEqual(1)
-				expect(body.ingredient.username).toEqual(updatedObject.username)
+				expect(body.ingredient.user_id).toEqual(updatedObject.user_id)
 				expect(body.ingredient.unit_of_measurement).toEqual(
 					updatedObject.unit_of_measurement
 				)
 				expect(body.ingredient.storage_type).toEqual(updatedObject.storage_type)
-				expect(body.ingredient.username).toEqual(updatedObject.username)
-			})
-	})
-	it('should update an ingredients username', () => {
-		const updatedObject = {
-			name: 'Mince',
-			unit_of_measurement: 'grams',
-			storage_type: 'chilled',
-			username: 'Solveiga'
-		}
-
-		return request(app)
-			.patch('/api/ingredients/1')
-			.send(updatedObject)
-			.expect(200)
-			.then(({ body }) => {
-				expect(body.ingredient.ingredient_id).toEqual(1)
-				expect(body.ingredient.username).toEqual(updatedObject.username)
-				expect(body.ingredient.unit_of_measurement).toEqual(
-					updatedObject.unit_of_measurement
-				)
-				expect(body.ingredient.storage_type).toEqual(updatedObject.storage_type)
-				expect(body.ingredient.username).toEqual(updatedObject.username)
+				expect(body.ingredient.user_id).toEqual(updatedObject.user_id)
 			})
 	})
 	it('should return a 404 if ingredient isnt found', () => {
@@ -505,7 +400,7 @@ describe('PATCH - /api/ingredients/:ingredient_id', () => {
 			name: 'Mince Meat',
 			unit_of_measurement: 'grams',
 			storage_type: 'chilled',
-			username: 'Anthony'
+			user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 		}
 
 		return request(app)
@@ -580,7 +475,7 @@ describe('POST - /api/recipe', () => {
 		const newRecipe = [
 			{
 				recipe_name: 'Spag_Bol_2',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				link: '',
 				ingredients: 1,
 				ingredient_quantity: 400,
@@ -588,7 +483,7 @@ describe('POST - /api/recipe', () => {
 			},
 			{
 				recipe_name: 'Spag_Bol_2',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				link: '',
 				ingredients: 2,
 				ingredient_quantity: 80,
@@ -596,7 +491,7 @@ describe('POST - /api/recipe', () => {
 			},
 			{
 				recipe_name: 'Spag_Bol_2',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				link: '',
 				ingredients: 3,
 				ingredient_quantity: 1,
@@ -604,7 +499,7 @@ describe('POST - /api/recipe', () => {
 			},
 			{
 				recipe_name: 'Spag_Bol_2',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				link: '',
 				ingredients: 4,
 				ingredient_quantity: 100,
@@ -628,7 +523,7 @@ describe('PATCH - /api/recipe/:name', () => {
 			{
 				recipe_id: 1,
 				name: 'Test Recipe update',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				link: '',
 				ingredients: 1,
 				ingredient_quantity: 400,
@@ -637,7 +532,7 @@ describe('PATCH - /api/recipe/:name', () => {
 			{
 				recipe_id: 2,
 				name: 'Test Recipe update',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				link: '',
 				ingredients: 2,
 				ingredient_quantity: 1,
@@ -646,7 +541,7 @@ describe('PATCH - /api/recipe/:name', () => {
 			{
 				recipe_id: 3,
 				name: 'Test Recipe update',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				link: '',
 				ingredients: 3,
 				ingredient_quantity: 50,
@@ -655,7 +550,7 @@ describe('PATCH - /api/recipe/:name', () => {
 			{
 				recipe_id: 4,
 				name: 'Test Recipe update',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				link: '',
 				ingredients: 4,
 				ingredient_quantity: 1,
@@ -667,7 +562,7 @@ describe('PATCH - /api/recipe/:name', () => {
 			{
 				recipe_id: 1,
 				recipe_name: 'Test Recipe update',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				link: '',
 				ingredients: 1,
 				ingredient_quantity: 400,
@@ -676,7 +571,7 @@ describe('PATCH - /api/recipe/:name', () => {
 			{
 				recipe_id: 2,
 				recipe_name: 'Test Recipe update',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				link: '',
 				ingredients: 2,
 				ingredient_quantity: 1,
@@ -685,7 +580,7 @@ describe('PATCH - /api/recipe/:name', () => {
 			{
 				recipe_id: 3,
 				recipe_name: 'Test Recipe update',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				link: '',
 				ingredients: 3,
 				ingredient_quantity: 50,
@@ -694,7 +589,7 @@ describe('PATCH - /api/recipe/:name', () => {
 			{
 				recipe_id: 4,
 				recipe_name: 'Test Recipe update',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				link: '',
 				ingredients: 4,
 				ingredient_quantity: 1,
@@ -747,7 +642,7 @@ describe('GET - /api/mealPlans/:mealPlanName', () => {
 			.then(({ body }) => {
 				body.meals.forEach(meal => {
 					expect(meal.name).toEqual('Week 1 test')
-					expect(meal).toHaveProperty('username')
+					expect(meal).toHaveProperty('user_id')
 					expect(meal).toHaveProperty('recipes')
 				})
 			})
@@ -767,7 +662,7 @@ describe('POST - /api/mealPlans', () => {
 		const testMealPlan = [
 			{
 				name: 'Week 2 test',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				recipes: [
 					{ Monday: ['Spag_Bol', 'Chilli'] },
 					{ Tuesday: ['Porridge', 'Sandwiches'] },
@@ -780,7 +675,7 @@ describe('POST - /api/mealPlans', () => {
 			{
 				template_id: 2,
 				name: 'Week 2 test',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				recipes: [
 					{ Monday: ['Spag_Bol', 'Chilli'] },
 					{ Tuesday: ['Porridge', 'Sandwiches'] },
@@ -804,7 +699,7 @@ describe('PATCH - /api/mealPlans/:mealPlanName', () => {
 		const testMealPlan = {
 			template_id: 1,
 			name: 'Week 2 test',
-			username: 'Anthony',
+			user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 			recipes: [
 				{ Monday: ['Spag_Bol', 'Chilli'] },
 				{ Tuesday: ['Porridge', 'Sandwiches'] },
@@ -816,7 +711,7 @@ describe('PATCH - /api/mealPlans/:mealPlanName', () => {
 			{
 				template_id: 1,
 				name: 'Week 2 test',
-				username: 'Anthony',
+				user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 				recipes: [
 					{ Monday: ['Spag_Bol', 'Chilli'] },
 					{ Tuesday: ['Porridge', 'Sandwiches'] },
