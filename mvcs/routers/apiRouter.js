@@ -5,6 +5,7 @@ const ingredientsRouter = require('./ingredientsRouter')
 const recipeRouter = require('./recipeRouter')
 const mealPlansRouter = require('./mealPlansRouter')
 const shoppingListRouter = require('./shoppingListRouter')
+const loginRouter = require('./login')
 const { getEndPoints } = require('../controllers/endpointsController')
 
 apiRouter.route('/').get(getEndPoints)
@@ -14,5 +15,6 @@ apiRouter.use('/ingredients', ingredientsRouter)
 apiRouter.use('/recipe', recipeRouter)
 apiRouter.use('/mealPlans', mealPlansRouter)
 apiRouter.use('/shoppingList', shoppingListRouter)
+apiRouter.use('/login', loginRouter)
 
 module.exports = apiRouter

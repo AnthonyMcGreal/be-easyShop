@@ -30,13 +30,14 @@ describe('POST - /api/user', () => {
 	it('should post a new user', () => {
 		const postUser = {
 			email: 'test@email.com',
-			password: 'testpassword'
+			password: 'testPa$$word'
 		}
 		return request(app)
 			.post('/api/user')
 			.send(postUser)
 			.expect(201)
 			.then(async ({ body }) => {
+				console.log(body.user)
 				expect(body.user.email).toEqual(postUser.email)
 				expect(body.user).toHaveProperty('user_id')
 				let passwordCheck = await bcrypt.compare(
@@ -820,6 +821,53 @@ describe('POST - /api/shoppingList', () => {
 			.expect(200)
 			.then(({ body }) => {
 				expect(body.shoppingList).toEqual(resultData)
+			})
+	})
+})
+
+describe.only('POST - login', () => {
+	it('should return a 200 if the credentials are correct', () => {
+		const testUser = {
+			email: 'anthonymcgreal@hotmail.co.uk',
+			password: 'testPa$$word'
+		}
+
+		return request(app)
+			.post('/api/login')
+			.send(testUser)
+			.expect(200)
+			.then(({ body }) => {
+				expect(body.msg).toEqual('Login successful')
+			})
+	})
+
+	it('should return a 400 if password is incorrect', () => {
+		const testUser = {
+			email: 'anthonymcgreal@hotmail.co.uk',
+			password: 'wrongPassword'
+		}
+
+		return request(app)
+			.post('/api/login')
+			.send(testUser)
+			.expect(400)
+			.then(({ body }) => {
+				expect(body.msg).toEqual('Login failed')
+			})
+	})
+
+	it('should return a 400 if email is missing', () => {
+		const testUser = {
+			email: '',
+			password: 'wrongPassword'
+		}
+
+		return request(app)
+			.post('/api/login')
+			.send(testUser)
+			.expect(400)
+			.then(({ body }) => {
+				expect(body.msg).toEqual('Bad Request')
 			})
 	})
 })
