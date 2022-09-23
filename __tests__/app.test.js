@@ -37,7 +37,6 @@ describe('POST - /api/user', () => {
 			.send(postUser)
 			.expect(201)
 			.then(async ({ body }) => {
-				console.log(body.user)
 				expect(body.user.email).toEqual(postUser.email)
 				expect(body.user).toHaveProperty('user_id')
 				let passwordCheck = await bcrypt.compare(
@@ -825,7 +824,7 @@ describe('POST - /api/shoppingList', () => {
 	})
 })
 
-describe.only('POST - login', () => {
+describe('POST - login', () => {
 	it('should return a 200 if the credentials are correct', () => {
 		const testUser = {
 			email: 'anthonymcgreal@hotmail.co.uk',
