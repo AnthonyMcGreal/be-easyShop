@@ -9,13 +9,9 @@ const {
 
 const miscItemRouter = require('express').Router()
 
-miscItemRouter
-	.route('/')
-	.get(userAuth, getAllMiscItems)
-	.post(userAuth, postMiscItem)
-miscItemRouter
-	.route('/:miscItem_id')
-	.get(userAuth, getMiscItemById)
-	.delete(userAuth, deleteMiscItemById)
+miscItemRouter.route('/').post(userAuth, postMiscItem)
+miscItemRouter.route('/:user_id').get(userAuth, getAllMiscItems)
+miscItemRouter.route('/:miscItem_id').delete(userAuth, deleteMiscItemById)
+miscItemRouter.route('/:user_id/:miscItem_id').get(userAuth, getMiscItemById)
 
 module.exports = miscItemRouter

@@ -1,18 +1,19 @@
 const db = require('../../db/connection')
 const format = require('pg-format')
 
-exports.selectMiscItemById = miscItem_id => {
+exports.selectMiscItemById = (user_id, miscItem_id) => {
 	if (/[a-z]/gi.test(miscItem_id)) {
 		return Promise.reject({ status: 400, msg: 'Bad Request' })
 	}
 
-	const queryStr = format(`SELECT * FROM miscItems WHERE item_id = %L;`, [
-		miscItem_id
-	])
-
-	return db.query(queryStr).then(user => {
-		return user.rows
-	})
+	return db
+		.query(`SELECT * FROM miscItems WHERE user_id = $1 AND item_id = $2;`, [
+			user_id,
+			miscItem_id
+		])
+		.then(user => {
+			return user.rows
+		})
 }
 
 exports.insertMiscItem = item => {
@@ -37,8 +38,10 @@ exports.insertMiscItem = item => {
 	})
 }
 
-exports.selectAllMiscItems = () => {
-	let queryStr = `SELECT * FROM miscItems;`
+exports.selectAllMiscItems = user_id => {
+	let queryStr = format(`SELECT * FROM miscItems WHERE user_id = %L;`, [
+		user_id
+	])
 
 	return db.query(queryStr).then(({ rows }) => {
 		return rows

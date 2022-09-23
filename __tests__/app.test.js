@@ -98,10 +98,10 @@ describe('DELETE - /api/user/:user_id', () => {
 	})
 })
 
-describe('GET - /api/miscItem/:miscItem_id', () => {
+describe('GET - /api/miscItem/:user_id/:miscItem_id', () => {
 	it('should respond with a miscItem object that matches the param', () => {
 		return request(app)
-			.get('/api/miscItem/1')
+			.get('/api/miscItem/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d/1')
 			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
@@ -117,7 +117,7 @@ describe('GET - /api/miscItem/:miscItem_id', () => {
 	})
 	it('should respond a 404 if item doesnt exist', () => {
 		return request(app)
-			.get('/api/miscItem/99')
+			.get('/api/miscItem/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d/99')
 			.auth(token, { type: 'bearer' })
 			.expect(404)
 			.then(({ body }) => {
@@ -126,7 +126,7 @@ describe('GET - /api/miscItem/:miscItem_id', () => {
 	})
 	it('should respond with 400 if input isnt valid', () => {
 		return request(app)
-			.get('/api/miscItem/NaN')
+			.get('/api/miscItem/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d/NaN')
 			.auth(token, { type: 'bearer' })
 			.expect(400)
 			.then(({ body }) => {
@@ -135,10 +135,10 @@ describe('GET - /api/miscItem/:miscItem_id', () => {
 	})
 })
 
-describe('GET - /api/miscItem', () => {
+describe('GET - /api/miscItem/:user_id', () => {
 	it('gets all misc items available', () => {
 		return request(app)
-			.get('/api/miscItem')
+			.get('/api/miscItem/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
@@ -148,6 +148,9 @@ describe('GET - /api/miscItem', () => {
 					expect(miscItem).toHaveProperty('name')
 					expect(miscItem).toHaveProperty('user_id')
 					expect(miscItem).toHaveProperty('category')
+					expect(miscItem.user_id).toEqual(
+						'9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+					)
 				})
 			})
 	})

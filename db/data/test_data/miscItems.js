@@ -13,5 +13,10 @@ module.exports = [
 		name: 'Washing up liquid',
 		user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
 		category: 'Cleaning'
+	},
+	{
+		name: 'Washing powder',
+		user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6e',
+		category: 'Cleaning'
 	}
 ]
