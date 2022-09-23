@@ -1,12 +1,12 @@
 const db = require('../../db/connection')
 const format = require('pg-format')
 
-exports.selectAllIngredients = () => {
-	let queryStr = `SELECT * FROM ingredients;`
-
-	return db.query(queryStr).then(({ rows }) => {
-		return rows
-	})
+exports.selectAllIngredients = user_id => {
+	return db
+		.query(`SELECT * FROM ingredients WHERE user_id = $1;`, [user_id])
+		.then(({ rows }) => {
+			return rows
+		})
 }
 
 exports.insertIngredient = (

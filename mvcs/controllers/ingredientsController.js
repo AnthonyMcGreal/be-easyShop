@@ -6,7 +6,8 @@ const {
 } = require('../models/ingredientsModels')
 
 exports.getAllIngredients = (req, res, next) => {
-	selectAllIngredients().then(ingredients => {
+	const { user_id } = req.params
+	selectAllIngredients(user_id).then(ingredients => {
 		res.status(200).send({ ingredients })
 	})
 }

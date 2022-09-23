@@ -8,10 +8,8 @@ const {
 
 const ingredientsRouter = require('express').Router()
 
-ingredientsRouter
-	.route('/')
-	.get(userAuth, getAllIngredients)
-	.post(userAuth, postIngredient)
+ingredientsRouter.route('/').post(userAuth, postIngredient)
+ingredientsRouter.route('/:user_id').get(userAuth, getAllIngredients)
 ingredientsRouter
 	.route('/:ingredient_id')
 	.patch(userAuth, patchIngredientsById)

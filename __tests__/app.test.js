@@ -244,10 +244,10 @@ describe('DELETE - /api/miscItem/:miscItem_id', () => {
 	})
 })
 
-describe('GET - /api/ingredients', () => {
+describe('GET - /api/ingredients/:user_id', () => {
 	it('should return an array of all ingredient objects', () => {
 		return request(app)
-			.get('/api/ingredients')
+			.get('/api/ingredients/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
@@ -257,6 +257,9 @@ describe('GET - /api/ingredients', () => {
 					expect(ingredient).toHaveProperty('unit_of_measurement')
 					expect(ingredient).toHaveProperty('storage_type')
 					expect(ingredient).toHaveProperty('user_id')
+					expect(ingredient.user_id).toEqual(
+						'9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+					)
 				})
 			})
 	})
@@ -288,7 +291,7 @@ describe('POST - /api/ingredients', () => {
 				)
 				expect(body.ingredient.storage_type).toEqual(newIngredient.storage_type)
 				expect(body.ingredient.user_id).toEqual(newIngredient.user_id)
-				expect(body.ingredient.ingredient_id).toEqual(5)
+				expect(body.ingredient.ingredient_id).toEqual(6)
 			})
 	})
 	it('should return a 400 if ingredient is missing a name', () => {
