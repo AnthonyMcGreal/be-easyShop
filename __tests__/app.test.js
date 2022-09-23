@@ -824,7 +824,7 @@ describe('POST - /api/shoppingList', () => {
 	})
 })
 
-describe('POST - login', () => {
+describe.only('POST - login', () => {
 	it('should return a 200 if the credentials are correct', () => {
 		const testUser = {
 			email: 'anthonymcgreal@hotmail.co.uk',
@@ -835,8 +835,13 @@ describe('POST - login', () => {
 			.post('/api/login')
 			.send(testUser)
 			.expect(200)
-			.then(({ body }) => {
-				expect(body.msg).toEqual('Login successful')
+			.then(result => {
+				expect(result.header['set-cookie'][0]).toEqual(
+					expect.stringMatching(
+						/^jwt=[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*; Path=\/$/
+					)
+				)
+				expect(result.body.msg).toEqual('Login successful')
 			})
 	})
 

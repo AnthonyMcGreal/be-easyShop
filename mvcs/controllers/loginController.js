@@ -1,13 +1,13 @@
 const { login } = require('../models/loginModel')
+const { createJWT } = require('../jwt')
 
 exports.postLogin = (req, res, next) => {
 	const { body } = req
 	login(body)
 		.then(result => {
 			if (result) {
-				res.status(200).send({ msg: 'Login successful' })
-			} else {
-				res.status(400).send({ msg: 'Login failed' })
+				const token = createJWT(result.user_id, result.email)
+				res.status(200).cookie('jwt', token).send({ msg: 'Login successful' })
 			}
 		})
 		.catch(next)
