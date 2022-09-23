@@ -1,18 +1,22 @@
+const { userAuth } = require('../auth')
 const {
-  getAllMealPlans,
-  getMealPlansByName,
-  postMealPlans,
-  patchMealPlanByName,
-  deleteMealPlanByName,
-} = require('../controllers/mealPlansController');
+	getAllMealPlans,
+	getMealPlansByName,
+	postMealPlans,
+	patchMealPlanByName,
+	deleteMealPlanByName
+} = require('../controllers/mealPlansController')
 
-const mealPlansRouter = require('express').Router();
+const mealPlansRouter = require('express').Router()
 
-mealPlansRouter.route('/').get(getAllMealPlans).post(postMealPlans);
 mealPlansRouter
-  .route('/:mealPlanName')
-  .get(getMealPlansByName)
-  .patch(patchMealPlanByName)
-  .delete(deleteMealPlanByName);
+	.route('/')
+	.get(userAuth, getAllMealPlans)
+	.post(userAuth, postMealPlans)
+mealPlansRouter
+	.route('/:mealPlanName')
+	.get(userAuth, getMealPlansByName)
+	.patch(userAuth, patchMealPlanByName)
+	.delete(userAuth, deleteMealPlanByName)
 
-module.exports = mealPlansRouter;
+module.exports = mealPlansRouter

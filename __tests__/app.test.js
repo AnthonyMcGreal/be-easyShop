@@ -4,14 +4,18 @@ const { seed } = require('../db/seeds/seed')
 const app = require('../app')
 const request = require('supertest')
 const bcrypt = require('bcryptjs')
+const { createJWT } = require('../mvcs/jwt.js')
 
-beforeEach(() => seed(testData))
+const token = createJWT('anthonymcgreal@hotmail.co.uk', 'testPa$$word')
+
+beforeEach(async () => seed(testData))
 afterAll(() => db.end())
 
 describe('GET - /api/users/:user_id', () => {
 	it('should respond with a user object', () => {
 		return request(app)
 			.get('/api/user/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
+			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
 				expect(body.user[0]).toHaveProperty('user_id')
@@ -22,6 +26,7 @@ describe('GET - /api/users/:user_id', () => {
 	it('should respond with 404 if user doesnt exist', () => {
 		return request(app)
 			.get('/api/user/8b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
+			.auth(token, { type: 'bearer' })
 			.expect(404)
 	})
 })
@@ -35,6 +40,7 @@ describe('POST - /api/user', () => {
 		return request(app)
 			.post('/api/user')
 			.send(postUser)
+			.auth(token, { type: 'bearer' })
 			.expect(201)
 			.then(async ({ body }) => {
 				expect(body.user.email).toEqual(postUser.email)
@@ -53,6 +59,7 @@ describe('POST - /api/user', () => {
 		return request(app)
 			.post('/api/user')
 			.send(postUser)
+			.auth(token, { type: 'bearer' })
 			.expect(400)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Bad Request')
@@ -65,6 +72,7 @@ describe('POST - /api/user', () => {
 		return request(app)
 			.post('/api/user')
 			.send(postUser)
+			.auth(token, { type: 'bearer' })
 			.expect(400)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Bad Request')
@@ -76,11 +84,13 @@ describe('DELETE - /api/user/:user_id', () => {
 	it('should delete a user matching the param endpoint', () => {
 		return request(app)
 			.delete('/api/user/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
+			.auth(token, { type: 'bearer' })
 			.expect(204)
 	})
 	it('should return 404 if username doesnt exist', () => {
 		return request(app)
 			.delete('/api/user/8b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
+			.auth(token, { type: 'bearer' })
 			.expect(404)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Not Found')
@@ -92,6 +102,7 @@ describe('GET - /api/miscItem/:miscItem_id', () => {
 	it('should respond with a miscItem object that matches the param', () => {
 		return request(app)
 			.get('/api/miscItem/1')
+			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
 				expect(body.miscItem[0]).toHaveProperty('name')
@@ -107,6 +118,7 @@ describe('GET - /api/miscItem/:miscItem_id', () => {
 	it('should respond a 404 if item doesnt exist', () => {
 		return request(app)
 			.get('/api/miscItem/99')
+			.auth(token, { type: 'bearer' })
 			.expect(404)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Not Found')
@@ -115,6 +127,7 @@ describe('GET - /api/miscItem/:miscItem_id', () => {
 	it('should respond with 400 if input isnt valid', () => {
 		return request(app)
 			.get('/api/miscItem/NaN')
+			.auth(token, { type: 'bearer' })
 			.expect(400)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Bad Request')
@@ -126,6 +139,7 @@ describe('GET - /api/miscItem', () => {
 	it('gets all misc items available', () => {
 		return request(app)
 			.get('/api/miscItem')
+			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
 				expect(body.miscItems.length).toEqual(3)
@@ -149,6 +163,7 @@ describe('POST - /api/miscItem', () => {
 		return request(app)
 			.post('/api/miscItem')
 			.send(newItem)
+			.auth(token, { type: 'bearer' })
 			.expect(201)
 			.then(({ body }) => {
 				expect(body.miscItem).toHaveProperty('name')
@@ -171,6 +186,7 @@ describe('POST - /api/miscItem', () => {
 		return request(app)
 			.post('/api/miscItem')
 			.send(newItem)
+			.auth(token, { type: 'bearer' })
 			.expect(400)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Bad Request')
@@ -186,6 +202,7 @@ describe('POST - /api/miscItem', () => {
 		return request(app)
 			.post('/api/miscItem')
 			.send(newItem)
+			.auth(token, { type: 'bearer' })
 			.expect(400)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Bad Request')
@@ -201,6 +218,7 @@ describe('POST - /api/miscItem', () => {
 		return request(app)
 			.post('/api/miscItem')
 			.send(newItem)
+			.auth(token, { type: 'bearer' })
 			.expect(400)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Bad Request')
@@ -210,10 +228,16 @@ describe('POST - /api/miscItem', () => {
 
 describe('DELETE - /api/miscItem/:miscItem_id', () => {
 	it('deletes a miscItem matching the param endpoint', () => {
-		return request(app).delete('/api/miscItem/1').expect(204)
+		return request(app)
+			.delete('/api/miscItem/1')
+			.auth(token, { type: 'bearer' })
+			.expect(204)
 	})
 	it('returns a 404 is item doesnt exist', () => {
-		return request(app).delete('/api/miscItem/99').expect(404)
+		return request(app)
+			.delete('/api/miscItem/99')
+			.auth(token, { type: 'bearer' })
+			.expect(404)
 	})
 })
 
@@ -221,6 +245,7 @@ describe('GET - /api/ingredients', () => {
 	it('should return an array of all ingredient objects', () => {
 		return request(app)
 			.get('/api/ingredients')
+			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
 				body.ingredients.forEach(ingredient => {
@@ -246,6 +271,7 @@ describe('POST - /api/ingredients', () => {
 		return request(app)
 			.post('/api/ingredients')
 			.send(newIngredient)
+			.auth(token, { type: 'bearer' })
 			.expect(201)
 			.then(({ body }) => {
 				expect(body.ingredient).toHaveProperty('ingredient_id')
@@ -273,6 +299,7 @@ describe('POST - /api/ingredients', () => {
 		return request(app)
 			.post('/api/ingredients')
 			.send(newIngredient)
+			.auth(token, { type: 'bearer' })
 			.expect(400)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Bad Request')
@@ -289,6 +316,7 @@ describe('POST - /api/ingredients', () => {
 		return request(app)
 			.post('/api/ingredients')
 			.send(newIngredient)
+			.auth(token, { type: 'bearer' })
 			.expect(400)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Bad Request')
@@ -305,6 +333,7 @@ describe('POST - /api/ingredients', () => {
 		return request(app)
 			.post('/api/ingredients')
 			.send(newIngredient)
+			.auth(token, { type: 'bearer' })
 			.expect(400)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Bad Request')
@@ -321,6 +350,7 @@ describe('POST - /api/ingredients', () => {
 		return request(app)
 			.post('/api/ingredients')
 			.send(newIngredient)
+			.auth(token, { type: 'bearer' })
 			.expect(400)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Bad Request')
@@ -340,6 +370,7 @@ describe('PATCH - /api/ingredients/:ingredient_id', () => {
 		return request(app)
 			.patch('/api/ingredients/1')
 			.send(updatedObject)
+			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
 				expect(body.ingredient.ingredient_id).toEqual(1)
@@ -362,6 +393,7 @@ describe('PATCH - /api/ingredients/:ingredient_id', () => {
 		return request(app)
 			.patch('/api/ingredients/1')
 			.send(updatedObject)
+			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
 				expect(body.ingredient.ingredient_id).toEqual(1)
@@ -384,6 +416,7 @@ describe('PATCH - /api/ingredients/:ingredient_id', () => {
 		return request(app)
 			.patch('/api/ingredients/1')
 			.send(updatedObject)
+			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
 				expect(body.ingredient.ingredient_id).toEqual(1)
@@ -406,6 +439,7 @@ describe('PATCH - /api/ingredients/:ingredient_id', () => {
 		return request(app)
 			.patch('/api/ingredients/99')
 			.send(updatedObject)
+			.auth(token, { type: 'bearer' })
 			.expect(404)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Not Found')
@@ -415,11 +449,15 @@ describe('PATCH - /api/ingredients/:ingredient_id', () => {
 
 describe('DELETE - /api/ingredients/:ingredients_id', () => {
 	it('deletes an ingredient matching the param endpoint', () => {
-		return request(app).delete('/api/ingredients/1').expect(204)
+		return request(app)
+			.delete('/api/ingredients/1')
+			.auth(token, { type: 'bearer' })
+			.expect(204)
 	})
 	it('returns a 404 if ingredient doesnt exits', () => {
 		return request(app)
 			.delete('/api/ingredients/100')
+			.auth(token, { type: 'bearer' })
 			.expect(404)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Not Found')
@@ -431,6 +469,7 @@ describe('GET - /api/recipe', () => {
 	it('should return a list of all recipes', () => {
 		return request(app)
 			.get('/api/recipe')
+			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
 				expect(body.recipes.length).toEqual(2)
@@ -447,6 +486,7 @@ describe('GET - /api/recipe/:name', () => {
 	it('should return a recipe with ingredient info', () => {
 		return request(app)
 			.get('/api/recipe/Spag_Bol_no_mushrooms')
+			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
 				body.forEach(recipe => {
@@ -463,6 +503,7 @@ describe('GET - /api/recipe/:name', () => {
 	it('should return a 404 if the recipe doesnt exist', () => {
 		return request(app)
 			.get('/api/recipe/Not a recipe')
+			.auth(token, { type: 'bearer' })
 			.expect(404)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Not Found')
@@ -510,6 +551,7 @@ describe('POST - /api/recipe', () => {
 		return request(app)
 			.post('/api/recipe')
 			.send(newRecipe)
+			.auth(token, { type: 'bearer' })
 			.expect(201)
 			.then(({ body }) => {
 				expect(body.recipe).toEqual(newRecipe)
@@ -600,6 +642,7 @@ describe('PATCH - /api/recipe/:name', () => {
 		return request(app)
 			.patch('/api/recipe/Spag_Bol_no_mushrooms')
 			.send(testRecipeUpdate)
+			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
 				expect(body.recipe).toEqual(expectedResult)
@@ -609,11 +652,15 @@ describe('PATCH - /api/recipe/:name', () => {
 
 describe('DELETE - /api/recipe/:name', () => {
 	it('deletes a recipe that matches the parametric name', () => {
-		return request(app).delete('/api/recipe/Spag_Bol').expect(204)
+		return request(app)
+			.delete('/api/recipe/Spag_Bol')
+			.auth(token, { type: 'bearer' })
+			.expect(204)
 	})
 	it('responds with 404 if recipe isnt found', () => {
 		return request(app)
 			.delete('/api/recipe/Not_a_Recipe')
+			.auth(token, { type: 'bearer' })
 			.expect(404)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Not Found')
@@ -625,6 +672,7 @@ describe('GET - /api/mealPlans/', () => {
 	it('should return a list of available mealPlans', () => {
 		return request(app)
 			.get('/api/mealPlans')
+			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
 				body.mealPlans.forEach(meal => {
@@ -638,6 +686,7 @@ describe('GET - /api/mealPlans/:mealPlanName', () => {
 	it('should return an array of all meals in a given meal plan', () => {
 		return request(app)
 			.get('/api/mealPlans/Week 1 test')
+			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
 				body.meals.forEach(meal => {
@@ -650,6 +699,7 @@ describe('GET - /api/mealPlans/:mealPlanName', () => {
 	it('should return a 404 if meal doesnt exit', () => {
 		return request(app)
 			.get('/api/mealPlans/notAMealPlan')
+			.auth(token, { type: 'bearer' })
 			.expect(404)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Not Found')
@@ -687,6 +737,7 @@ describe('POST - /api/mealPlans', () => {
 		return request(app)
 			.post('/api/mealPlans')
 			.send(testMealPlan)
+			.auth(token, { type: 'bearer' })
 			.expect(201)
 			.then(({ body }) => {
 				expect(body.mealPlan).toEqual(result)
@@ -723,6 +774,7 @@ describe('PATCH - /api/mealPlans/:mealPlanName', () => {
 		return request(app)
 			.patch('/api/mealPlans/Week 1 test')
 			.send(testMealPlan)
+			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
 				expect(body.mealPlan).toEqual(ExpectedMealPlan)
@@ -732,11 +784,15 @@ describe('PATCH - /api/mealPlans/:mealPlanName', () => {
 
 describe('DELETE - /api/mealPlans/:mealPlanName', () => {
 	it('should remove a mealPlan by name', () => {
-		return request(app).delete('/api/mealPlans/Week 1 test').expect(204)
+		return request(app)
+			.delete('/api/mealPlans/Week 1 test')
+			.auth(token, { type: 'bearer' })
+			.expect(204)
 	})
 	it('responds with 404 if recipe isnt found', () => {
 		return request(app)
 			.delete('/api/mealPlans/Not a recipe')
+			.auth(token, { type: 'bearer' })
 			.expect(404)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Not Found')
@@ -783,6 +839,7 @@ describe('POST - /api/shoppingList', () => {
 		return request(app)
 			.post('/api/shoppingList')
 			.send(requestData)
+			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
 				expect(body.shoppingList).toEqual(resultData)
@@ -817,6 +874,7 @@ describe('POST - /api/shoppingList', () => {
 		return request(app)
 			.post('/api/shoppingList')
 			.send(requestData)
+			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
 				expect(body.shoppingList).toEqual(resultData)
@@ -824,7 +882,7 @@ describe('POST - /api/shoppingList', () => {
 	})
 })
 
-describe.only('POST - login', () => {
+describe('POST - login', () => {
 	it('should return a 200 if the credentials are correct', () => {
 		const testUser = {
 			email: 'anthonymcgreal@hotmail.co.uk',

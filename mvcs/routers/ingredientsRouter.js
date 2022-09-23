@@ -1,16 +1,20 @@
+const { userAuth } = require('../auth')
 const {
-  getAllIngredients,
-  postIngredient,
-  patchIngredientsById,
-  deleteIngredientsById,
-} = require('../controllers/ingredientsController');
+	getAllIngredients,
+	postIngredient,
+	patchIngredientsById,
+	deleteIngredientsById
+} = require('../controllers/ingredientsController')
 
-const ingredientsRouter = require('express').Router();
+const ingredientsRouter = require('express').Router()
 
-ingredientsRouter.route('/').get(getAllIngredients).post(postIngredient);
 ingredientsRouter
-  .route('/:ingredient_id')
-  .patch(patchIngredientsById)
-  .delete(deleteIngredientsById);
+	.route('/')
+	.get(userAuth, getAllIngredients)
+	.post(userAuth, postIngredient)
+ingredientsRouter
+	.route('/:ingredient_id')
+	.patch(userAuth, patchIngredientsById)
+	.delete(userAuth, deleteIngredientsById)
 
-module.exports = ingredientsRouter;
+module.exports = ingredientsRouter

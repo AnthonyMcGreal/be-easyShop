@@ -1,3 +1,4 @@
+const { userAuth } = require('../auth')
 const {
 	postUser,
 	deleteUserByUsername,
@@ -6,11 +7,11 @@ const {
 
 const usersRouter = require('express').Router()
 
-usersRouter.route('/').post(postUser)
+usersRouter.route('/').post(userAuth, postUser)
 
 usersRouter
 	.route('/:user_id')
-	.get(getUserByUsername)
-	.delete(deleteUserByUsername)
+	.get(userAuth, getUserByUsername)
+	.delete(userAuth, deleteUserByUsername)
 
 module.exports = usersRouter
