@@ -5,6 +5,7 @@ const {
 	formatRecipeData,
 	formatMealPlansData
 } = require('../db/utils/data_manipulation')
+const { createJWT } = require('../mvcs/jwt')
 
 describe('tests for formatUsersData', () => {
 	it('should not mutate the original data', () => {
@@ -435,5 +436,20 @@ describe('tests for formatMealPlansData', () => {
 		]
 
 		expect(formatMealPlansData).not.toBe(input)
+	})
+})
+
+describe('test jwt creation', () => {
+	it('should return a valid jwt', () => {
+		const token = createJWT(
+			'9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d',
+			'anthonymcgreal@hotmail.co.uk'
+		)
+
+		expect(token).toEqual(
+			expect.stringMatching(
+				/^[A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.?[A-Za-z0-9-_.+/=]*$/
+			)
+		)
 	})
 })
