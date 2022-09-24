@@ -7,7 +7,8 @@ const {
 } = require('../models/mealPlansModels')
 
 exports.getAllMealPlans = (req, res, next) => {
-	selectAllMealPlans().then(mealPlans => {
+	const { user_id } = req.params
+	selectAllMealPlans(user_id).then(mealPlans => {
 		res.status(200).send({ mealPlans })
 	})
 }
@@ -42,8 +43,8 @@ exports.patchMealPlanByName = (req, res, next) => {
 }
 
 exports.deleteMealPlanByName = (req, res, next) => {
-	const { mealPlanName } = req.params
-	removeMealPlanByName(mealPlanName).then(mealPlan => {
+	const { mealPlanName, user_id } = req.params
+	removeMealPlanByName(mealPlanName, user_id).then(mealPlan => {
 		if (mealPlan.rows.length === 0) {
 			res.status(404).send({ msg: 'Not Found' })
 		} else {

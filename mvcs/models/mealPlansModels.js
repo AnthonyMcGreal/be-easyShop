@@ -4,12 +4,14 @@ const {
 	deleteIngredientsById
 } = require('../controllers/ingredientsController')
 
-exports.selectAllMealPlans = () => {
-	let queryStr = `SELECT DISTINCT name FROM mealPlans;`
-
-	return db.query(queryStr).then(({ rows }) => {
-		return rows
-	})
+exports.selectAllMealPlans = user_id => {
+	return db
+		.query(`SELECT DISTINCT name, user_id FROM mealPlans WHERE user_id = $1;`, [
+			user_id
+		])
+		.then(({ rows }) => {
+			return rows
+		})
 }
 
 exports.selectMealPlansByName = mealPlanName => {
@@ -73,8 +75,9 @@ exports.updateMealPlanByName = async body => {
 	})
 }
 
-exports.removeMealPlanByName = mealPlanName => {
-	return db.query(`DELETE FROM mealPlans WHERE name = $1 RETURNING *;`, [
-		mealPlanName
-	])
+exports.removeMealPlanByName = (mealPlanName, user_id) => {
+	return db.query(
+		`DELETE FROM mealPlans WHERE name = $1 AND user_id = $2 RETURNING *;`,
+		[mealPlanName, user_id]
+	)
 }

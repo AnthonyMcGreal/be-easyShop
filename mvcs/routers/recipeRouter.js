@@ -11,10 +11,10 @@ const recipeRouter = require('express').Router()
 
 recipeRouter.route('/').post(userAuth, postRecipe)
 recipeRouter.route('/:user_id').get(userAuth, getAllRecipes)
+recipeRouter.route('/:name').patch(userAuth, patchRecipeByName)
 recipeRouter
-	.route('/:name')
-	.patch(userAuth, patchRecipeByName)
+	.route('/:user_id/:name')
+	.get(userAuth, getRecipeById)
 	.delete(userAuth, deleteRecipeByName)
-recipeRouter.route('/:user_id/:name').get(userAuth, getRecipeById)
 
 module.exports = recipeRouter

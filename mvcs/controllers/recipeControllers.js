@@ -41,8 +41,8 @@ exports.patchRecipeByName = (req, res, next) => {
 }
 
 exports.deleteRecipeByName = (req, res, next) => {
-	const { name } = req.params
-	removeRecipeByName(name).then(recipe => {
+	const { name, user_id } = req.params
+	removeRecipeByName(name, user_id).then(recipe => {
 		if (recipe.rows.length === 0) {
 			res.status(404).send({ msg: 'Not Found' })
 		} else {

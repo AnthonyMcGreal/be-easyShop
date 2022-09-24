@@ -660,16 +660,16 @@ describe('PATCH - /api/recipe/:name', () => {
 	})
 })
 
-describe('DELETE - /api/recipe/:name', () => {
+describe('DELETE - /api/recipe/:user_id/:name', () => {
 	it('deletes a recipe that matches the parametric name', () => {
 		return request(app)
-			.delete('/api/recipe/Spag_Bol')
+			.delete('/api/recipe/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d/Spag_Bol')
 			.auth(token, { type: 'bearer' })
 			.expect(204)
 	})
 	it('responds with 404 if recipe isnt found', () => {
 		return request(app)
-			.delete('/api/recipe/Not_a_Recipe')
+			.delete('/api/recipe/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d/Not_a_Recipe')
 			.auth(token, { type: 'bearer' })
 			.expect(404)
 			.then(({ body }) => {
@@ -678,24 +678,26 @@ describe('DELETE - /api/recipe/:name', () => {
 	})
 })
 
-describe('GET - /api/mealPlans/', () => {
+describe('GET - /api/mealPlans/:user_id', () => {
 	it('should return a list of available mealPlans', () => {
 		return request(app)
-			.get('/api/mealPlans')
+			.get('/api/mealPlans/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
 				body.mealPlans.forEach(meal => {
+					expect(meal).toHaveProperty('user_id')
 					expect(meal).toHaveProperty('name')
+					expect(meal.user_id).toEqual('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 				})
 			})
 	})
 })
 
-describe('GET - /api/mealPlans/:mealPlanName', () => {
+describe('GET - /api/mealPlans/:user_id/:mealPlanName', () => {
 	it('should return an array of all meals in a given meal plan', () => {
 		return request(app)
-			.get('/api/mealPlans/Week 1 test')
+			.get('/api/mealPlans/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d/Week 1 test')
 			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
@@ -708,7 +710,7 @@ describe('GET - /api/mealPlans/:mealPlanName', () => {
 	})
 	it('should return a 404 if meal doesnt exit', () => {
 		return request(app)
-			.get('/api/mealPlans/notAMealPlan')
+			.get('/api/mealPlans/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d/notAMealPlan')
 			.auth(token, { type: 'bearer' })
 			.expect(404)
 			.then(({ body }) => {
@@ -755,7 +757,7 @@ describe('POST - /api/mealPlans', () => {
 	})
 })
 
-describe('PATCH - /api/mealPlans/:mealPlanName', () => {
+describe('PATCH - /api/mealPlans/:user_id/:mealPlanName', () => {
 	it('should update a mealPlan when passed a modified mealPlan', () => {
 		const testMealPlan = {
 			template_id: 1,
@@ -782,7 +784,7 @@ describe('PATCH - /api/mealPlans/:mealPlanName', () => {
 		]
 
 		return request(app)
-			.patch('/api/mealPlans/Week 1 test')
+			.patch('/api/mealPlans/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d/Week 1 test')
 			.send(testMealPlan)
 			.auth(token, { type: 'bearer' })
 			.expect(200)
@@ -792,16 +794,18 @@ describe('PATCH - /api/mealPlans/:mealPlanName', () => {
 	})
 })
 
-describe('DELETE - /api/mealPlans/:mealPlanName', () => {
+describe('DELETE - /api/mealPlans/:user_id/:mealPlanName', () => {
 	it('should remove a mealPlan by name', () => {
 		return request(app)
-			.delete('/api/mealPlans/Week 1 test')
+			.delete('/api/mealPlans/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d/Week 1 test')
 			.auth(token, { type: 'bearer' })
 			.expect(204)
 	})
 	it('responds with 404 if recipe isnt found', () => {
 		return request(app)
-			.delete('/api/mealPlans/Not a recipe')
+			.delete(
+				'/api/mealPlans/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d/Not a recipe'
+			)
 			.auth(token, { type: 'bearer' })
 			.expect(404)
 			.then(({ body }) => {

@@ -136,8 +136,9 @@ exports.updateRecipeByName = async body => {
 	})
 }
 
-exports.removeRecipeByName = name => {
-	return db.query('DELETE FROM recipes WHERE recipe_name = $1 RETURNING *;', [
-		name
-	])
+exports.removeRecipeByName = (name, user_id) => {
+	return db.query(
+		'DELETE FROM recipes WHERE recipe_name = $1 AND user_id = $2 RETURNING *;',
+		[name, user_id]
+	)
 }
