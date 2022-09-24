@@ -947,3 +947,9 @@ describe('POST - login', () => {
 			})
 	})
 })
+
+describe.only('GET - /wake', () => {
+	it('should wake up the backend and return a 200', () => {
+		return request(app).get('/api//wake').expect(200)
+	})
+})
