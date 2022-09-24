@@ -1,41 +1,41 @@
 {
-  "name": "be-easyshop",
-  "version": "1.0.0",
-  "description": "back end set up for Easy Shop",
-  "main": "index.js",
-  "scripts": {
-    "seed:prod": "NODE_ENV=production DATABASE_URL=$(heroku config:get DATABASE_URL) npm run seed",
-    "devStart": "nodemon node listen.js",
-    "test": "jest",
-    "setup-dbs": "psql -f ./db/setup.sql",
-    "seed": "node ./db/seeds/run-seed.js",
-    "start": "node listen.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/AnthonyMcGreal/be-easyShop.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/AnthonyMcGreal/be-easyShop/issues"
-  },
-  "homepage": "https://github.com/AnthonyMcGreal/be-easyShop#readme",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "jest": "^27.3.1",
-    "jsonwebtoken": "^8.5.1",
-    "pg": "^8.7.1",
-    "pg-format": "^1.0.4",
-    "uuid": "^9.0.0"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.15",
-    "supertest": "^6.1.6"
-  }
+	"name": "be-easyshop",
+	"version": "1.0.0",
+	"description": "back end set up for Easy Shop",
+	"main": "index.js",
+	"scripts": {
+		"seed:prod": "NODE_ENV=production DATABASE_URL=$(heroku config:get DATABASE_URL) npm run seed",
+		"devStart": "nodemon node listen.js",
+		"test": "jest",
+		"setup-dbs": "psql -f ./db/setup.sql",
+		"seed": "node ./db/seeds/run-seed.js",
+		"start": "node listen.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/AnthonyMcGreal/be-easyShop.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/AnthonyMcGreal/be-easyShop/issues"
+	},
+	"homepage": "https://github.com/AnthonyMcGreal/be-easyShop#readme",
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"cookie-parser": "^1.4.6",
+		"cors": "^2.8.5",
+		"dotenv": "^10.0.0",
+		"express": "^4.17.1",
+		"jsonwebtoken": "^8.5.1",
+		"pg": "^8.7.1",
+		"pg-format": "^1.0.4",
+		"uuid": "^9.0.0"
+	},
+	"devDependencies": {
+		"jest": "^27.3.1",
+		"nodemon": "^2.0.15",
+		"supertest": "^6.1.6"
+	}
 }
