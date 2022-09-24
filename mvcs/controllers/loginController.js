@@ -7,7 +7,10 @@ exports.postLogin = (req, res, next) => {
 		.then(result => {
 			if (result) {
 				const token = createJWT(result.user_id, result.email)
-				res.status(200).cookie('jwt', token).send({ msg: 'Login successful' })
+				res
+					.status(200)
+					.cookie('jwt', token)
+					.send({ msg: 'Login successful', ...result })
 			}
 		})
 		.catch(next)

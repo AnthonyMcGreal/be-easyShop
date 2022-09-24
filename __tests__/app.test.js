@@ -914,6 +914,10 @@ describe('POST - login', () => {
 					)
 				)
 				expect(result.body.msg).toEqual('Login successful')
+				expect(result.body.email).toEqual('anthonymcgreal@hotmail.co.uk')
+				expect(result.body.user_id).toEqual(
+					'9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+				)
 			})
 	})
 
