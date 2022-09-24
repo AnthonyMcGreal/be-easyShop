@@ -3,6 +3,6 @@ const { getShoppingList } = require('../controllers/shoppingListController')
 
 const shoppingListRouter = require('express').Router()
 
-shoppingListRouter.route('/').post(userAuth, getShoppingList)
+shoppingListRouter.route('/:user_id').post(userAuth, getShoppingList)
 
 module.exports = shoppingListRouter

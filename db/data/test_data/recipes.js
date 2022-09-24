@@ -54,5 +54,13 @@ module.exports = [
 		ingredients: 3,
 		ingredient_quantity: 1,
 		portions: 2
+	},
+	{
+		name: 'Test recipe 3',
+		user_id: '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6e',
+		link: '',
+		ingredients: 3,
+		ingredient_quantity: 1,
+		portions: 2
 	}
 ]

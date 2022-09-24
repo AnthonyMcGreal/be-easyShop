@@ -471,10 +471,10 @@ describe('DELETE - /api/ingredients/:ingredients_id', () => {
 	})
 })
 
-describe('GET - /api/recipe', () => {
+describe('GET - /api/recipe/:user_id', () => {
 	it('should return a list of all recipes', () => {
 		return request(app)
-			.get('/api/recipe')
+			.get('/api/recipe/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
@@ -482,16 +482,19 @@ describe('GET - /api/recipe', () => {
 				body.recipes.forEach(recipe => {
 					expect(recipe).toHaveProperty('recipe_name')
 					expect(recipe).toHaveProperty('portions')
-					expect(Object.keys(recipe).length).toEqual(2)
+					expect(recipe.user_id).toEqual('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
+					expect(Object.keys(recipe).length).toEqual(3)
 				})
 			})
 	})
 })
 
-describe('GET - /api/recipe/:name', () => {
+describe('GET - /api/recipe/:user_id/:name', () => {
 	it('should return a recipe with ingredient info', () => {
 		return request(app)
-			.get('/api/recipe/Spag_Bol_no_mushrooms')
+			.get(
+				'/api/recipe/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d/Spag_Bol_no_mushrooms'
+			)
 			.auth(token, { type: 'bearer' })
 			.expect(200)
 			.then(({ body }) => {
@@ -503,12 +506,13 @@ describe('GET - /api/recipe/:name', () => {
 					expect(recipe).toHaveProperty('unit_of_measurement')
 					expect(recipe).toHaveProperty('portions')
 					expect(recipe).toHaveProperty('storage_type')
+					expect(recipe.user_id).toEqual('9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 				})
 			})
 	})
 	it('should return a 404 if the recipe doesnt exist', () => {
 		return request(app)
-			.get('/api/recipe/Not a recipe')
+			.get('/api/recipe/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d/Not a recipe')
 			.auth(token, { type: 'bearer' })
 			.expect(404)
 			.then(({ body }) => {
@@ -806,7 +810,7 @@ describe('DELETE - /api/mealPlans/:mealPlanName', () => {
 	})
 })
 
-describe('POST - /api/shoppingList', () => {
+describe('POST - /api/shoppingList/:user_id', () => {
 	it('should return a shoppingList of ingredients when provided with recipes and misc items', () => {
 		const requestData = {
 			miscItems: {
@@ -843,7 +847,7 @@ describe('POST - /api/shoppingList', () => {
 		}
 
 		return request(app)
-			.post('/api/shoppingList')
+			.post('/api/shoppingList/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 			.send(requestData)
 			.auth(token, { type: 'bearer' })
 			.expect(200)
@@ -878,7 +882,7 @@ describe('POST - /api/shoppingList', () => {
 		}
 
 		return request(app)
-			.post('/api/shoppingList')
+			.post('/api/shoppingList/9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d')
 			.send(requestData)
 			.auth(token, { type: 'bearer' })
 			.expect(200)

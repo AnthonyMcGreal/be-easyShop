@@ -5,36 +5,39 @@ const {
 } = require('../controllers/ingredientsController')
 const { query } = require('../../db/connection')
 
-exports.selectAllRecipes = () => {
-	let queryStr = `SELECT recipe_name, portions FROM recipes;`
-
-	return db.query(queryStr).then(({ rows }) => {
-		let distinctRecipes = []
-		rows.forEach(recipe => {
-			for (let i = 0; i <= distinctRecipes.length; i++) {
-				if (!distinctRecipes[i]) {
-					distinctRecipes.push(recipe)
-					return
+exports.selectAllRecipes = user_id => {
+	return db
+		.query(
+			`SELECT recipe_name, portions, user_id FROM recipes WHERE user_id = $1;`,
+			[user_id]
+		)
+		.then(({ rows }) => {
+			let distinctRecipes = []
+			rows.forEach(recipe => {
+				for (let i = 0; i <= distinctRecipes.length; i++) {
+					if (!distinctRecipes[i]) {
+						distinctRecipes.push(recipe)
+						return
+					}
+					if (distinctRecipes[i].recipe_name === recipe.recipe_name) return
 				}
-				if (distinctRecipes[i].recipe_name === recipe.recipe_name) return
-			}
-			distinctRecipes.push(recipe)
+				distinctRecipes.push(recipe)
+			})
+			return distinctRecipes
 		})
-		return distinctRecipes
-	})
 }
-exports.selectRecipeById = name => {
-	let queryStr = format(
-		`SELECT recipes.recipe_id, recipes.recipe_name, recipes.link, recipes.ingredients, ingredients.name, recipes.ingredient_quantity, ingredients.unit_of_measurement, recipes.portions, ingredients.storage_type FROM recipes
+exports.selectRecipeById = (user_id, name) => {
+	return db
+		.query(
+			`SELECT recipes.recipe_id, recipes.user_id, recipes.recipe_name, recipes.link, recipes.ingredients, ingredients.name, recipes.ingredient_quantity, ingredients.unit_of_measurement, recipes.portions, ingredients.storage_type FROM recipes
   JOIN ingredients
   ON recipes.ingredients = ingredients.ingredient_id
-  WHERE recipe_name = %L`,
-		[name]
-	)
-
-	return db.query(queryStr).then(({ rows }) => {
-		return rows
-	})
+  WHERE recipes.user_id = $1 AND recipe_name = $2`,
+			[user_id, name]
+		)
+		.then(({ rows }) => {
+			return rows
+		})
 }
 
 exports.insertRecipe = async body => {

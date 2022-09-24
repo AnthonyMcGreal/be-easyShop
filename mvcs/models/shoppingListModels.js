@@ -2,7 +2,7 @@ const db = require('../../db/connection')
 const format = require('pg-format')
 const { selectRecipeById } = require('./recipeModels')
 
-exports.makeShoppingList = async body => {
+exports.makeShoppingList = async (user_id, body) => {
 	const miscItems = body.miscItems
 	const recipes = body.recipes
 
@@ -25,7 +25,7 @@ exports.makeShoppingList = async body => {
 	const getAllIngredients = async () => {
 		for (let recipe in recipes) {
 			for (let i = 0; i < recipes[recipe]; i++) {
-				await selectRecipeById(recipe).then(ingredients => {
+				await selectRecipeById(user_id, recipe).then(ingredients => {
 					ingredientsShoppingList.push(ingredients)
 				})
 			}
