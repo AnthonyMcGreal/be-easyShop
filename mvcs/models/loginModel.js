@@ -13,6 +13,9 @@ exports.login = async body => {
 
 	let user = await db.query(queryStr)
 
+	if (user.rowCount === 0)
+		return Promise.reject({ status: 401, msg: 'Login failed' })
+
 	let passwordCheck = await bcrypt.compare(password, user.rows[0].password)
 
 	if (passwordCheck) {
@@ -21,6 +24,6 @@ exports.login = async body => {
 			email: user.rows[0].email
 		}
 	} else {
-		return Promise.reject({ status: 400, msg: 'Login failed' })
+		return Promise.reject({ status: 401, msg: 'Login failed' })
 	}
 }

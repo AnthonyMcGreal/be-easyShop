@@ -921,7 +921,7 @@ describe('POST - login', () => {
 			})
 	})
 
-	it('should return a 400 if password is incorrect', () => {
+	it('should return a 401 if password is incorrect', () => {
 		const testUser = {
 			email: 'anthonymcgreal@hotmail.co.uk',
 			password: 'wrongPassword'
@@ -930,7 +930,7 @@ describe('POST - login', () => {
 		return request(app)
 			.post('/api/login')
 			.send(testUser)
-			.expect(400)
+			.expect(401)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Login failed')
 			})
@@ -948,6 +948,21 @@ describe('POST - login', () => {
 			.expect(400)
 			.then(({ body }) => {
 				expect(body.msg).toEqual('Bad Request')
+			})
+	})
+
+	it('should return a 401 if email doesnt match an exiting user', () => {
+		const testUser = {
+			email: 'unknownUser',
+			password: 'wrongPassword'
+		}
+
+		return request(app)
+			.post('/api/login')
+			.send(testUser)
+			.expect(401)
+			.then(({ body }) => {
+				expect(body.msg).toEqual('Login failed')
 			})
 	})
 })
