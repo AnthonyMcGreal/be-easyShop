@@ -15,6 +15,17 @@ exports.insertUser = async (email, password) => {
 	if (!email || !password) {
 		return Promise.reject({ status: 400, msg: 'Bad Request' })
 	}
+
+	let checkForExistingUserQueryString = format(
+		`SELECT * FROM users WHERE email = %L;`,
+		[email]
+	)
+
+	let checkForExistingUser = await db.query(checkForExistingUserQueryString)
+
+	if (checkForExistingUser.rowCount > 0)
+		return Promise.reject({ status: 400, msg: 'Bad Request' })
+
 	let newUUID = uuidv4()
 	let encryptedPassword = await bcrypt.hash(password, 10)
 

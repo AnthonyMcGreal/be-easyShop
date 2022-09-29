@@ -51,6 +51,19 @@ describe('POST - /api/user', () => {
 				expect(passwordCheck).toEqual(true)
 			})
 	})
+	it.only('should return a 400 if email is already registered', () => {
+		const postUser = {
+			email: 'anthonymcgreal@hotmail.co.uk',
+			password: 'testPa$$word'
+		}
+		return request(app)
+			.post('/api/user')
+			.send(postUser)
+			.expect(400)
+			.then(({ body }) => {
+				expect(body.msg).toEqual('Bad Request')
+			})
+	})
 	it('should return a 400 if email field is missing', () => {
 		const postUser = {
 			password: 'testpassword'
