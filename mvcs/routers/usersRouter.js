@@ -7,7 +7,7 @@ const {
 
 const usersRouter = require('express').Router()
 
-usersRouter.route('/').post(userAuth, postUser)
+usersRouter.route('/').post(postUser)
 
 usersRouter
 	.route('/:user_id')

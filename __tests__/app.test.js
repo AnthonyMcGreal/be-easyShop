@@ -40,7 +40,6 @@ describe('POST - /api/user', () => {
 		return request(app)
 			.post('/api/user')
 			.send(postUser)
-			.auth(token, { type: 'bearer' })
 			.expect(201)
 			.then(async ({ body }) => {
 				expect(body.user.email).toEqual(postUser.email)
