@@ -51,7 +51,7 @@ describe('POST - /api/user', () => {
 				expect(passwordCheck).toEqual(true)
 			})
 	})
-	it.only('should return a 400 if email is already registered', () => {
+	it('should return a 400 if email is already registered', () => {
 		const postUser = {
 			email: 'anthonymcgreal@hotmail.co.uk',
 			password: 'testPa$$word'
