@@ -35,7 +35,7 @@ describe('POST - /api/user', () => {
 	it('should post a new user', () => {
 		const postUser = {
 			email: 'test@email.com',
-			password: 'testPa$$word'
+			password: 'demoPassword'
 		}
 		return request(app)
 			.post('/api/user')
@@ -53,7 +53,7 @@ describe('POST - /api/user', () => {
 	})
 	it('should return a 400 if email is already registered', () => {
 		const postUser = {
-			email: 'anthonymcgreal@hotmail.co.uk',
+			email: 'anthony@email.com',
 			password: 'testPa$$word'
 		}
 		return request(app)
@@ -911,7 +911,7 @@ describe('POST - /api/shoppingList/:user_id', () => {
 describe('POST - login', () => {
 	it('should return a 200 if the credentials are correct', () => {
 		const testUser = {
-			email: 'anthonymcgreal@hotmail.co.uk',
+			email: 'anthony@email.com',
 			password: 'testPa$$word'
 		}
 
@@ -926,7 +926,7 @@ describe('POST - login', () => {
 					)
 				)
 				expect(result.body.msg).toEqual('Login successful')
-				expect(result.body.email).toEqual('anthonymcgreal@hotmail.co.uk')
+				expect(result.body.email).toEqual('anthony@email.com')
 				expect(result.body.user_id).toEqual(
 					'9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 				)
