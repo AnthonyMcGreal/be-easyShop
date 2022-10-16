@@ -48,7 +48,7 @@ const seed = async ({
 	    user_id UUID REFERENCES users(user_id) ON UPDATE CASCADE,
 	    link TEXT,
 	    ingredients INT REFERENCES ingredients(ingredient_id) ON DELETE CASCADE,
-	    ingredient_quantity INT NOT NULL,
+	    ingredient_quantity REAL NOT NULL,
 	    portions INT NOT NULL
 	);`)
 
