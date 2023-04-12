@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"seed:prod": "NODE_ENV=production DATABASE_URL=$(DATABASE_URL) npm run seed",
-		"devStart": "nodemon node listen.js",
+		"devStart": "npm run setup-dbs && npm run seed && npm start",
 		"test": "jest",
 		"setup-dbs": "psql -f ./db/setup.sql",
 		"seed": "node ./db/seeds/run-seed.js",
